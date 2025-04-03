@@ -4,11 +4,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
     {% block head %}{% endblock %}
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
+    <header>
+        <a href="/user">User</a>
+        <a href="/">Main</a>
+        <a href="/report">Report</a>
+        <a href="/create">Create</a>
     
+    
+    </header>
     {% block content %}
-
+    
     {% endblock %}
     
 </body>
