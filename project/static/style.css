@@ -1,7 +1,10 @@
 header{
     display: flex;
     flex-direction: row-reverse;
-    gap: 100px;
+    gap: 80px;
     background-color: FFE4E4;
     color: black;
+}
+body{
+    margin:  0;
 }
