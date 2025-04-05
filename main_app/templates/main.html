@@ -2,8 +2,37 @@
 
 {% block title %} Main page {% endblock %}
 
-{% block head %}  {% endblock %}
+{% block head %} 
+<link rel="stylesheet" href="{{ url_for('main.static', filename='main.css') }}">
+{% endblock %}
+
 
 {% block content %} 
-<h1>Main Page</h1>
+<div class="main_container">
+    <div class="left_panel">
+        <button class="profile"></button>
+        <button class="create"></button>
+        <button class="report"></button>
+        <button class="settings"></button>
+    </div>
+    <div class="top_panel">
+        <button class="login">Login</button>
+        <h1 class="name">Knowex</h1>
+    </div>
+    <div class="content">
+        <div class="block1">
+            <div class="block_img1"></div>
+            <div class="block_name">Name test</div>
+            <div class="subject_block">Sub: something</div>
+            <div class="block_nick">Smt_creator</div>
+        </div>
+        
+        <div class="block2">
+            <div class="block_img2"></div>
+            <div class="block_name">Name test</div>
+            <div class="subject_block">Sub: something</div>
+            <div class="block_nick">Smt_creator</div>
+        </div>
+    </div>
+</div>
 {% endblock %}
