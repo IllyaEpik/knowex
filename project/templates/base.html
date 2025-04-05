@@ -2,22 +2,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %}  {% endblock %}</title>
     {% block head %}{% endblock %}
     <link rel="stylesheet" href="static/style.css">
+    <link rel="shortcut icon" href="static/book.png">
 </head>
 <body>
+    <!-- <img src="static/background.png" alt=""> -->
     <header>
         <a href="/user">User</a>
         <a href="/">Main</a>
         <a href="/report">Report</a>
         <a href="/create">Create</a>
     
-    
     </header>
-    {% block content %}
-    
-    {% endblock %}
-    
+    <img src="/static/images/Background.png" alt="">
+    <div class="main_container">
+        <div class="left_panel">
+            <a class="profile" href="/user" ></a>
+            <a class="create"  href="/create"></a>
+            <a class="report"  href="/report"></a>
+            <a class="settings"  href="/"></a>
+        </div>
+        <div class="top_panel">
+            <button class="login">Login</button>
+            <h1 class="name">Knowex</h1>
+        </div>
+            {% block content %}
+            
+            {% endblock %}
+        </div>
+    </div>
 </body>
 </html>
