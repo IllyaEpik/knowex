@@ -133,3 +133,16 @@ body {
 .main_container{
     cursor: pointer;
 }
+.reg{
+    width: 150px;
+    height: 45px;
+    margin-right: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: #84FFF1;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 25px;
+    text-align: center;
+}
