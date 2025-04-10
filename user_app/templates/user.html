@@ -2,14 +2,25 @@
 
 {% block title %} User page {% endblock %}
 
-{% block head %}  {% endblock %}
+{% block head %} 
+{% endblock %}
 
+<link rel="stylesheet" href="static/css/style.css">
 {% block content %} 
 <h1>User Page</h1>
-<form method="post">
+
+<form method="post" class="form">
+    <h1 name="type" value="reg">reg</h1>
     <input type="text" name="nickname" id="nickname" placeholder="nickname">
     <input type="email" name="email" id="email" placeholder="email">
     <input type="password" name="password" id="password" placeholder="password">
     <input type="password" name="confirm_password" id="confirm_password" placeholder="confirm_password">
+    <button>Save</button>
+</form>
+<form method="post" class="form">
+    <h1 name="type" value="log">log in</h1>
+    <input type="text" name="log" id="" placeholder="nickname">
+    <input type="text" name="pass" id="" placeholder="password">
+    <button>Save</button>
 </form>
 {% endblock %}

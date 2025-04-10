@@ -1,21 +1,4 @@
-.content {
-    width: calc(100% - 135px);
-    height: calc(100% - 109px);
-    box-sizing: border-box;
-    position: absolute;
-    border: none;
-    top: 110px;
-    left: 120px;
-    margin-left: 9px;
-    padding: 10px;
-    padding-top: 5px;
-    overflow: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
+
 
 .content::-webkit-scrollbar {
     width: 10px;
@@ -100,4 +83,8 @@
 
 button{
     cursor: pointer;
+}
+#main{
+    background-color: #dbeafe;
+    border-radius: 10px;
 }

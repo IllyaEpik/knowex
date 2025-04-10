@@ -8,31 +8,30 @@
     <link rel="shortcut icon" href="static/book.png">
 </head>
 <body>
-    <!-- <img src="static/background.png" alt=""> -->
-    <header>
-        <a href="/user">User</a>
-        <a href="/">Main</a>
-        <a href="/report">Report</a>
-        <a href="/create">Create</a>
-    
-    </header>
-    <img src="/static/images/Background.png" alt="">
-    <div class="main_container">
-        <div class="left_panel">
-            <a class="profile" href="/user" ></a>
-            <a class="create"  href="/create"></a>
-            <a class="report"  href="/report"></a>
-            <a class="settings"  href="/"></a>
+    <div class="left_panel">
+        <h1 class="name">Knowex</h1>
+        <div class="menu_item" id="main">
+            <img src="static/new_icons/main.png" alt="Main" class="main_photo">
+            <a href="/" class="main">Tests</a>
         </div>
-        <div class="top_panel">
-            <a class="login" href="/user">Login</a>
-            <a class="reg" href="/user">Registration</a>
-            <h1 class="name">Knowex</h1>
+        <div class="menu_item" id="create">
+            <img src="static/new_icons/create.png" alt="Create" class="create_photo">
+            <a href="/create" class="create">New test</a>
         </div>
-            {% block content %}
-            
-            {% endblock %}
+        <div class="menu_item" id="report">
+            <img src="static/new_icons/report.png" alt="Report" class="report_photo">
+            <a href="/report" class="report">Create test</a>
         </div>
+    </div>
+    <div class="top_panel">
+        <img src="static/new_icons/profile.png" alt="" class="profile_photo">
+        <a class="profile"></a>
+        <h1 class="name_page">base page</h1>
+    </div>
+    <div class="content">
+        {% block content %}
+        
+        {% endblock %}
     </div>
 </body>
 </html>

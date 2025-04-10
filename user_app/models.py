@@ -8,7 +8,7 @@ class User(DATABASE.Model):
     password = DATABASE.Column(DATABASE.String(255))
     # profile_icon = DATABASE.Column(DATABASE.String(255))
     is_mentor = DATABASE.Column(DATABASE.Boolean)
-    create_test = DATABASE.Column(DATABASE.Text)
+    create_tests = DATABASE.Column(DATABASE.Text)
     complete_tests = DATABASE.Column(DATABASE.Text)
     theme = DATABASE.Column(DATABASE.Boolean)
     def __repr__(self):
