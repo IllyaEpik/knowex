@@ -1,3 +1,12 @@
-.form{
+/* .form{
     display: flex;
+} */
+button:hover{
+    color: red;
+    /* height: 40; */
+
+}
+button{
+    /* height: 200; */
+    transition:cubic-bezier(1, 1, 0, 1) 0.5s;
 }

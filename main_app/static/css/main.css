@@ -1,90 +1,21 @@
-
-
-.content::-webkit-scrollbar {
-    width: 10px;
-    background: transparent;
-}
-
-.content::-webkit-scrollbar-thumb {
-    background: #0f800b;
-    border-radius: 15px;
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-    background: #01c52c;
-}
-
-.block1 {
-    width: 380px;
-    height: 240px;
-    background: linear-gradient(to right, #BFFFCB, #30AC51);
-    margin: 10px;
-    position: relative;
-}
-
-.block_img1{
-    width: 160px;
-    height: 160px;
-    background-image: url('icon_test/chemistry.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top left;
-    background-attachment: local;
-}
-
-.block_name{
-    position: absolute;
-    top: 0px;
-    left: 45%;
-    max-width: 100%;
-    box-sizing: border-box;
-    font-size: 40px;
-    color: #000000;
-}
-
-.subject_block{
-    position: absolute;
-    top: 38px;
-    left: 40%;
-    max-width: 100%;
-    box-sizing: border-box;
-    font-size: 40px;
-    color: #000000;
-    text-align: center;
-}
-
-.block_nick{
-    position: absolute;
-    left: 40%;
-    max-width: 50%;
-    box-sizing: border-box;
-    font-size: 40px;
-    color: #000000;
-    text-align: center;
-}
-
-.block2{
-    width: 380px;
-    height: 240px;
-    background: linear-gradient(to right, #BFFFCB, #30AC51);
-    margin: 10px;
-    position: relative;
-}
-
-.block_img2 {
-    width: 160px;
-    height: 160px;
-    background-image: url('icon_test/math.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top left;
-    background-attachment: local;
-}
-
 button{
     cursor: pointer;
 }
+
+
+/* bright */
+
 #main{
     background-color: #dbeafe;
+    border-radius: 15px;
+}
+/* dark */
+
+#main.dark{
+    background-color: #7e7f80;
     border-radius: 10px;
+}
+
+.dark{
+    color: wheat;
 }

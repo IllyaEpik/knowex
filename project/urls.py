@@ -7,7 +7,7 @@ from .settings import project
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create)
 report_app.report.add_url_rule(rule="/report", view_func=report_app.views.render_report)
-user_app.user.add_url_rule(rule="/user", view_func=user_app.views.render_user)
+user_app.user.add_url_rule(rule="/user", view_func=user_app.views.render_user, methods = ['get', 'post'])
 
 
 project.register_blueprint(blueprint=main_app.app.main)

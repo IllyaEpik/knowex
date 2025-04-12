@@ -1,7 +1,7 @@
 from project.settings import DATABASE
+import flask_login
 
-
-class User(DATABASE.Model):
+class User(DATABASE.Model,flask_login.AnonymousUserMixin):
     id= DATABASE.Column(DATABASE.Integer, primary_key=True)
     email = DATABASE.Column(DATABASE.String(255))
     nickname = DATABASE.Column(DATABASE.String(255))

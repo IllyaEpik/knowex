@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}  {% endblock %}</title>
+    <title>Knowex</title>
     {% block head %}{% endblock %}
     <link rel="stylesheet" href="static/style.css">
     <link rel="shortcut icon" href="static/book.png">
@@ -24,9 +24,9 @@
         </div>
     </div>
     <div class="top_panel">
-        <img src="static/new_icons/profile.png" alt="" class="profile_photo">
-        <a class="profile"></a>
-        <h1 class="name_page">base page</h1>
+        <a class="profile" href="/user"><img src="static/new_icons/profile.png" alt="" class="profile_photo"></a>
+        
+        <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>
     <div class="content">
         {% block content %}

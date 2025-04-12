@@ -9,6 +9,6 @@ project = flask.Flask(
     template_folder="templates"
 )
 
-project.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
+project.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///instance/data.db"
 DATABASE  = flask_sqlalchemy.SQLAlchemy(app=project)
 MIGRATE = flask_migrate.Migrate(app=project , db= DATABASE)

@@ -3,9 +3,9 @@
 {% block title %} User page {% endblock %}
 
 {% block head %} 
+<link rel="stylesheet" href="{{ url_for('user.static', filename='css/user.css') }}">
 {% endblock %}
 
-<link rel="stylesheet" href="static/css/style.css">
 {% block content %} 
 <h1>User Page</h1>
 
@@ -19,8 +19,8 @@
 </form>
 <form method="post" class="form">
     <h1 name="type" value="log">log in</h1>
-    <input type="text" name="log" id="" placeholder="nickname">
-    <input type="text" name="pass" id="" placeholder="password">
-    <button>Save</button>
+    <input type="text" name="nickname" id="" placeholder="nickname">
+    <input type="text" name="password" id="" placeholder="password">
+    <button name="auth" value="1">Save</button>
 </form>
 {% endblock %}
