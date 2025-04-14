@@ -3,8 +3,8 @@ import flask_login
 
 class User(DATABASE.Model,flask_login.AnonymousUserMixin):
     id= DATABASE.Column(DATABASE.Integer, primary_key=True)
-    email = DATABASE.Column(DATABASE.String(255))
     nickname = DATABASE.Column(DATABASE.String(255))
+    email = DATABASE.Column(DATABASE.String(255))
     password = DATABASE.Column(DATABASE.String(255))
     # profile_icon = DATABASE.Column(DATABASE.String(255))
     is_mentor = DATABASE.Column(DATABASE.Boolean)

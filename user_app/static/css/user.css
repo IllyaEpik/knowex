@@ -10,3 +10,6 @@ button{
     /* height: 200; */
     transition:cubic-bezier(1, 1, 0, 1) 0.5s;
 }
+.hidden{
+    display: none;
+}
