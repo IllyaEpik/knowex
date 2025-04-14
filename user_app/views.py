@@ -4,10 +4,14 @@ from project.settings import DATABASE
 def render_user():
     
     if flask.request.method == "POST":
+        print(flask_login.current_user.is_authenticated)
         if flask.request.form.get('auth'):
             for user in User.query.filter_by(nickname=flask.request.form['nickname']):
                 if user.password == flask.request.form['password']:
+                    print(user)
                     flask_login.login_user(user)
+                    print(flask_login.current_user.is_authenticated)
+                    
         else:
             if flask.request.form['password'] == flask.request.form['confirm_password']:
                 
@@ -16,7 +20,7 @@ def render_user():
                     email = flask.request.form['email'],
                     password = flask.request.form['password'],
                     nickname = flask.request.form['nickname'],
-                    theme = 1,
+                    # theme = 1,
                     complete_tests = 0,
                     create_tests  = 0,
                     is_mentor = False

@@ -2,7 +2,6 @@ import flask, flask_sqlalchemy, flask_migrate, flask_login
 import os
 
 
-
 project = flask.Flask(
     import_name="project",
     instance_path= os.path.abspath(__file__ + "/.."),

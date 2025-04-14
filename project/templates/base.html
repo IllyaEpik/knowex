@@ -2,14 +2,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowex</title>
     {% block head %}{% endblock %}
+    <script src="static/js/base.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <link rel="shortcut icon" href="static/book.png">
 </head>
 <body>
     <div class="left_panel">
-        <h1 class="name">Knowex</h1>
+        <div class = "icon">
+            <img src="static/images/knowex_icon.png" alt="" class="icon_photo">
+            <h1 class="name">Knowex</h1>
+        </div>
+        <button id="theme_change" class="theme_change"></button>
         <div class="menu_item" id="main">
             <img src="static/new_icons/main.png" alt="Main" class="main_photo">
             <a href="/" class="main">Tests</a>
@@ -24,8 +28,9 @@
         </div>
     </div>
     <div class="top_panel">
-        <a class="profile" href="/user"><img src="static/new_icons/profile.png" alt="" class="profile_photo"></a>
-        
+        <a href="/user" class="profile_photo"></a>
+        <a src="" alt="" >
+        <a class="profile"></a>
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>
     <div class="content">

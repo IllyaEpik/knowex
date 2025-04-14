@@ -1,15 +1,185 @@
-/* .form{
+.user_page{
+    background-color: #ACDDFF;
+    width: 750px;
+    height: 620px;
+    position: fixed;
+    left: 600px;
+    top: 140px;
+    border-radius: 10px;
+}
+
+.form{
+    padding: 20px;
+    width: 750px;
+    height: 620px;
+    left: 600px;
+    top: 140px;
+    /* display: flex; */
+    /* flex-direction: column;  */
+    /* align-items: center; */
+    z-index: 1; 
+}
+
+.name_knowex{
+    position: relative;
+    font-size: 48px;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input{
     display: flex;
-} */
-button:hover{
-    color: red;
-    /* height: 40; */
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    margin-bottom: 15px; 
+    width: 100%;
+    height: 40px;
+    overflow: visible;
+}
+
+.input img {
+    position: relative;
+    top: 94px;
+    left: 35px;
+    width: 20px; 
+    height: 20px; 
+    z-index: 2;
+}
+
+.input input {
+    width: 50%; 
+    height: 40px; 
+    padding: 10px; 
+    padding-left: 30px;
+    font-size: 16px;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
 
 }
-button{
-    /* height: 200; */
-    transition:cubic-bezier(1, 1, 0, 1) 0.5s;
+
+
+
+/* ------------------------------------------- */
+
+.reg_log{
+    display: flex; 
+    justify-content: center; 
+    gap: 100px; 
+    margin-top: 20px; 
 }
-.hidden{
+
+
+button.log, button.reg {
+    background: none; 
+    border: none; 
+    color: #000; 
+    font-size: 32px; 
+    font-family: inherit; 
+    cursor: pointer; 
+    padding: 0; 
+    text-decoration: none;
+}
+
+button.log:hover, button.reg:hover {
+    text-decoration: underline; 
+    color: #007BFF; 
+}
+
+
+.select button{
+    color: #FC5B46;
+}
+
+
+.line_reg, .line_log{
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-bottom: 3px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.select{
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-bottom: 3px solid #FC5B46;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+/* ------------------------------------------------ */
+
+.log_nickname,
+.log_password {
+    position: relative;
+    width: 80%; 
+    height: 40px; 
+    margin-bottom: 15px; 
+    padding: 10px; 
+    font-size: 16px;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    top: 100px;
+}
+
+.log_save {
+    position: relative;
+    width: 60%; 
+    height: 45px; 
+    margin-top: 20px; 
+    background-color: #007BFF; 
+    color: #fff; 
+    font-size: 18px; 
+    font-family: inherit; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+    top: 100px;
+}
+
+/* ------------------------------------------------------------ */
+
+.reg{
+    position: relative;
+}
+
+.reg_nickname{
+    position: relative;
+}
+
+.reg_password{
+    position: relative;
+}
+
+.reg_confirm_password{
+    position: relative;
+}
+
+.reg_email{
+    position: relative;
+}
+
+.reg_save{
+    position: relative;
+}
+
+/* -------------------------------------------------------------------- */
+
+/* .log_nickname,
+.log_password,
+.log_save,
+.user_page:not(.reg) .reg_nickname,
+.user_page:not(.reg) .reg_password,
+.user_page:not(.reg) .reg_confirm_password,
+.user_page:not(.reg) .reg_email,
+.user_page:not(.reg) .reg_save {
     display: none;
-}
+    pointer-events: none;
+} */
