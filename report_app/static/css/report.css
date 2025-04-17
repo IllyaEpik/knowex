@@ -1,0 +1,13 @@
+/* bright */
+
+#report{
+    background-color: #dbeafe;
+    border-radius: 15px;
+}
+
+/* dark */
+
+body.dark #report{
+    background-color: #7e7f80;
+    border-radius: 10px;
+}

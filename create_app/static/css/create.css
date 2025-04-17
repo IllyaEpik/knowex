@@ -1,0 +1,12 @@
+/* bright */
+
+#create{
+    background-color: #dbeafe;
+    border-radius: 15px;
+}
+/* dark */
+
+body.dark #create{
+    background-color: #7e7f80;
+    border-radius: 10px;
+}

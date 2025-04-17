@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block head %}{% endblock %}
+    <title>Knowex</title>
     <script src="static/js/base.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <link rel="shortcut icon" href="static/book.png">
@@ -19,17 +20,18 @@
             <a href="/" class="main">Tests</a>
         </div>
         <div class="menu_item" id="create">
-            <img src="static/new_icons/create.png" alt="Create" class="create_photo">
-            <a href="/create" class="create">New test</a>
+            <img src="static/new_icons/report.png" alt="Report" class="report_photo">
+            <a href="/create" class="create">Create</a>
         </div>
         <div class="menu_item" id="report">
-            <img src="static/new_icons/report.png" alt="Report" class="report_photo">
-            <a href="/report" class="report">Create test</a>
+            <img src="static/new_icons/create.png" alt="Create" class="create_photo">
+            <a href="/report" class="report">Report</a>
         </div>
     </div>
     <div class="top_panel">
         <a href="/user" class="profile_photo"></a>
         <a src="" alt="" >
+        
         <a class="profile"></a>
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>

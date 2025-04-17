@@ -2,7 +2,9 @@
 
 {% block title %} create page {% endblock %}
 
-{% block head %}  {% endblock %}
+{% block head %} 
+    <link rel="stylesheet" href="{{ url_for('create.static', filename='css/create.css') }}">
+{% endblock %}
 
 {% block content %} 
 

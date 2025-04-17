@@ -2,7 +2,9 @@
 
 {% block title %}Report Page{% endblock %}
 
-{% block head %}  {% endblock %}
+{% block head %} 
+    <link rel="stylesheet" href="{{ url_for('report.static', filename='css/report.css') }}">
+{% endblock %}
 
 {% block content %} 
 <h1>Report Page</h1>

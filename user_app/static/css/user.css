@@ -3,8 +3,7 @@
     width: 750px;
     height: 620px;
     position: fixed;
-    left: 600px;
-    top: 140px;
+    margin-top: 60px;
     border-radius: 10px;
 }
 
@@ -12,11 +11,7 @@
     padding: 20px;
     width: 750px;
     height: 620px;
-    left: 600px;
-    top: 140px;
-    /* display: flex; */
-    /* flex-direction: column;  */
-    /* align-items: center; */
+    margin-top: 60px;
     z-index: 1; 
 }
 
@@ -28,9 +23,23 @@
     text-align: center;
 }
 
+.container{
+    position: absolute;
+    width: 750px;
+    height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    top: 1px;
+    z-index: 1;
+    pointer-events: none;
+}
+
 .input{
     display: flex;
     align-items: center;
+    pointer-events: all;
     justify-content: center;
     gap: 10px; 
     margin-bottom: 15px; 
@@ -41,7 +50,7 @@
 
 .input img {
     position: relative;
-    top: 94px;
+    top: 34px;
     left: 35px;
     width: 20px; 
     height: 20px; 
@@ -56,42 +65,36 @@
     font-size: 16px;
     border: 1px solid #ccc; 
     border-radius: 5px; 
-
 }
-
-
-
-/* ------------------------------------------- */
 
 .reg_log{
     display: flex; 
     justify-content: center; 
     gap: 100px; 
     margin-top: 20px; 
+    z-index: 5;
 }
-
-
+button{
+    pointer-events: all;
+    cursor: pointer;
+}
 button.log, button.reg {
     background: none; 
     border: none; 
-    color: #000; 
+    color: #000000; 
     font-size: 32px; 
     font-family: inherit; 
     cursor: pointer; 
     padding: 0; 
     text-decoration: none;
+    
 }
 
 button.log:hover, button.reg:hover {
     text-decoration: underline; 
     color: #007BFF; 
+    pointer-events: all;
 }
-
-
-.select button{
-    color: #FC5B46;
-}
-
 
 .line_reg, .line_log{
     position: relative;
@@ -102,6 +105,7 @@ button.log:hover, button.reg:hover {
     align-items: center;
     justify-content: center;
 }
+
 .select{
     position: relative;
     width: 200px;
@@ -113,10 +117,16 @@ button.log:hover, button.reg:hover {
 
 }
 
-/* ------------------------------------------------ */
+.select button{
+    color: #FC5B46;
+}
 
 .log_nickname,
-.log_password {
+.log_password,
+.reg_nickname,
+.reg_password,
+.reg_confirm_password,
+.reg_email {
     position: relative;
     width: 80%; 
     height: 40px; 
@@ -125,10 +135,10 @@ button.log:hover, button.reg:hover {
     font-size: 16px;
     border: 1px solid #ccc; 
     border-radius: 5px; 
-    top: 100px;
+    top: 40px;
 }
 
-.log_save {
+.reg_save, .log_save {
     position: relative;
     width: 60%; 
     height: 45px; 
@@ -141,45 +151,6 @@ button.log:hover, button.reg:hover {
     border-radius: 5px; 
     cursor: pointer; 
     transition: background-color 0.3s ease; 
-    top: 100px;
+    top: 40px;
 }
 
-/* ------------------------------------------------------------ */
-
-.reg{
-    position: relative;
-}
-
-.reg_nickname{
-    position: relative;
-}
-
-.reg_password{
-    position: relative;
-}
-
-.reg_confirm_password{
-    position: relative;
-}
-
-.reg_email{
-    position: relative;
-}
-
-.reg_save{
-    position: relative;
-}
-
-/* -------------------------------------------------------------------- */
-
-/* .log_nickname,
-.log_password,
-.log_save,
-.user_page:not(.reg) .reg_nickname,
-.user_page:not(.reg) .reg_password,
-.user_page:not(.reg) .reg_confirm_password,
-.user_page:not(.reg) .reg_email,
-.user_page:not(.reg) .reg_save {
-    display: none;
-    pointer-events: none;
-} */
