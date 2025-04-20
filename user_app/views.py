@@ -33,20 +33,20 @@ def render_user():
                     print(error)
         
     return flask.render_template("user.html")            
-def render_login_page():
+# def render_login_page():
     
-    if flask_login.current_user.is_authenticated:
-        return flask.redirect('/')
-    else:
+#     if flask_login.current_user.is_authenticated:
+#         return flask.redirect('/')
+#     else:
         
-        if flask.request.method == "POST":
-            for user in User.query.filter_by(login=flask.request.form['login']):
-                if user.nickname == flask.request.form['nickname']:
-                    flask_login.login_user(user)
-            if  code:
-                for user in User.query.filter_by(email=flask.request.form['login']):
-                    if user.password == flask.request.form['password']:
-                        flask_login.login_user(user)
-                        code = False
+#         if flask.request.method == "POST":
+#             for user in User.query.filter_by(login=flask.request.form['login']):
+#                 if user.nickname == flask.request.form['nickname']:
+#                     flask_login.login_user(user)
+#             if  code:
+#                 for user in User.query.filter_by(email=flask.request.form['login']):
+#                     if user.password == flask.request.form['password']:
+#                         flask_login.login_user(user)
+#                         code = False
                         
-    return flask.render_template("user.html")           
+#     return flask.render_template("user.html")           
