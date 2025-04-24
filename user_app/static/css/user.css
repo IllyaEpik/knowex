@@ -67,6 +67,15 @@
     border-radius: 5px; 
 }
 
+.profile_photo_bt{
+    width: 45px; 
+    height: 45px;  
+    position: fixed;
+    background-image: url("../images/profile.png");
+    background-size: cover;
+    background-position: center;
+}
+
 .reg_log{
     display: flex; 
     justify-content: center; 

@@ -49,4 +49,11 @@ def render_user():
 #                         flask_login.login_user(user)
 #                         code = False
                         
+# <<<<<<< HEAD
 #     return flask.render_template("user.html")           
+# =======
+    # return flask.render_template("user.html")           
+
+def render_profile_page():
+    return flask.render_template("profile.html")
+# >>>>>>> origin/Max

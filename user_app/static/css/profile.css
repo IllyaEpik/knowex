@@ -1,0 +1,78 @@
+.top_container{
+    position: fixed;
+    left: 105px;
+    top: 110px;
+    display: flex;
+    justify-content: row;
+    align-items: center;
+    height: 100px;
+    width: 500px;
+}
+
+.top_container img{
+    margin-right: 15px;
+}
+
+.top_container div{
+    background-color: #ACDDFF;
+    font-size: 12px;
+    width: 225px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* --------------------------------------------------------------------- */
+
+.profile_page{
+    background-color: #ACDDFF;
+    width: 850px;
+    height: 500px;
+    position: fixed;
+    margin-top: 80px;
+    border-radius: 30px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.user_info{
+    margin: 10px; 
+    width: 850px; 
+    height: 60px;  
+    position: relative;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.user_info #hide{
+    width: 45px; 
+    height: 45px;  
+    position: relative;
+    background-image: url("../images/hide_open.png");
+    background-size: cover;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    margin-top: 20px;
+}
+.user_info #close{
+    width: 45px; 
+    height: 45px;  
+    position: relative;
+    background-image: url("../images/hide_close.png");
+    background-size: cover;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    margin-top: 20px;
+}
+.user_info #change_password{
+    width: 750px; 
+    height: 60px;  
+    position: relative;
+    background-color: #e7e7e7;
+}
+
