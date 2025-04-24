@@ -8,6 +8,7 @@
 
 {% block content %} 
 <div class="user_page">
+    <a href="/profile" class="profile_photo_bt"></a>
     <h1 class="name_knowex">Knowex</h1>
     <div class = reg_log>
         <div class ="line_log select">
@@ -33,6 +34,7 @@
     
     <form method="post" class="form" id="reg" hidden>
         <div class="container">
+            <a href="/profile" class="profile_photo_bt"></a>
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
                 <input type="text" name="nickname" id="nickname" placeholder="nickname" class="reg_nickname">

@@ -50,3 +50,6 @@ def render_login_page():
                         code = False
                         
     return flask.render_template("user.html")           
+
+def render_profile_page():
+    return flask.render_template("profile.html")

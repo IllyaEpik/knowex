@@ -67,6 +67,15 @@
     border-radius: 5px; 
 }
 
+.profile_photo_bt{
+    width: 45px; 
+    height: 45px;  
+    position: fixed;
+    background-image: url("../images/profile.png");
+    background-size: cover;
+    background-position: center;
+}
+
 .reg_log{
     display: flex; 
     justify-content: center; 
@@ -74,10 +83,12 @@
     margin-top: 20px; 
     z-index: 5;
 }
+
 button{
     pointer-events: all;
     cursor: pointer;
 }
+
 button.log, button.reg {
     background: none; 
     border: none; 
@@ -90,9 +101,8 @@ button.log, button.reg {
     
 }
 
-button.log:hover, button.reg:hover {
-    text-decoration: underline; 
-    color: #007BFF; 
+button.log:hover, button.reg:hover { 
+    color: #005bbd88; 
     pointer-events: all;
 }
 
@@ -154,3 +164,92 @@ button.log:hover, button.reg:hover {
     top: 40px;
 }
 
+/* For dark */
+
+body.dark .user_page{
+    background-color: #05263d;
+    width: 750px;
+    height: 620px;
+    position: fixed;
+    margin-top: 60px;
+    border-radius: 10px;
+}
+
+body.dark .name_knowex{
+    position: relative;
+    font-size: 48px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+body.dark .reg_save, body.dark .log_save {
+    position: relative;
+    width: 60%; 
+    height: 45px; 
+    margin-top: 20px; 
+    background-color: #0f4783; 
+    color: #fff; 
+    font-size: 18px; 
+    font-family: inherit; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+    top: 40px;
+}
+
+body.dark .input input {
+    width: 50%; 
+    height: 40px; 
+    padding: 10px; 
+    padding-left: 30px;
+    font-size: 16px;
+    border: 1px solid #081933; 
+    border-radius: 5px; 
+}
+
+body.dark button.log, body.dark button.reg {
+    background: none; 
+    border: none; 
+    color: #ffffff; 
+    font-size: 32px; 
+    font-family: inherit; 
+    cursor: pointer; 
+    padding: 0; 
+    text-decoration: none;
+}
+
+body.dark .line_reg, body.dark .line_log{
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-bottom: 3px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.dark .select{
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-bottom: 3px solid #b93321;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+body.dark .select button{
+    color: #b93321;
+}
+
+body.dark .select button:hover{
+    color: #b93321;
+}
+
+body.dark button.log:hover, body.dark button.reg:hover { 
+    color: #416bdfea; 
+    pointer-events: all;
+}
