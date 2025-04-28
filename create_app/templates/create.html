@@ -7,11 +7,7 @@
 {% endblock %}
 
 {% block content %} 
-<<<<<<< HEAD
-    <div class="div_create">
-        
-    </div>
-=======
+
 
 <h1>Create Page</h1>
 <div class="question-form" id="questionForm">
@@ -30,12 +26,11 @@
         <div><input type="text" class="option" value="Варіант 3"></div>
     </div>
 
-    <button>Додати варіант</button><br><br>
+    <button id="add">Додати варіант</button><br><br>
 
    
-    <button>Зберегти питання</button>
+    <button id="save">Зберегти питання</button>
 </div>
 <script defer src="{{ url_for('create.static', filename = '/js/create.js') }}"></script>
 
->>>>>>> origin/Mark
 {% endblock %}
