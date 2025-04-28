@@ -4,6 +4,20 @@
     background-color: #dbeafe;
     border-radius: 15px;
 }
+
+.div_create{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.div_create h1{
+    font-size: 50px;
+    color: #0f172a;
+}
+
 /* dark */
 
 body.dark #create{

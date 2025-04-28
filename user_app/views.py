@@ -4,7 +4,6 @@ from project.settings import DATABASE
 def render_user():
     
     if flask.request.method == "POST":
-        print(flask_login.current_user.is_authenticated)
         if flask.request.form.get('auth'):
             for user in User.query.filter_by(nickname=flask.request.form['nickname']):
                 if user.password == flask.request.form['password']:
@@ -32,6 +31,7 @@ def render_user():
                 except Exception as error:
                     print(error)
         
+# <<<<<<< HEAD
     return flask.render_template("user.html")            
 # def render_login_page():
     
@@ -55,5 +55,15 @@ def render_user():
     # return flask.render_template("user.html")           
 
 def render_profile_page():
-    return flask.render_template("profile.html")
+    # return flask.render_template("profile.html")
+# >>>>>>> origin/Max
+# =======
+    return flask.render_template("user.html", nickname=flask_login.current_user.nickname)            
+     
+
+def render_profile_page():
+    password = flask_login.current_user.password
+    email = flask_login.current_user.email
+    # nickname = flask_login.current_user.nickname
+    return flask.render_template("profile.html", password=password, email=email)
 # >>>>>>> origin/Max
