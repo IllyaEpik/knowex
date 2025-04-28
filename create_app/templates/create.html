@@ -7,7 +7,35 @@
 {% endblock %}
 
 {% block content %} 
+<<<<<<< HEAD
     <div class="div_create">
         
     </div>
+=======
+
+<h1>Create Page</h1>
+<div class="question-form" id="questionForm">
+    <h3>Питання №1:</h3>
+
+    <input type="text" id="question" placeholder="Напишіть питання"><br><br>
+
+    <label>Правильна відповідь:</label><br>
+    <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь"><br><br>
+
+    <label>Варіанти відповідей:</label><br>
+    <div id="options">
+        <div><input type="text" class="option" value="Правильна відповідь"></div>
+        <div><input type="text" class="option" value="Варіант 1"> </div>
+        <div><input type="text" class="option" value="Варіант 2"></div>
+        <div><input type="text" class="option" value="Варіант 3"></div>
+    </div>
+
+    <button>Додати варіант</button><br><br>
+
+   
+    <button>Зберегти питання</button>
+</div>
+<script defer src="{{ url_for('create.static', filename = '/js/create.js') }}"></script>
+
+>>>>>>> origin/Mark
 {% endblock %}
