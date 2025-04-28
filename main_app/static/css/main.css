@@ -9,6 +9,72 @@ button{
     background-color: #dbeafe;
     border-radius: 15px;
 }
+
+.description{
+    background-color: #ACDDFF;
+    width: 1650px;
+    height: 250px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.description p{
+    font-size: 30px;
+    color: #000000;
+}
+
+.login{
+    margin: 10px;
+    background-color: #ACDDFF;
+    width: 1250px;
+    height: 80px;
+    padding: 20px;
+    border-radius: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.login p{
+    font-size: 30px;
+    color: #000000;
+}
+
+.to_login{
+    font-size: 30px;
+
+}
+
+.container_tests{
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px; 
+    justify-content: center; 
+    margin-top: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.container_test{
+    width: 200px; 
+    height: 150px; 
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    margin: 10px;
+}
+
+
 /* dark */
 
 body.dark #main{

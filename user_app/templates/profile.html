@@ -10,17 +10,17 @@
 <div class="top_container">
     <img src="{{ url_for('user.static', filename='images/user_photo.png') }}" alt="">
     <div>
-        <h1 class="name_user">KRABIK</h1> 
+        <h1 class="name_user">{{ nickname }}</h1> 
     </div>
 </div>
 
 <div class="profile_page">
     <div class="user_info">
-        <h1 class="password">password: Admin</h1>
-        <button id="hide"></button>
+        <h1 class="password">password: <span>{{ password }}</span></h1>
+        <button id="hide" value=""></button>
     </div>
     <div class="user_info">
-        <h1 class="email">E-mail: pupupu@gmail.com</h1>
+        <h1 class="email">E-mail: <span>{{ email }}</span></h1>
         <button id="hide"></button>
     </div>
     <div class="user_info">
