@@ -9,26 +9,37 @@ function removeOption(button) {
     button.parentElement.remove();
 }
 
-function saveQuestion() {
+function saveQuestion(event) {
+    event.preventDefault()
     const question = document.getElementById('question').value;
     const correctAnswer = document.getElementById('correctAnswer').value;
     const options = Array.from(document.getElementsByClassName('option')).map(input => input.value);
     console.log('1312123132132')
-    fetch('/save_question', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question, correct_answer: correctAnswer, options: options })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        // alert(response)
-        // console.log(0/0/0/0/0)
-    });
+    $.ajax('/create', {
+        type: "post",
+        data: $(this).serialize(),
+        success: function(){
+            console.log('success')
+    }})
+    
     alert(data.message)
 }
 // document.getElementById('add').addEventListener(() => addOption)
 // document.createElement()
-document.querySelector('#save').addEventListener('click',saveQuestion)
+document.querySelector('form').addEventListener('submit', 
+    function (event) {
+    event.preventDefault()
+    const question = document.getElementById('question').value;
+    const correctAnswer = document.getElementById('correctAnswer').value;
+    const options = Array.from(document.getElementsByClassName('option')).map(input => input.value);
+    console.log('1312123132132')
+    $.ajax('/create', {
+        type: "post",
+        data:{question:question, correctAnswer:correctAnswer, options:options},
+        success: function(){
+            console.log('success')
+    }})
+    
+    alert(data.message)
+})
 console.log()
-// 

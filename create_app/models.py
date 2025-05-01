@@ -7,6 +7,7 @@ class Questions(DATABASE.Model):
     text = DATABASE.Column(DATABASE.String(255))
     image = DATABASE.Column(DATABASE.String(255))
     answers = DATABASE.Column(DATABASE.String(255))
+    correct_answer = DATABASE.Column(DATABASE.String(255))
     def __repr__(self):
         return self.text
 
