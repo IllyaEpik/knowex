@@ -16,6 +16,7 @@ class Test(DATABASE.Model):
     user = DATABASE.Column(DATABASE.Integer)
     questions = DATABASE.Column(DATABASE.String(255))
     subject = DATABASE.Column(DATABASE.String(255))
+    class_name = DATABASE.Column(DATABASE.String(255))
     name = DATABASE.Column(DATABASE.String(255))
     count = DATABASE.Column(DATABASE.Integer)
     def __repr__(self):

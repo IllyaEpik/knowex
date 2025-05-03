@@ -30,34 +30,12 @@ def render_user():
                     DATABASE.session.commit()
                 except Exception as error:
                     print(error)
-        
-# <<<<<<< HEAD
     return flask.render_template("user.html")            
-# def render_login_page():
     
 #     if flask_login.current_user.is_authenticated:
 #         return flask.redirect('/')
-#     else:
-        
-#         if flask.request.method == "POST":
-#             for user in User.query.filter_by(login=flask.request.form['login']):
-#                 if user.nickname == flask.request.form['nickname']:
-#                     flask_login.login_user(user)
-#             if  code:
-#                 for user in User.query.filter_by(email=flask.request.form['login']):
-#                     if user.password == flask.request.form['password']:
-#                         flask_login.login_user(user)
-#                         code = False
-                        
-# <<<<<<< HEAD
-#     return flask.render_template("user.html")           
-# =======
-    # return flask.render_template("user.html")           
 
 def render_profile_page():
-    # return flask.render_template("profile.html")
-# >>>>>>> origin/Max
-# =======
     return flask.render_template("user.html", nickname=flask_login.current_user.nickname)            
      
 
@@ -66,4 +44,3 @@ def render_profile_page():
     email = flask_login.current_user.email
     # nickname = flask_login.current_user.nickname
     return flask.render_template("profile.html", password=password, email=email)
-# >>>>>>> origin/Max

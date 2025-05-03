@@ -4,11 +4,12 @@ from .models import Questions
 from project.settings import DATABASE
 def render_create():
     if flask.request.method == "POST":
+        print(flask.request.form)
         question = Questions(
             
-            text = flask.request.form['text'],
-            answers = flask.request.form['answer'],
-            correct_answers = flask.request.form['correct_answer']
+            text = flask.request.form['question'],
+            answers = flask.request.form['options'],
+            correct_answer = flask.request.form['correctAnswer']
             
             
         )
