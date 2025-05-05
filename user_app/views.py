@@ -1,69 +1,63 @@
 import flask, flask_login
 from .models import User
 from project.settings import DATABASE
+
+
 def render_user():
-    
+    if 'messages' not in flask.session:
+        flask.session['messages'] = []
+        
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
-            for user in User.query.filter_by(nickname=flask.request.form['nickname']):
-                if user.password == flask.request.form['password']:
-                    print(user)
-                    flask_login.login_user(user)
-                    print(flask_login.current_user.is_authenticated)
-                    
+            if not User.query.filter_by(nickname=flask.request.form['nickname']).all():
+                if 'Неправильный логін' not in flask.session['messages']:
+                    flask.session['messages'].append('Неправильный логін')
+            else:
+                for user in User.query.filter_by(nickname=flask.request.form['nickname']):
+                    if user.password == flask.request.form['password']:
+                        flask.session['messages'].append('Ви успішно увійшли в аккаунт')
+                        flask_login.login_user(user)
+                        return flask.redirect(flask.url_for('main.render_main'))
+                    if user.password != flask.request.form['password']:
+                        if 'Неправильний пароль' not in flask.session['messages']:
+                            flask.session['messages'].append('Неправильний пароль')
+
         else:
             if flask.request.form['password'] == flask.request.form['confirm_password']:
-                
-
                 user = User(
                     email = flask.request.form['email'],
                     password = flask.request.form['password'],
                     nickname = flask.request.form['nickname'],
-                    # theme = 1,
+                    profile_icon = 'profile.png',
                     complete_tests = 0,
                     create_tests  = 0,
                     is_mentor = False
                 )
-
                 try:
                     DATABASE.session.add(user)
                     DATABASE.session.commit()
+                    flask.session['messages'].append('Користувач успішно доданий!')
+    
                 except Exception as error:
                     print(error)
-        
-# <<<<<<< HEAD
-    return flask.render_template("user.html")            
-# def render_login_page():
-    
+                    flask.session['messages'].append(f'Помилка при додавані користувача: {error}')
+            else:
+                flask.session['messages'].append('Паролі не співпадають')
+    print(flask.session['messages'])
+    return flask.render_template("user.html")                 
+  
+
+
+# def render_profile_page():
 #     if flask_login.current_user.is_authenticated:
-#         return flask.redirect('/')
+#         nickname = flask_login.current_user.nickname
+#         password = flask_login.current_user.password
+#         email = flask_login.current_user.email
+#         profile_icon = flask_login.current_user.profile_icon
 #     else:
-        
-#         if flask.request.method == "POST":
-#             for user in User.query.filter_by(login=flask.request.form['login']):
-#                 if user.nickname == flask.request.form['nickname']:
-#                     flask_login.login_user(user)
-#             if  code:
-#                 for user in User.query.filter_by(email=flask.request.form['login']):
-#                     if user.password == flask.request.form['password']:
-#                         flask_login.login_user(user)
-#                         code = False
-                        
-# <<<<<<< HEAD
-#     return flask.render_template("user.html")           
-# =======
-    # return flask.render_template("user.html")           
+#         nickname = ''
+#         password = ''
+#         email = ''
+#         profile_icon = 'profile.png'
+#     return flask.render_template("profile.html", password=password, email=email, nickname=nickname, profile_icon=profile_icon, is_authenticated=flask_login.current_user.is_authenticated)
 
-def render_profile_page():
-    # return flask.render_template("profile.html")
-# >>>>>>> origin/Max
-# =======
-    return flask.render_template("user.html", nickname=flask_login.current_user.nickname)            
-     
-
-def render_profile_page():
-    password = flask_login.current_user.password
-    email = flask_login.current_user.email
-    # nickname = flask_login.current_user.nickname
-    return flask.render_template("profile.html", password=password, email=email)
-# >>>>>>> origin/Max

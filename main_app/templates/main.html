@@ -12,13 +12,24 @@
         <h1>Ласкаво просимо у Knovex</h1>
         <p>Knovex — це освітня платформа для школярів, студентів та всіх охочих навчатися. Тут ви знайдете уроки, тести, модулі та систему прогресу, щоб зробити навчання простим і ефективним. Обирайте предмет, проходьте тести, вдосконалюйте знання та слідкуйте за своїми досягненнями!</p>
     </div>
-    <div class="login">
-        <p>Бажаете почати?</p>
-        <a href="/user" class="to_login">login</a>
-    </div>
+    {% if is_authenticated == False %}
+        <div class="login">
+            <p>Бажаете почати?</p>
+            <a href="/user" class="to_login">login</a>
+        </div>
+    {% endif %}
     <div class="container_tests">
-        <div class="container_test">
-
+        <div class="container_test_math">
+            <div class="test_name">
+                <h2>Тест 1</h2>
+            </div>
+            <div class="test_description">
+                <p>Цей тест перевіряє ваші знання з математики.</p>
+                <img src="{{ url_for('main.static', filename='images/math.png') }}">
+            </div>
+            <div class="test_link">
+                <a href="">Перейти до тесту</a>
+            </div>
         </div>
 
         <div class="container_test">

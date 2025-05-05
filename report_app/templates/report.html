@@ -7,12 +7,13 @@
 {% endblock %}
 
 {% block content %} 
+<button id="filter">Filter</button>
 <div class="filters">
     <div class="filter_container">
         <!-- Фильтр по количеству вопросов -->
         <div class="filter">
             <label for="questions">Кількість питань:</label>
-            <select name="questions" id="questions" multiple>
+            <select name="questions" id="questions">
                 <option value="all">Всі</option>
                 <option value="1-5">1-5</option>
                 <option value="6-10">6-10</option>
@@ -25,7 +26,7 @@
         <!-- Фильтр по класу -->
         <div class="filter">
             <label for="class">Клас:</label>
-            <select name="class" id="class" multiple>
+            <select name="class" id="class">
                 <option value="all">Всі</option>
                 <option value="none">Без класу</option>
                 <option value="1">1 клас</option>
@@ -45,7 +46,7 @@
         <!-- Фильтр по предмету -->
         <div class="filter">
             <label for="subject">Предмет:</label>
-            <select name="subject" id="subject" multiple>
+            <select name="subject" id="subject">
                 <option value="all">Всі</option>
                 <option value="other">Інше</option>
                 <option value="math">Математика</option>
@@ -77,19 +78,23 @@
                 <option value="desc">Від більш популярних</option>
             </select>
         </div>
-        <button class="button_filter">Застосувати фільтри</button>
+        <div class="button_container">
+            <button class="button_filter">Застосувати фільтри</button>
+        </div>
     </div>
 </div>
 
 
 
 <div class="container_tests">
-    <div class="container_test">
 
+    <div class="container_test">
+        <!-- <p>Математика</p> -->
+        <img src= "{{ url_for('report.static', filename='images/math.png') }}"> 
     </div>
 
     <div class="container_test">
-
+        <img src=""> 
     </div>
 
     <div class="container_test">
@@ -116,4 +121,5 @@
         
     </div>
 </div>
+<script defer src="{{ url_for('report.static', filename = '/js/report.js') }}"></script>
 {% endblock %}

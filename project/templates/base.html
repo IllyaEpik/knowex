@@ -5,6 +5,7 @@
     {% block head %}{% endblock %}
     <title>Knowex</title>
     <script src="static/js/base.js"></script>
+    <script src="static/js/profile.js"></script>
     <link rel="stylesheet" href="static/style.css">
     <link rel="shortcut icon" href="static/images/knowex_icon.png">
 </head>
@@ -29,13 +30,35 @@
         </div>
     </div>
     <div class="top_panel">
-        <a href="/user" class="profile_photo"></a>
-        <!-- <p>{{ username }}</p> -->
-        <a src="" alt="" >
-        
+        {% if is_authenticated == True %}
+            <img class="profile_icon" src="static/images/user_icons/{{ profile_icon }}" alt="">
+            <button class="nickname">{{ nickname }}</button>
+            <div class = "profile_info">
+                <img class="profile_ico" src="static/images/user_icons/{{ profile_icon }}" alt="">
+                <button id="upload"></button>
+                <h1 class="nickname_profile">{{ nickname }}</h1>
+                <h1 class="email_profile">email: {{ email }}</h1>
+                <h1 class="password_profile">password: {{ password }}</h1>
+                    <a href="/logout" id="logout" class="logout">Logout</a>
+            </div>
+        {% endif %}
+        {% if is_authenticated == False %}
+            <a href="/user" class="login_page">login</a>
+        {% endif %}
+
         <a class="profile"></a>
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>
+    <div class="messages" id="messages">
+        {% for message in session.get('messages', []) %}
+            <div class="message">
+                {{ message }}
+                {% do session.update({'messages': []}) %}
+            </div>
+        {% endfor %}
+           
+    </div>
+
     <div class="content">
         {% block content %}
         
