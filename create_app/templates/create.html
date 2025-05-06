@@ -7,33 +7,34 @@
 {% endblock %}
 
 {% block content %} 
+<div class="create_container">
+    <h1 class="page_title">Створити тест</h1>
+    <div class="create_content">
+        <div class="list_container">
+            <div class="list_header">
+                <h2>Список тестів</h2>
+                <button id="add_question">Add question</button>
+                <button id="delete_question">Delete question</button>
+            </div>
+            <div class="list_questions">
+                
+            </div>
+        </div>
 
+        <form class="question_form" id="questionForm">
+            <h3>Питання:</h3>
+            <input type="text" id="question" placeholder="Напишіть питання" name="text"><br><br>
+            <label>Правильна відповідь:</label><br>
+            <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь" name="correct_answer"><br><br>
+            <label>Варіанти відповідей:</label><br>
+            <div id="options">
 
-<h1>Create Page</h1>
-
-<form class="question-form" id="questionForm">
-    
-    <h3>Питання №1:</h3>
-
-    <input type="text" id="question" placeholder="Напишіть питання"><br><br>
-
-    <label>Правильна відповідь:</label><br>
-    <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь"><br><br>
-
-    <label>Варіанти відповідей:</label><br>
-
-    <div id="options">
-        <div><input type="text" class="option" value="Правильна відповідь"></div>
-        <div><input type="text" class="option" value="Варіант 1"> </div>
-        <div><input type="text" class="option" value="Варіант 2"></div>
-        <div><input type="text" class="option" value="Варіант 3"></div>
+            </div>
+            <button id="add">Додати варіант</button><br><br>
+            <button id="save">Зберегти питання</button>
+        </form>
     </div>
-
-    <button id="add">Додати варіант</button><br><br>
-
-   
-    <button id="save">Зберегти питання</button>
-</form>
+</div>
 <script defer src="{{ url_for('create.static', filename = '/js/jquery.js') }}"></script>
 <script defer src="{{ url_for('create.static', filename = '/js/create.js') }}"></script>
 {% endblock %}
