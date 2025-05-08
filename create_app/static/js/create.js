@@ -10,13 +10,14 @@ document.getElementById("add_question").addEventListener("click", function () {
     newButton.addEventListener("click", function () {
         const questionForm = document.getElementById("questionForm");
         const questionTitle = questionForm.querySelector("h3");
-
         let number = "error"
         try{
             number = questionTitle.textContent.split("№")[1][0]
-            
+            // question_3 
+            document.querySelector(`#question_${number}`).classList.remove('question_button_choosen')
         }
         catch{}
+        this.classList.add('question_button_choosen')
         questionTitle.textContent = `Питання №${questionCount}:`; 
         questionForm.style.display = "block";
         if (number != "error"){
@@ -25,6 +26,7 @@ document.getElementById("add_question").addEventListener("click", function () {
             for (let div of allDiv)  {
                 allinputs.push(div.querySelector("input").value)
             }
+            // Hello-go
             let question = {
                 "question" :questionForm.querySelector("#question").value,
                 "correct": questionForm.querySelector("#correctAnswer").value,

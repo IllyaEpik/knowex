@@ -6,7 +6,7 @@ from project.settings import DATABASE
 def render_user():
     if 'messages' not in flask.session:
         flask.session['messages'] = []
-        
+    error = ''    
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
             if not User.query.filter_by(nickname=flask.request.form['nickname']).all():
@@ -24,16 +24,16 @@ def render_user():
 
         else:
             if flask.request.form['password'] == flask.request.form['confirm_password']:
-                user = User(
-                    email = flask.request.form['email'],
-                    password = flask.request.form['password'],
-                    nickname = flask.request.form['nickname'],
-                    # profile_icon = 'profile.png',
-                    complete_tests = 0,
-                    create_tests  = 0,
-                    is_mentor = False
-                )
                 try:
+                    user = User(
+                        email = flask.request.form['email'],
+                        password = flask.request.form['password'],
+                        nickname = flask.request.form['nickname'],
+                        # profile_icon = 'profile.png',
+                        complete_tests = 0,
+                        create_tests  = 0,
+                        is_mentor = False
+                    )
                     DATABASE.session.add(user)
                     DATABASE.session.commit()
                     flask.session['messages'].append('Користувач успішно доданий!')
@@ -41,7 +41,7 @@ def render_user():
                 except Exception as error:
                     print(error)
 # <<<<<<< HEAD
-    return flask.render_template("user.html")            
+    return flask.render_template("user.html", error = error)            
     
 #     if flask_login.current_user.is_authenticated:
 #         return flask.redirect('/')
