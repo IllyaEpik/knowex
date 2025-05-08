@@ -9,11 +9,39 @@ document.getElementById("add_question").addEventListener("click", function () {
 
     newButton.addEventListener("click", function () {
         const questionForm = document.getElementById("questionForm");
-        const questionTitle = questionForm.querySelector("h3"); 
+        const questionTitle = questionForm.querySelector("h3");
+
+        let number = "error"
+        try{
+            number = questionTitle.textContent.split("№")[1][0]
+            
+        }
+        catch{}
         questionTitle.textContent = `Питання №${questionCount}:`; 
         questionForm.style.display = "block";
-    });
+        if (number != "error"){
+            let allDiv = questionForm.querySelector("#options").querySelectorAll("div")
+            let allinputs = []
+            for (let div of allDiv)  {
+                allinputs.push(div.querySelector("input").value)
+            }
+            let question = {
+                "question" :questionForm.querySelector("#question").value,
+                "correct": questionForm.querySelector("#correctAnswer").value,
+                "options": allinputs 
+            }
+            localStorage.setItem(`${number}`, JSON.stringify(
+                question
+            ))
+            console.log(localStorage.getItem(`${number}`))
+            questionForm.querySelector("#question").value=""
+            questionForm.querySelector("#correctAnswer").value=""
+            questionForm.querySelector("#options").innerHTML=""
+            
+        }
 
+    });
+    
     listQuestions.appendChild(newButton);
 });
 
@@ -44,35 +72,7 @@ document.getElementById("add").addEventListener("click", function (event) {
     optionsDiv.appendChild(newOptionDiv);
 });
 
-// <<<<<<< HEAD
-// =======
-// function saveQuestion(event) {
-//     event.preventDefault()
-//     const question = document.getElementById('question').value;
-//     const correctAnswer = document.getElementById('correctAnswer').value;
-//     const options = Array.from(document.getElementsByClassName('option')).map(input => input.value);
-//     console.log('1312123132132')
-//     $.ajax('/create', {
-//                 type: "POST",
-//                 data: {
-//                     correct_answer: correctAnswer,
-//                     answer: correctAnswer,
-//                     'options[]': options
-//                 },
-//                 headers: {
-//                     'X-Requested-With': 'XMLHttpRequest'
-//                 },
-//                 success: function(data) {
-//                     console.log('success');
-//                     alert(data.message);
-//                 },
-//                 error: function(xhr) {
-//                     alert('Ошибка: ' + xhr.responseText);
-//                 }
-//             });
-//         }
 
-// >>>>>>> origin/Max
 
 document.querySelector('form').addEventListener('submit', 
     function (event) {
