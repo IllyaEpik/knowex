@@ -169,7 +169,7 @@ body.dark .theme_change:active {
 }
 
 .profile_info{
-    z-index: 1000;
+    z-index: 100;
     pointer-events: all;
     position: fixed;
     right: 0;
@@ -177,6 +177,8 @@ body.dark .theme_change:active {
     background-color: #cff1ff;
     width: 300px;
     height: 500px;
+    border: 1px solid #ccc; 
+    border-radius: 20px;
 }
 
 .profile_ico{
@@ -437,4 +439,42 @@ body.dark .profile_photo{
     background-image: url("new_icons/profile.png");
     background-size: cover;
     background-position: center;
+}
+
+body.dark .profile_info{
+    z-index: 100;
+    pointer-events: all;
+    position: fixed;
+    right: 0;
+    top: 109px;
+    background-color: #36393b;
+    width: 300px;
+    height: 500px;
+    border: 1px solid #ccc; 
+    border-radius: 20px;
+}
+
+body.dark .profile_info h1{
+    color: #dbeafe;
+}
+
+body.dark .profile_info .logout {
+    position: relative;
+    top: 180px;
+    left: 10px;
+    background-color: #045f75;
+    color: rgb(0, 90, 226);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+body.dark .profile_info .logout {
+    color: rgb(176, 230, 247);
+    font-size: 16px;
+}
+
+body.dark .profile_info #logout:hover {
+    background-color: #00c3ff9f;
 }

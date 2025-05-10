@@ -119,3 +119,7 @@ body.dark #report{
     border-radius: 10px;
 }
 
+.dark #message{
+    color: #dbeafe;
+    background-color: #005F99;
+}

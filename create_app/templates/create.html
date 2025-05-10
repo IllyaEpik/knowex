@@ -20,21 +20,22 @@
                 
             </div>
         </div>
+        <div class="container_create_form">
+            <form class="question_form" id="questionForm">
+                <h3>Питання:</h3>
+                <input type="text" id="question" placeholder="Напишіть питання" name="text"><br><br>
+                <label>Правильна відповідь:</label><br>
+                <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь" name="correct_answer"><br><br>
+                <label>Варіанти відповідей:</label><br>
+                <div id="options">
 
-        <form class="question_form" id="questionForm">
-            <h3>Питання:</h3>
-            <input type="text" id="question" placeholder="Напишіть питання" name="text"><br><br>
-            <label>Правильна відповідь:</label><br>
-            <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь" name="correct_answer"><br><br>
-            <label>Варіанти відповідей:</label><br>
-            <div id="options">
-
-            </div>
-            <button id="add">Додати варіант</button><br><br>
-        </form>
-        <form class="save-test" id="save-form">
-            <button id="save">Зберегти Тест</button>
-        </form>
+                </div>
+                <button id="add">Додати варіант</button><br><br>
+            </form>
+            <form class="save-test" id="save-form">
+                <button id="save">Зберегти Тест</button>
+            </form>
+        </div>
     </div>
 </div>
 <script defer src="{{ url_for('create.static', filename = '/js/jquery.js') }}"></script>

@@ -1,8 +1,6 @@
 import dotenv
 import os
 
-PATH = os.path.abspath(os.path.join(__file__, '..'))
-
 def load_env():
     commands = {
         "DB_INIT": "flask --app project db init",
@@ -15,7 +13,7 @@ def load_env():
             for key, value in commands.items():
                 env_file.write(f"{key} = {value}\n")
     dotenv.load_dotenv(env_path)
-    if not os.path.exists(os.path.join(__file__, '..', '..', 'instance')):
+    if not os.path.exists(os.path.join(__file__, '..', '..', 'migrations')):
         os.system(os.environ['DB_INIT'])
     os.system(os.environ['DB_MIGRATE'])
     os.system(os.environ['DB_UPGRADE'])

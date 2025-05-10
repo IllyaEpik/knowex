@@ -24,7 +24,6 @@ def render_create():
         
     if flask_login.current_user.is_authenticated:
         nickname = flask_login.current_user.nickname
-        # profile_icon = flask_login.current_user.profile_icon
         email = flask_login.current_user.email
         password = flask_login.current_user.password
     else:

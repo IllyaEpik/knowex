@@ -20,6 +20,8 @@ button{
     align-items: center;
     flex-direction: column;
     margin: 10px;
+    border: 1px solid #ccc; 
+    border-radius: 30px;
 }
 
 .description p{
@@ -82,5 +84,57 @@ body.dark #main{
 }
 
 .dark{
-    color: wheat;
+    color: #dbeafe;
 }
+
+.dark a{
+    color: #00ccff;
+}
+
+.dark #message{
+    color: #dbeafe;
+    background-color: #005F99;
+}
+
+body.dark .description{
+    background-color: #005c9e;
+    width: 1650px;
+    height: 250px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+    border: 1px solid #242424; 
+    border-radius: 30px;
+}
+
+body.dark .description h1, body.dark .description p{
+    color: #dbeafe;
+}
+
+.login{
+    margin: 10px;
+    background-color: #005c9e;
+    width: 1250px;
+    height: 80px;
+    padding: 20px;
+    border-radius: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.login p{
+    font-size: 30px;
+    color: #dbeafe;
+}
+
+body.dark .to_login{
+    font-size: 30px;
+    color: #00ccff;
+}
+

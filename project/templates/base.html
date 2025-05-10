@@ -39,7 +39,7 @@
                 <h1 class="nickname_profile">{{ nickname }}</h1>
                 <h1 class="email_profile">email: {{ email }}</h1>
                 <h1 class="password_profile">password: {{ password }}</h1>
-                    <a href="/logout" id="logout" class="logout">Logout</a>
+                <a href="/logout" id="logout" class="logout">Logout</a>
             </div>
         {% endif %}
         {% if is_authenticated == False %}
@@ -51,7 +51,7 @@
     </div>
     <div class="messages" id="messages">
         {% for message in session.get('messages', []) %}
-            <div class="message">
+            <div class="message" id = "message">
                 {{ message }}
                 {% do session.update({'messages': []}) %}
             </div>

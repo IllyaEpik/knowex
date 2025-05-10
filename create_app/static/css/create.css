@@ -40,6 +40,13 @@ body{
     text-align: center;
 }
 
+.container_create_form{
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    height: 500px;
+}
+
 .page_title {
     font-size: 36px;
     color: #004C99;
@@ -67,6 +74,8 @@ body{
     max-height: 500px;
     height: 500px;
     overflow-y: auto;
+    /* width: 400px;
+    max-width: 400px; */
 }
 
 .list_header {
@@ -181,6 +190,7 @@ body{
     border: 2px solid #007ACC;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
     max-width: 500px;
 }
 
@@ -243,6 +253,9 @@ body.dark #create{
     border-radius: 10px;
 }
 
-
+.dark #message{
+    color: #dbeafe;
+    background-color: #005F99;
+}
 
 

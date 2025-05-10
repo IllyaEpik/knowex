@@ -167,8 +167,13 @@ button.log:hover, button.reg:hover {
 
 /* For dark */
 
+.dark #message{
+    color: #dbeafe;
+    background-color: #005F99;
+}
+
 body.dark .user_page{
-    background-color: #05263d;
+    background-color: #024b80;
     width: 750px;
     height: 620px;
     position: fixed;
@@ -179,7 +184,7 @@ body.dark .user_page{
 body.dark .name_knowex{
     position: relative;
     font-size: 48px;
-    color: #ffffff;
+    color: #dbeafe;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -189,8 +194,8 @@ body.dark .reg_save, body.dark .log_save {
     width: 60%; 
     height: 45px; 
     margin-top: 20px; 
-    background-color: #0f4783; 
-    color: #fff; 
+    background-color: #056ad6; 
+    color: #dbeafe;
     font-size: 18px; 
     font-family: inherit; 
     border: none; 
@@ -213,7 +218,7 @@ body.dark .input input {
 body.dark button.log, body.dark button.reg {
     background: none; 
     border: none; 
-    color: #ffffff; 
+    color: #dbeafe;
     font-size: 32px; 
     font-family: inherit; 
     cursor: pointer; 
@@ -254,3 +259,4 @@ body.dark button.log:hover, body.dark button.reg:hover {
     color: #416bdfea; 
     pointer-events: all;
 }
+
