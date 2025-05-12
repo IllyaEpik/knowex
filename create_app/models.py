@@ -9,7 +9,7 @@ class Questions(DATABASE.Model):
     answers = DATABASE.Column(DATABASE.String(255))
     correct_answer = DATABASE.Column(DATABASE.String(255))
     def __repr__(self):
-        return self.text
+        return self.id
 
 class Test(DATABASE.Model):
     id = DATABASE.Column(DATABASE.Integer, primary_key=True)

@@ -35,6 +35,7 @@ document.getElementById("add_question").addEventListener("click", function () {
             localStorage.setItem(`${number}`, JSON.stringify(
                 question
             ))
+            
             // questionCount ``
 
             console.log(localStorage.getItem(`${questionCount}`))
@@ -75,7 +76,7 @@ document.getElementById("delete_question").addEventListener("click", function ()
         for (let question of listQuestions.children ){
             if (question.classList.contains('question_button_choosen')){
                 listQuestions.removeChild(question)
-
+                localStorage.removeItem(question.textContent[question.textContent.length-1])
             }
         }
         // listQuestions.removeChild(listQuestions.lastElementChild);
@@ -104,19 +105,35 @@ document.getElementById("add").addEventListener("click", function (event) {
 
 
 
-document.querySelector('form').addEventListener('submit', 
-    function (event) {
+console.log(localStorage.getItem('2'))
+// for (let o of ){
+//     console.log(o)
+// }
+document.querySelector('#save-form').addEventListener('submit', function (event) {
     event.preventDefault()
-    const question = document.getElementById('question').value;
-    const correctAnswer = document.getElementById('correctAnswer').value;
-    const options = JSON.stringify(Array.from(document.getElementsByClassName('option')).map(input => input.value));
+    const listQuestions = document.querySelector(".list_questions");
+    let listAllQuestions = []
+    for (let question of listQuestions.children){
+        
+        listAllQuestions.push(JSON.parse(localStorage.getItem(question.textContent[question.textContent.length-1])))
+        // let question = document.getElementById('question').value;
+        // let correctAnswer = document.getElementById('correctAnswer').value;
+        // let options = JSON.stringify(Array.from(document.getElementsByClassName('option')).map(input => input.value));
+        
+    }
+    // let question = {
+    //             "question" :questionForm.querySelector("#question").value,
+    //             "correct": questionForm.querySelector("#correctAnswer").value,
+    //             "options": allinputs 
+    //         }
+    // {question:question, correctAnswer:correctAnswer, options:options}
     console.log('1312123132132')
     $.ajax('/create', {
         type: "POST",
-        data:{question:question, correctAnswer:correctAnswer, options:options},
+        data: {data: JSON.stringify(listAllQuestions)},
         success: function(){
             console.log('success')
-    alert(data.message)
+    // alert(data.message)
     }})
     
     
