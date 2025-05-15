@@ -1,22 +1,44 @@
+
 document.getElementById("add_question").addEventListener("click", function () {
     const listQuestions = document.querySelector(".list_questions");
-    const questionCount = listQuestions.children.length + 1;
-
+    // const questionCount = listQuestions.children.length + 1;
+    let end = 0
+    let questionCount;
+    // let count=0;
+    for (let count=0; !questionCount; count++){
+        
+        console.log(document.getElementById(`question_${count}`))
+        // end = 1
+        if (null==document.getElementById(`question_${count}`)){
+        // console.log())
+            questionCount = count
+        }
+    }
     const newButton = document.createElement("button");
-    newButton.className = "question_button"; 
-    newButton.id = `question_${questionCount}`; 
+    newButton.className = "question_button";
+    newButton.id = `question_${questionCount}`;
     newButton.textContent = `question ${questionCount}`;
-
+    // if ii==1321
+    //     5678
     newButton.addEventListener("click", function () {
         const questionForm = document.getElementById("questionForm");
         const questionTitle = questionForm.querySelector("h3");
+        questionForm.children
+        // <input></input>
         let number = "error"
-        try{
-            number = questionTitle.textContent.split("№")[1][0]
-            // question_3 
-            document.querySelector(`#question_${number}`).classList.remove('question_button_choosen')
+        for (let aw of listQuestions.children){
+            // question_button_choosen
+            if (aw.classList.contains('question_button_choosen')){
+               aw.classList.remove('question_button_choosen') 
+            }
         }
-        catch{}
+
+        // try{
+        //     number = questionTitle.textContent.split("№")[1][0]
+        //     // question_3 
+        //     document.querySelector(`#question_${number}`).classList.remove('question_button_choosen')
+        // }
+        // catch{}
         this.classList.add('question_button_choosen')
         questionTitle.textContent = `Питання №${questionCount}:`; 
         questionForm.style.display = "block";
