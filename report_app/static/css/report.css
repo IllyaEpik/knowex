@@ -114,12 +114,98 @@
 
 /* dark */
 
-body.dark #report{
-    background-color: #7e7f80;
-    border-radius: 10px;
+body.dark #report {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border-radius: 15px;
 }
 
-.dark #message{
-    color: #dbeafe;
-    background-color: #005F99;
+body.dark #message {
+    color: #ffaaaa;
+    background-color: #003f66;
+}
+
+body.dark .completed_tests {
+    margin: 10px;
+    background-color: #0a2a45;
+    color: #ffffff;
+    width: 120px;
+    height: 30px;
+    padding: 10px;
+    border-radius: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+body.dark .container_test {
+    width: 200px; 
+    height: 150px; 
+    background-color: #1a1a2d; 
+    border: 1px solid #444; 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    margin: 10px;
+    color: #ffffff;
+}
+
+body.dark .button_filter {
+    padding: 10px 20px;
+    height: fit-content;
+    width: fit-content;
+    background-color: #3a3a7d;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+body.dark .button_filter:hover {
+    background-color: #5a5aa5;
+}
+
+
+
+
+body.dark #filter {
+    color: #6cb8ff; 
+}
+
+body.dark .filter select {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+body.dark .filter label {
+    color: #ffffff;
+}
+
+body.dark .container_tests {
+    background-color: #0d1117; 
+}
+
+body.dark .filters {
+    background-color: #121212;
+}
+
+body.dark .filter_container {
+    background-color: #1a1a1a; 
+}
+
+body.dark .container_test {
+    color: #ffffff; 
+}
+
+body.dark select option {
+    background-color: #1e1e2f;
+    color: white;
+}
+
+body.dark {
+    background-color: #0b0c10;
+    color: #e0e0e0;
 }

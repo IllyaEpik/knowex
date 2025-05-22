@@ -15,9 +15,15 @@ document.getElementById("add_question").addEventListener("click", function () {
         }
     }
     const newButton = document.createElement("button");
+    newButton.textContent = `question ${questionCount}`;
     newButton.className = "question_button";
     newButton.id = `question_${questionCount}`;
-    newButton.textContent = `question ${questionCount}`;
+/////////////////////NEW/////////////////////////////
+    makeDraggable(newButton);
+/////////////////////NEW/////////////////////////////
+
+    
+    
     // if ii==1321
     //     5678
     newButton.addEventListener("click", function () {
@@ -160,4 +166,36 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     
     
 })
-console.log()
+// console.log(symbol)
+
+
+////////////////////NEW/////////////////////////
+let count = 10
+function makeDraggable(element) {
+    let offsetX, offsetY, isDragging = false;
+    let textlist = element.textContent.split("")
+    // console.log(textlist, element.textContent )
+    let symbol = Number(textlist[textlist.length-1])-1
+    console.log(Number(symbol ))
+    element.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        // offsetX = e.clientX - element.offsetLeft;
+        offsetY = e.clientY - element.offsetTop+symbol*48;
+        element.style.cursor = 'grabbing';
+        count++
+        element.style.zIndex = count;
+    });
+    // position: relative;
+    document.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+            // element.style.left = `${e.clientX - offsetX}px`;
+            element.style.top = `${e.clientY - offsetY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', function () {
+        isDragging = false;
+        element.style.cursor = 'grab';
+    });
+}
+/////////////////////NEW/////////////////////////////
