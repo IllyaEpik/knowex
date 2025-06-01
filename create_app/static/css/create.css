@@ -492,7 +492,7 @@ body.dark #options {
 
 /*new*/
 .question_button {
-    position: relative;
+    position:absolute;
     cursor: grab;
 }
 /*new*/

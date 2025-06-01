@@ -6,8 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('settings_modal').style.display = 'block';
 });
 // >>>>>>> origin/Max/
-
+let yQuestion = -60
 document.getElementById("add_question").addEventListener("click", function () {
+    
+    console.log(yQuestion)
     const listQuestions = document.querySelector(".list_questions");
     // const questionCount = listQuestions.children.length + 1;
     let end = 0
@@ -15,7 +17,7 @@ document.getElementById("add_question").addEventListener("click", function () {
     // let count=0;
     for (let count=0; !questionCount; count++){
         
-        console.log(document.getElementById(`question_${count}`))
+        // console.log(document.getElementById(`question_${count}`))
         // end = 1
         if (null==document.getElementById(`question_${count}`)){
         // console.log())
@@ -34,7 +36,10 @@ document.getElementById("add_question").addEventListener("click", function () {
 /////////////////////NEW/////////////////////////////
     makeDraggable(newButton);
 /////////////////////NEW/////////////////////////////
+    yQuestion += getSlotHeight()*1.2
+    newButton.style.top = yQuestion
 
+    console.log(yQuestion,999999999999999)
     
     
     // if ii==1321
@@ -105,6 +110,14 @@ document.getElementById("add_question").addEventListener("click", function () {
                 questionForm.querySelector("#options").append(div);
             }
         }
+        initPositions()
+        // dragging = true
+        // onMouseUp()
+        // dragging = false
+        // const questions = Array.from(listQuestions.children);
+        // const currentTop = parseInt(draggedQuestion.style.top);
+        // let newIndex = Math.round(currentTop / getSlotHeight());
+        // newIndex = Math.max(0, Math.min(questions.length - 1, newIndex));
     });
 
     listQuestions.appendChild(newButton);
@@ -252,7 +265,8 @@ function initPositions() {
     const questions = Array.from(listQuestions.children);
     let currentTop = 0;
     questions.forEach((question, index) => {
-        const height = question.offsetHeight;
+        const height = question.offsetHeight*1.2;
+        console.log(currentTop)
         question.style.top = `${currentTop}px`;
         currentTop += height;
         questionOrder[index] = question;
