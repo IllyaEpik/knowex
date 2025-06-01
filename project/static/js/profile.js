@@ -37,3 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const uploadInput = document.getElementById('upload');
+    const uploadSubmit = document.getElementById('upload-submit');
+    if (uploadInput && uploadSubmit) {
+        uploadInput.addEventListener('change', function() {
+            uploadSubmit.click();
+        });
+    }
+});
