@@ -239,3 +239,77 @@ function makeDraggable(element) {
 //     localStorage.setItem('test_name', testName);
 // });
 // >>>>>>> origin/Max
+
+// Отвечает за съежание вопросов в списке
+const listQuestions = document.querySelector('.list_questions');
+let draggedQuestion = null;
+let dragging = false;
+let initialMouseY = 0;
+let initialTop = 0;
+let questionOrder = [];
+
+function initPositions() {
+    const questions = Array.from(listQuestions.children);
+    let currentTop = 0;
+    questions.forEach((question, index) => {
+        const height = question.offsetHeight;
+        question.style.top = `${currentTop}px`;
+        currentTop += height;
+        questionOrder[index] = question;
+    });
+}
+
+function onMouseDown(e) {
+    if (e.target.classList.contains('question_button')) {
+        draggedQuestion = e.target;
+        dragging = true;
+        initialMouseY = e.clientY;
+        initialTop = parseInt(draggedQuestion.style.top || 0);
+        draggedQuestion.classList.add('dragging');
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+}
+
+function onMouseMove(e) {
+    if (dragging) {
+        const deltaY = e.clientY - initialMouseY;
+        draggedQuestion.style.top = `${initialTop + deltaY}px`;
+    }
+}
+
+function onMouseUp() {
+    if (dragging) {
+        const questions = Array.from(listQuestions.children);
+        const currentTop = parseInt(draggedQuestion.style.top);
+        let newIndex = Math.round(currentTop / getSlotHeight());
+        newIndex = Math.max(0, Math.min(questions.length - 1, newIndex));
+
+        const currentIndex = questionOrder.indexOf(draggedQuestion);
+        questionOrder.splice(currentIndex, 1);
+        questionOrder.splice(newIndex, 0, draggedQuestion);
+
+        updateDOM();
+
+        draggedQuestion.classList.remove('dragging');
+        dragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+}
+
+function getSlotHeight() {
+    const firstQuestion = listQuestions.children[0];
+    return firstQuestion ? firstQuestion.offsetHeight : 50;
+}
+
+function updateDOM() {
+    questionOrder.forEach(question => {
+        listQuestions.appendChild(question);
+    });
+    initPositions(); 
+}
+
+listQuestions.addEventListener('mousedown', onMouseDown);
+initPositions();
+// 
