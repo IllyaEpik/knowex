@@ -9,6 +9,8 @@ main_app.main.add_url_rule(rule="/logout", view_func=main_app.views.logout)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])
 report_app.report.add_url_rule(rule="/report", view_func=report_app.views.render_report, methods = ['get', 'post'])
 user_app.user.add_url_rule(rule="/user", view_func=user_app.views.render_user, methods = ['get', 'post'])
+user_app.user.add_url_rule(rule="/render_icon", view_func=user_app.views.render_icon, methods = ['post'])
+
 
 # user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
 

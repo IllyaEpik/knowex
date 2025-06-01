@@ -31,11 +31,15 @@
     </div>
     <div class="top_panel">
         {% if is_authenticated == True %}
-            <img class="profile_icon" src="static/images/user_icons/profile.png" alt="">
+            <img class="profile_icon" src="{{ url_for('static', filename= 'images/user_icons/' + profile_name) }}" alt="">
             <button class="nickname">{{ nickname }}</button>
             <div class = "profile_info">
-                <img class="profile_ico" src="static/images/user_icons/profile.png" alt="">
-                <button id="upload"></button>
+                <img class="profile_ico" src="{{ url_for('static', filename= 'images/user_icons/' + profile_name) }} " alt="">
+                <form action="/render_icon" method="POST" enctype="multipart/form-data">
+                    <label for="upload" id="upload-label"></label>
+                    <input type="file" id="upload" name="image" style="display: none;">  
+                    <button type="submit" style="display:none;" id="upload-submit"></button>
+                </form>
                 <h1 class="nickname_profile">{{ nickname }}</h1>
                 <h1 class="email_profile">email: {{ email }}</h1>
                 <h1 class="password_profile">password: {{ password }}</h1>
