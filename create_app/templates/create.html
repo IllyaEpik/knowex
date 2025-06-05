@@ -1,27 +1,25 @@
 {% extends 'base.html' %}
 
-{% block title %} create page {% endblock %}
+{% block title %}Створити тест{% endblock %}
 
-{% block head %} 
+{% block head %}
     <link rel="stylesheet" href="{{ url_for('create.static', filename='css/create.css') }}">
 {% endblock %}
 
-{% block content %} 
+{% block content %}
 <div class="create_container">
     <div class="header_flex">
         <h1 class="page_title">Створити тест</h1>
-        <button id="settings_test"></button>
+        <button id="open_settings">Налаштування тесту</button>
     </div>
     <div class="create_content">
         <div class="list_container">
             <div class="list_header">
-                <h2>Список тестів</h2>
-                <button id="add_question">Add question</button>
-                <button id="delete_question">Delete question</button>
+                <h2>Список питань</h2>
+                <button id="add_question">Додати питання</button>
+                <button id="delete_question">Видалити питання</button>
             </div>
-            <div class="list_questions">
-                
-            </div>
+            <div class="list_questions"></div>
         </div>
         <div class="container_create_form">
             <form class="question_form" id="questionForm">
@@ -30,15 +28,12 @@
                 <label>Правильна відповідь:</label><br>
                 <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь" name="correct_answer"><br><br>
                 <label>Варіанти відповідей:</label><br>
-                <div id="options">
-
-                </div>
-                <button id="add">Додати варіант</button><br><br>
+                <div id="options"></div>
+                <button id="add" type="button">Додати варіант</button><br><br>
             </form>
             <form class="save-test" id="save-form">
-                <button id="save">Зберегти Тест</button>
+                <button type="submit" id="save">Зберегти тест</button>
             </form>
-
             <div id="settings_modal" class="modal">
                 <form id="settings_form">
                     <h3>Налаштування тесту</h3>
@@ -49,14 +44,12 @@
                     <label>Назва тесту:</label><br>
                     <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту"><br><br>
                     <button type="submit">Зберегти</button>
+                    <button type="button" id="close_settings">← Назад до питань</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<script defer src="{{ url_for('create.static', filename = '/js/jquery.js') }}"></script>
-<script defer src="{{ url_for('create.static', filename = '/js/create.js') }}"></script>
-<!--  -->
-
-
+<script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
+<script defer src="{{ url_for('create.static', filename='js/create.js') }}"></script>
 {% endblock %}
