@@ -148,8 +148,10 @@ function makeDraggable(element) {
         }
     });
 
-    document.addEventListener('mouseup', function () {
+    document.addEventListener('mouseup', function (event) {
         if (isDragging) {
+            let old_list = getCoor()
+            
             isDragging = false;
             element.style.cursor = 'grab';
             const currentTop = parseInt(element.style.top);
@@ -161,10 +163,32 @@ function makeDraggable(element) {
                 questionOrder.splice(newIndex, 0, element);
             }
             updateDOM();
+            
+            let new_list = getCoor()
+            let match = true
+            for (let count=0;count<=old_list.length;count++){
+                match = old_list[count] == new_list[count]                
+                if (!match){
+                    break
+                }
+            }
+            if (match){
+
+                selectQuestion(Number(event.target.textContent[event.target.textContent.length-1])-1)
+            }
+            console.log(match)
         }
     });
 }
-
+// document.querySelector('p').textContent
+function getCoor(){
+    let list = []
+    let questions = Array.from(listQuestions.children);
+        for (let question of questions){
+            list.push(question.style.top)
+        }
+    return list
+}
 const listQuestions = document.querySelector('.list_questions');
 
 function initPositions() {
