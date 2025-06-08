@@ -1,10 +1,8 @@
 import flask, flask_login
-from os.path import join, abspath 
 from .models import User
 from project.settings import DATABASE
-from project.config_page import config_page
 
-@config_page("user.html")
+
 def render_user():
     if 'messages' not in flask.session:
         flask.session['messages'] = []
@@ -19,7 +17,7 @@ def render_user():
                     if user.password == flask.request.form['password']:
                         flask.session['messages'].append('Ви успішно увійшли в аккаунт')
                         flask_login.login_user(user)
-                        return flask.redirect('/')
+                        return flask.redirect(flask.url_for('main.render_main'))
                     if user.password != flask.request.form['password']:
                         if 'Неправильний пароль' not in flask.session['messages']:
                             flask.session['messages'].append('Неправильний пароль')
@@ -27,12 +25,11 @@ def render_user():
         else:
             if flask.request.form['password'] == flask.request.form['confirm_password']:
                 try:
-                    nickname = flask.request.form['nickname']
-
                     user = User(
                         email = flask.request.form['email'],
                         password = flask.request.form['password'],
-                        nickname = nickname,
+                        nickname = flask.request.form['nickname'],
+                        # profile_icon = 'profile.png',
                         complete_tests = 0,
                         create_tests  = 0,
                         is_mentor = False
@@ -43,17 +40,41 @@ def render_user():
     
                 except Exception as error:
                     print(error)
-    return {}
+# <<<<<<< HEAD
+    return flask.render_template("user.html", error = error)            
+    
+#     if flask_login.current_user.is_authenticated:
+#         return flask.redirect('/')
 
-def render_icon():
-        print("render_iconrthhwreeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-        if flask.request.method == 'POST':
-            image = flask.request.files.get('image')
-            if image:
-                print("kkkkkkkkkkkkkkkkkkkkkkkk")
-            if image and image.filename:
-                print(f"{image.filename} uploaded for user {flask_login.current_user.nickname}")
-                image.save(abspath(join(__file__, '..', '..', "project", 'static', 'images', 'user_icons', f'{flask_login.current_user.nickname}.png'))) 
-            else:
-                print("No image provided, using default profile image.")
-        return flask.redirect(flask.request.referrer or '/')
+# def render_profile_page():
+#     return flask.render_template("user.html", nickname=flask_login.current_user.nickname)            
+     
+
+# def render_profile_page():
+#     password = flask_login.current_user.password
+#     email = flask_login.current_user.email
+#     # nickname = flask_login.current_user.nickname
+#     return flask.render_template("profile.html", password=password, email=email)
+# # =======
+#                     flask.session['messages'].append(f'Помилка при додавані користувача: {error}')
+#             else:
+#                 flask.session['messages'].append('Паролі не співпадають')
+#     print(flask.session['messages'])
+#     return flask.render_template("user.html")                 
+  
+
+
+# def render_profile_page():
+#     if flask_login.current_user.is_authenticated:
+#         nickname = flask_login.current_user.nickname
+#         password = flask_login.current_user.password
+#         email = flask_login.current_user.email
+#         profile_icon = flask_login.current_user.profile_icon
+#     else:
+#         nickname = ''
+#         password = ''
+#         email = ''
+#         profile_icon = 'profile.png'
+#     return flask.render_template("profile.html", password=password, email=email, nickname=nickname, profile_icon=profile_icon, is_authenticated=flask_login.current_user.is_authenticated)
+
+# >>>>>>> origin/Max

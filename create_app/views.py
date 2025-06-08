@@ -2,9 +2,7 @@ import flask, flask_login
 import json
 from .models import Questions, Test
 from project.settings import DATABASE
-from project.config_page import config_page
 
-@config_page("create.html")
 def render_create():
     if 'messages' not in flask.session:
         flask.session['messages'] = []
@@ -39,11 +37,20 @@ def render_create():
         except Exception as error:
             print(error)
             flask.session['messages'].append(f'Помилка при добавлении запитання: {error}')
+    if flask_login.current_user.is_authenticated:
+        nickname = flask_login.current_user.nickname
+        email = flask_login.current_user.email
+        password = flask_login.current_user.password
+    else:
+        nickname = ''
+        password = ''
+        email = ''
+        profile_icon = 'profile.png'
     # try:
         
     #     flask.session['messages'].append('Запитання успішно додано!')
     # except Exception as error:
     #     print(error)
     #     flask.session['messages'].append(f'Помилка при добавлении запитання: {error}')
-    return {}
+    return flask.render_template("create.html", nickname=nickname, email=email, password=password, is_authenticated=flask_login.current_user.is_authenticated)
 
