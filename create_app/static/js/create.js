@@ -82,6 +82,7 @@ document.getElementById("add").addEventListener("click", function (event) {
 
 document.querySelector('#save-form').addEventListener('submit', function (event) {
     event.preventDefault();
+
     const listQuestions = document.querySelector(".list_questions");
     const questionForm = document.getElementById("questionForm");
     const selectedButton = document.querySelector('.question_button_choosen');
@@ -89,16 +90,29 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     if (selectedButton) {
         const questionId = selectedButton.id.replace('question_', '');
         const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
+        
         if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
             alert('Заповніть питання та додайте хоча б один варіант відповіді!');
             return;
         }
+
         const questionData = {
             question: questionForm.querySelector('#question').value,
             correct: questionForm.querySelector('#correctAnswer').value,
             options: allInputs
         };
         localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+    }
+
+    const subject = localStorage.getItem('test_subject') || '';
+    const className = localStorage.getItem('test_class_name') || '';
+    const testName = localStorage.getItem('test_name') || '';
+
+    // 🛡️ Защита: если настройки не заданы, не отправляем
+    if (!subject || !className || !testName) {
+        alert('Будь ласка, заповніть налаштування тесту!');
+        document.getElementById('settings_modal').style.display = 'block';
+        return;
     }
 
     let listAllQuestions = [];
@@ -109,10 +123,6 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             listAllQuestions.push(data);
         }
     }
-
-    const subject = localStorage.getItem('test_subject') || '';
-    const className = localStorage.getItem('test_class_name') || '';
-    const testName = localStorage.getItem('test_name') || '';
 
     $.ajax('/create', {
         type: "POST",
@@ -130,6 +140,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         }
     });
 });
+
 
 function makeDraggable(element) {
     let offsetY, isDragging = false;
