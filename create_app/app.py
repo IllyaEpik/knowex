@@ -1,5 +1,4 @@
 import flask 
-
 create = flask.Blueprint(
     name = "create",
     import_name = "create_app",
