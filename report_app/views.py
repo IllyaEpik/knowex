@@ -3,6 +3,10 @@ import flask, flask_login
 def render_report():
     if 'messages' not in flask.session:
         flask.session['messages'] = []
+# <<<<<<< Max
+#     return {}
+
+# =======
 
     if flask_login.current_user.is_authenticated:
         nickname = flask_login.current_user.nickname
@@ -16,3 +20,4 @@ def render_report():
         profile_icon = 'profile.png'
     
     return flask.render_template("report.html", nickname=nickname, email=email, password=password, is_authenticated=flask_login.current_user.is_authenticated)
+# >>>>>>> master

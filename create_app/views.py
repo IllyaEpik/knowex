@@ -54,3 +54,4 @@ def render_create():
     #     flask.session['messages'].append(f'Помилка при добавлении запитання: {error}')
     return flask.render_template("create.html", nickname=nickname, email=email, password=password, is_authenticated=flask_login.current_user.is_authenticated)
 
+
