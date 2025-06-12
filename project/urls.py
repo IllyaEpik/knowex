@@ -20,12 +20,21 @@ main_app.main.add_url_rule(rule="/logout", view_func=main_app.views.logout)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])
 report_app.report.add_url_rule(rule="/report", view_func=report_app.views.render_report, methods = ['get', 'post'])
 user_app.user.add_url_rule(rule="/user", view_func=user_app.views.render_user, methods = ['get', 'post'])
+# <<<<<<< HEAD
+# =======
+# <<<<<<< Max
+# >>>>>>> 87a199501833f1fd35f730efd56f4864efef5f01
 user_app.user.add_url_rule(rule="/render_icon", view_func=user_app.views.render_icon, methods = ['post'])
 user_app.user.add_url_rule(rule="/send_email_code", view_func=user_app.views.send_email_code, methods = ['post', 'get'])
 user_app.user.add_url_rule(rule="/render_code", view_func=user_app.views.render_code, methods = ['get', 'post'])
 test_app.test_page.add_url_rule(rule="/test", view_func=test_app.views.render_test)
 test_app.test_page.add_url_rule(rule="/test_question", view_func=test_app.views.test_question, methods = ['get', 'post'])
+# <<<<<<< HEAD
 # >>>>>>> origin/Max
+# =======
+# =======
+# >>>>>>> master
+# >>>>>>> 87a199501833f1fd35f730efd56f4864efef5f01
 
 # user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
 

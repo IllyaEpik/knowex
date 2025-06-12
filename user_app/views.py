@@ -1,11 +1,11 @@
 import flask, flask_login
 from .models import User
 from project.settings import DATABASE
-# <<<<<<< HEAD
-# =======
-# from project.config_page import config_page
+# <<<<<<<<< Temporary merge branch 1
+# =========
+from project.config_page import config_page
 from .confirm_email import code, send_code
-# >>>>>>> origin/Max
+# >>>>>>>>> Temporary merge branch 2
 
 
 def render_user():
@@ -28,7 +28,15 @@ def render_user():
                             flask.session['messages'].append('Неправильний пароль')
 
         else:
-
+# <<<<<<<<< Temporary merge branch 1
+            # if flask.request.form['password'] == flask.request.form['confirm_password']:
+            #     try:
+            #         user = User(
+            #             email = flask.request.form['email'],
+            #             password = flask.request.form['password'],
+            #             nickname = flask.request.form['nickname'],
+            #             # profile_icon = 'profile.png',
+# =========
             try:
                 if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
                     nickname = flask.request.form.get('nickname')
@@ -36,7 +44,7 @@ def render_user():
                         email = flask.request.form.get('email'),
                         password = flask.request.form.get('password'),
                         nickname = nickname,
-
+# >>>>>>>>> Temporary merge branch 2
                         complete_tests = 0,
                         create_tests  = 0,
                         is_mentor = False
@@ -44,6 +52,7 @@ def render_user():
                     DATABASE.session.add(user)
                     DATABASE.session.commit()
                     flask.session['messages'].append('Користувач успішно доданий!')
+# <<<<<<<<< Temporary merge branch 1
     
             except Exception as error:
                 print(error)
@@ -85,3 +94,44 @@ def render_user():
 #     return flask.render_template("profile.html", password=password, email=email, nickname=nickname, profile_icon=profile_icon, is_authenticated=flask_login.current_user.is_authenticated)
 
 # >>>>>>> origin/Max
+# =========
+    #                 return flask.redirect('/')
+    #         except Exception as error:
+    #             print(error)
+    # return {}
+
+def render_icon():
+        if flask.request.method == 'POST':
+            image = flask.request.files.get('image')
+            if image and image.filename:
+                print(f"{image.filename} uploaded for user {flask_login.current_user.nickname}")
+                image.save(abspath(join(__file__, '..', '..', "project", 'static', 'images', 'user_icons', f'{flask_login.current_user.nickname}.png'))) 
+            else:
+                print("No image provided, using default profile image.")
+        return flask.redirect(flask.request.referrer or '/')
+
+def send_email_code():
+    email = flask.request.json.get('email')
+    if not email:
+        return flask.jsonify({'success': False, 'error': 'No email provided'}), 400
+    try:
+        send_code(email)
+        return flask.jsonify({'success': True})
+    except Exception as e:
+        return flask.jsonify({'success': False, 'error': str(e)}), 500
+    
+def render_code():
+    if 'messages' not in flask.session:
+        flask.session['messages'] = []
+    confirm_code = flask.request.form.get('confirm_code')
+    if code == confirm_code or code == 'admin':
+        if 'Код підтвердженно' not in flask.session['messages']:
+                flask.session['messages'].append('Код підтвердженно')
+        return flask.redirect('/')
+    else:
+        if 'Неправильний код підтвердження' not in flask.session['messages']:
+            flask.session['messages'].append('Неправильний код підтвердження')
+        return flask.redirect('/user')
+
+
+# >>>>>>>>> Temporary merge branch 2
