@@ -1,130 +1,69 @@
-// <<<<<<< HEAD
-// =======
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.question_form').style.display = 'none';
     document.getElementById('save-form').style.display = 'none';
     document.getElementById('settings_modal').style.display = 'block';
+
+    const listQuestions = document.querySelector('.list_questions');
+    if (!listQuestions) {
+        console.error('Елемент .list_questions не знайдено!');
+        return;
+    }
+    initPositions();
 });
-// >>>>>>> origin/Max/
+
+let yQuestion = -60;
+let questionOrder = [];
 
 document.getElementById("add_question").addEventListener("click", function () {
     const listQuestions = document.querySelector(".list_questions");
-    // const questionCount = listQuestions.children.length + 1;
-    let end = 0
-    let questionCount;
-    // let count=0;
-    for (let count=0; !questionCount; count++){
-        
-        console.log(document.getElementById(`question_${count}`))
-        // end = 1
-        if (null==document.getElementById(`question_${count}`)){
-        // console.log())
-            questionCount = count
-        }
+    let questionCount = 0;
+    while (document.getElementById(`question_${questionCount}`)) {
+        questionCount++;
     }
+
     const newButton = document.createElement("button");
-// <<<<<<< HEAD
-// =======
     newButton.className = "question_button";
     newButton.id = `question_${questionCount}`;
-// >>>>>>> origin/Max
-    newButton.textContent = `question ${questionCount}`;
-    newButton.className = "question_button";
-    newButton.id = `question_${questionCount}`;
-/////////////////////NEW/////////////////////////////
+    newButton.textContent = `Питання ${questionCount + 1}`;
     makeDraggable(newButton);
-/////////////////////NEW/////////////////////////////
 
-    
-    
-    // if ii==1321
-    //     5678
+    yQuestion += getSlotHeight() * 1.2;
+    newButton.style.top = `${yQuestion}px`;
+
     newButton.addEventListener("click", function () {
-        document.getElementById('settings_modal').style.display = 'none';
-        document.querySelector('.question_form').style.display = '';
-        document.getElementById('save-form').style.display = '';
-
-        const questionForm = document.getElementById("questionForm");
-        const questionTitle = questionForm.querySelector("h3");
-        let number = "error"
-        for (let aw of listQuestions.children){
-            // question_button_choosen
-            if (aw.classList.contains('question_button_choosen')){
-               aw.classList.remove('question_button_choosen') 
-            }
-        }
-
-        // try{
-        //     number = questionTitle.textContent.split("№")[1][0]
-        //     // question_3 
-        //     document.querySelector(`#question_${number}`).classList.remove('question_button_choosen')
-        // }
-        // catch{}
-        this.classList.add('question_button_choosen')
-        questionTitle.textContent = `Питання №${questionCount}:`;
-        // let number = "error";
-        // try {
-        //     number = questionTitle.textContent.split("№")[1][0];
-        //     document.querySelector(`#question_${number}`).classList.remove('question_button_choosen');
-        // } catch { }
-        // this.classList.add('question_button_choosen');
-        // questionTitle.textContent = `Питання №${questionCount}:`;
-// >>>>>>> origin/Max
-        questionForm.style.display = "block";
-        if (number != "error") {
-            let allDiv = questionForm.querySelector("#options").querySelectorAll("div");
-            let allinputs = [];
-            for (let div of allDiv) {
-                allinputs.push(div.querySelector("input").value);
-            }
-            let question = {
-                "question": questionForm.querySelector("#question").value,
-                "correct": questionForm.querySelector("#correctAnswer").value,
-                "options": allinputs
-            }
-            localStorage.setItem(`${number}`, JSON.stringify(question));
-
-            let data = JSON.parse(localStorage.getItem(`${questionCount}`));
-            questionForm.querySelector("#question").value = data['question'];
-            questionForm.querySelector("#correctAnswer").value = data['correct'];
-            questionForm.querySelector("#options").innerHTML = '';
-            for (let option of data['options']) {
-                let div = document.createElement('div');
-                let input = document.createElement('input');
-                let button = document.createElement('button');
-                input.value = option;
-                input.type = 'text';
-                input.classList.add('option');
-                input.placeholder = 'Новий варіант';
-                button.classList.add('remove_option');
-                button.name = 'answer';
-                button.type = 'button';
-                button.textContent = '➖';
-                div.append(input);
-                div.append(button);
-                questionForm.querySelector("#options").append(div);
-            }
-        }
+        selectQuestion(questionCount);
     });
 
     listQuestions.appendChild(newButton);
+    questionOrder.push(newButton);
+    newButton.click();
 });
 
 document.getElementById("delete_question").addEventListener("click", function () {
     const listQuestions = document.querySelector(".list_questions");
-    if (listQuestions.children.length > 0) {
-        for (let question of listQuestions.children) {
-            if (question.classList.contains('question_button_choosen')) {
-                listQuestions.removeChild(question);
-                localStorage.removeItem(question.textContent[question.textContent.length - 1]);
-            }
+    let removed = false;
+    for (let question of listQuestions.children) {
+        if (question.classList.contains('question_button_choosen')) {
+            const questionId = question.id.replace('question_', '');
+            listQuestions.removeChild(question);
+            localStorage.removeItem(`question_${questionId}`);
+            questionOrder = questionOrder.filter(q => q !== question);
+            removed = true;
+            break;
         }
-    } else {
-        alert("Список тестів порожній!");
     }
-    const questionForm = document.querySelector('.question_form');
-    questionForm.reset();
-    questionForm.querySelector("h3").textContent = "Питання:";
+
+    if (!removed) {
+        alert("Список тестів порожній або жодне питання не вибрано!");
+    } else {
+        const questionForm = document.querySelector('.question_form');
+        questionForm.reset();
+        questionForm.querySelector("h3").textContent = "Питання:";
+        questionForm.querySelector("#options").innerHTML = '';
+        if (listQuestions.children.length > 0) {
+            listQuestions.children[0].click();
+        }
+    }
 });
 
 document.getElementById("add").addEventListener("click", function (event) {
@@ -144,98 +83,211 @@ document.getElementById("add").addEventListener("click", function (event) {
 document.querySelector('#save-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const listQuestions = document.querySelector(".list_questions");
+    const questionForm = document.getElementById("questionForm");
+    const selectedButton = document.querySelector('.question_button_choosen');
+
+    if (selectedButton) {
+        const questionId = selectedButton.id.replace('question_', '');
+        const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
+        if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
+            alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+            return;
+        }
+        const questionData = {
+            question: questionForm.querySelector('#question').value,
+            correct: questionForm.querySelector('#correctAnswer').value,
+            options: allInputs
+        };
+        localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+    }
+
     let listAllQuestions = [];
     for (let question of listQuestions.children) {
-        listAllQuestions.push(JSON.parse(localStorage.getItem(question.textContent[question.textContent.length - 1])));
+        const questionId = question.id.replace('question_', '');
+        const data = JSON.parse(localStorage.getItem(`question_${questionId}`));
+        if (data) {
+            listAllQuestions.push(data);
+        }
     }
+
     const subject = localStorage.getItem('test_subject') || '';
     const className = localStorage.getItem('test_class_name') || '';
     const testName = localStorage.getItem('test_name') || '';
 
     $.ajax('/create', {
         type: "POST",
-// <<<<<<< HEAD
-        data: {data: JSON.stringify(listAllQuestions)},
-        success: function(){
-            console.log('success')
-    // alert(data.message)
-    }})
-    
-    
-})
-// console.log(symbol)
+        data: {
+            data: JSON.stringify(listAllQuestions),
+            subject: subject,
+            class_name: className,
+            name: testName
+        },
+        success: function () {
+            alert('Тест збережено!');
+        },
+        error: function () {
+            alert('Помилка при збереженні!');
+        }
+    });
+});
 
-
-////////////////////NEW/////////////////////////
-let count = 10
 function makeDraggable(element) {
-    let offsetX, offsetY, isDragging = false;
-    let textlist = element.textContent.split("")
-    // console.log(textlist, element.textContent )
-    let symbol = Number(textlist[textlist.length-1])-1
-    console.log(Number(symbol ))
+    let offsetY, isDragging = false;
+    let zIndex = 10;
+
     element.addEventListener('mousedown', function (e) {
         isDragging = true;
-        // offsetX = e.clientX - element.offsetLeft;
-        offsetY = e.clientY - element.offsetTop+symbol*48;
+        offsetY = e.clientY - parseInt(element.style.top || 0);
         element.style.cursor = 'grabbing';
-        count++
-        element.style.zIndex = count;
+        element.style.zIndex = ++zIndex;
     });
-    // position: relative;
+
     document.addEventListener('mousemove', function (e) {
         if (isDragging) {
-            // element.style.left = `${e.clientX - offsetX}px`;
             element.style.top = `${e.clientY - offsetY}px`;
         }
     });
 
-    document.addEventListener('mouseup', function () {
-        isDragging = false;
-        element.style.cursor = 'grab';
+    document.addEventListener('mouseup', function (event) {
+        if (isDragging) {
+            let old_list = getCoor()
+            
+            isDragging = false;
+            element.style.cursor = 'grab';
+            const currentTop = parseInt(element.style.top);
+            let newIndex = Math.round(currentTop / getSlotHeight());
+            newIndex = Math.max(0, Math.min(questionOrder.length - 1, newIndex));
+            const currentIndex = questionOrder.indexOf(element);
+            if (currentIndex !== -1) {
+                questionOrder.splice(currentIndex, 1);
+                questionOrder.splice(newIndex, 0, element);
+            }
+            updateDOM();
+            
+            let new_list = getCoor()
+            let match = true
+            for (let count=0;count<=old_list.length;count++){
+                match = old_list[count] == new_list[count]                
+                if (!match){
+                    break
+                }
+            }
+            if (match){
+
+                selectQuestion(Number(event.target.textContent[event.target.textContent.length-1])-1)
+            }
+            console.log(match)
+        }
     });
 }
-/////////////////////NEW/////////////////////////////
-// =======
-//         data: {
-//             data: JSON.stringify(listAllQuestions),
-//             subject: subject,
-//             class_name: className,
-//             name: testName
-//         },
-//         success: function () {
-//             alert('Тест збережено!');
-//         },
-//         error: function () {
-//             alert('Помилка при збереженні!');
-//         }
-//     });
-// });
+// document.querySelector('p').textContent
+function getCoor(){
+    let list = []
+    let questions = Array.from(listQuestions.children);
+        for (let question of questions){
+            list.push(question.style.top)
+        }
+    return list
+}
+const listQuestions = document.querySelector('.list_questions');
 
-// document.addEventListener('mousedown', function (event) {
-//     const container = document.querySelector('.container_create_form');
-//     const list = document.querySelector('.list_container');
-//     const modal = document.getElementById('settings_modal');
-//     const questionForm = document.querySelector('.question_form');
-//     const saveForm = document.getElementById('save-form');
-//     if (
-//         !container.contains(event.target) &&
-//         !list.contains(event.target) &&
-//         !modal.contains(event.target)
-//     ) {
-//         modal.style.display = 'block';
-//         questionForm.style.display = 'none';
-//         saveForm.style.display = 'none';
-//     }
-// });
+function initPositions() {
+    const questions = Array.from(listQuestions.children);
+    let currentTop = 0;
+    questions.forEach((question, index) => {
+        const height = question.offsetHeight * 1.2;
+        question.style.top = `${currentTop}px`;
+        currentTop += height;
+        questionOrder[index] = question;
+    });
+}
 
-// document.getElementById('settings_form').addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     const subject = document.getElementById('subject').value;
-//     const className = document.getElementById('class_name').value;
-//     const testName = document.getElementById('test_name').value;
-//     localStorage.setItem('test_subject', subject);
-//     localStorage.setItem('test_class_name', className);
-//     localStorage.setItem('test_name', testName);
-// });
-// >>>>>>> origin/Max
+function getSlotHeight() {
+    const firstQuestion = listQuestions.children[0];
+    return firstQuestion ? firstQuestion.offsetHeight : 50;
+}
+
+function updateDOM() {
+    questionOrder.forEach(question => {
+        listQuestions.appendChild(question);
+    });
+    initPositions();
+}
+
+function selectQuestion(index) {
+    const form = document.getElementById('questionForm');
+    const questionTitle = form.querySelector('h3');
+    questionTitle.textContent = `Питання №${index + 1}:`;
+
+    const data = JSON.parse(localStorage.getItem(`question_${index}`)) || {};
+    form.querySelector('#question').value = data.question || '';
+    form.querySelector('#correctAnswer').value = data.correct || '';
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    (data.options || []).forEach(opt => {
+        const div = document.createElement('div');
+        const input = document.createElement('input');
+        const button = document.createElement('button');
+        input.type = 'text';
+        input.value = opt;
+        input.className = 'option';
+        input.placeholder = 'Новий варіант';
+        button.className = 'remove_option';
+        button.name = 'answer';
+        button.type = 'button';
+        button.textContent = '➖';
+        button.addEventListener('click', () => div.remove());
+        div.append(input);
+        div.append(button);
+        optionsDiv.append(div);
+    });
+
+    document.getElementById('settings_modal').style.display = 'none';
+    document.querySelector('.question_form').style.display = 'block';
+    document.getElementById('save-form').style.display = 'block';
+
+    for (let btn of listQuestions.children) {
+        btn.classList.remove('question_button_choosen');
+    }
+    document.getElementById(`question_${index}`).classList.add('question_button_choosen');
+}
+        // Завантаження поточних налаштувань із localStorage при завантаженні сторінки
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('subject').value = localStorage.getItem('test_subject') || '';
+            document.getElementById('class_name').value = localStorage.getItem('test_class_name') || '';
+            document.getElementById('test_name').value = localStorage.getItem('test_name') || '';
+        });
+
+        // Відкриття вікна налаштувань
+        document.getElementById('open_settings').addEventListener('click', function () {
+            document.getElementById('settings_modal').style.display = 'block';
+            document.querySelector('.question_form').style.display = 'none';
+            document.getElementById('save-form').style.display = 'none';
+        });
+
+        // Закриття вікна налаштувань
+        document.getElementById('close_settings').addEventListener('click', function () {
+            document.getElementById('settings_modal').style.display = 'none';
+            document.querySelector('.question_form').style.display = 'block';
+            document.getElementById('save-form').style.display = 'block';
+        });
+        
+
+        // Збереження налаштувань
+        document.getElementById('settings_form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const subject = document.getElementById('subject').value.trim();
+            const className = document.getElementById('class_name').value.trim();
+            const testName = document.getElementById('test_name').value.trim();
+
+            if (!subject || !className || !testName) {
+                alert('Будь ласка, заповніть усі поля!');
+                return;
+            }
+
+            localStorage.setItem('test_subject', subject);
+            localStorage.setItem('test_class_name', className);
+            localStorage.setItem('test_name', testName);
+            document.getElementById('close_settings').click();
+        });
+
