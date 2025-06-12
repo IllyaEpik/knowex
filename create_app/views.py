@@ -47,3 +47,4 @@ def render_create():
     #     flask.session['messages'].append(f'Помилка при добавлении запитання: {error}')
     return {}
 
+

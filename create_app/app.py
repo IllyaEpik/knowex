@@ -7,3 +7,4 @@ create = flask.Blueprint(
     static_folder= "static",
     static_url_path= "/create/"
 )
+

@@ -5,5 +5,5 @@ from project.config_page import config_page
 def render_report():
     if 'messages' not in flask.session:
         flask.session['messages'] = []
-    
     return {}
+

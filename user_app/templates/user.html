@@ -50,9 +50,28 @@
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
                 <input type="password" name="confirm_password" id="confirm_password" placeholder="confirm_password" class="reg_confirm_password">
             </div>    
-            <button class="reg_save">Save</button>
+            <button class="reg_save" type="button">Save</button>
         </div>
     </form>
+</div>
+<form action="/render_code" method="post" id="modal-form" style="display:none;">
+    <div id="modal-bg" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+        <div id="modal-window" style="background:#fff; padding:30px; border-radius:10px; width:300px; margin:100px auto; position:relative;">
+            <span id="modal-close" style="position:absolute; right:10px; top:10px; cursor:pointer;">&times;</span>
+            <h3>Enter afirm code:</h3>
+            <input type="text" id="modal-input" style="width:100%; margin-bottom:15px;" name="confirm_code" placeholder="Enter code">
+            <button id="modal-ok" type="button">Confirm</button>
+        </div>
+    </div>
+</form>
+
+<div class="messages" id="messages">
+    {% for message in session.get('messages', []) %}
+        <div class="message" id = "message">
+            {{ message }}
+            {% do session.update({'messages': []}) %}
+        </div>
+    {% endfor %}
 </div>
 
 <script defer src="{{ url_for('user.static', filename = '/js/script.js') }}"></script>

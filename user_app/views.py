@@ -3,6 +3,7 @@ from os.path import join, abspath
 from .models import User
 from project.settings import DATABASE
 from project.config_page import config_page
+from .confirm_email import code, send_code
 
 @config_page("user.html")
 def render_user():
@@ -25,13 +26,12 @@ def render_user():
                             flask.session['messages'].append('Неправильний пароль')
 
         else:
-            if flask.request.form['password'] == flask.request.form['confirm_password']:
-                try:
-                    nickname = flask.request.form['nickname']
-
+            try:
+                if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+                    nickname = flask.request.form.get('nickname')
                     user = User(
-                        email = flask.request.form['email'],
-                        password = flask.request.form['password'],
+                        email = flask.request.form.get('email'),
+                        password = flask.request.form.get('password'),
                         nickname = nickname,
                         complete_tests = 0,
                         create_tests  = 0,
@@ -40,20 +40,42 @@ def render_user():
                     DATABASE.session.add(user)
                     DATABASE.session.commit()
                     flask.session['messages'].append('Користувач успішно доданий!')
-    
-                except Exception as error:
-                    print(error)
+                    return flask.redirect('/')
+            except Exception as error:
+                print(error)
     return {}
 
 def render_icon():
-        print("render_iconrthhwreeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         if flask.request.method == 'POST':
             image = flask.request.files.get('image')
-            if image:
-                print("kkkkkkkkkkkkkkkkkkkkkkkk")
             if image and image.filename:
                 print(f"{image.filename} uploaded for user {flask_login.current_user.nickname}")
                 image.save(abspath(join(__file__, '..', '..', "project", 'static', 'images', 'user_icons', f'{flask_login.current_user.nickname}.png'))) 
             else:
                 print("No image provided, using default profile image.")
         return flask.redirect(flask.request.referrer or '/')
+
+def send_email_code():
+    email = flask.request.json.get('email')
+    if not email:
+        return flask.jsonify({'success': False, 'error': 'No email provided'}), 400
+    try:
+        send_code(email)
+        return flask.jsonify({'success': True})
+    except Exception as e:
+        return flask.jsonify({'success': False, 'error': str(e)}), 500
+    
+def render_code():
+    if 'messages' not in flask.session:
+        flask.session['messages'] = []
+    confirm_code = flask.request.form.get('confirm_code')
+    if code == confirm_code or code == 'admin':
+        if 'Код підтвердженно' not in flask.session['messages']:
+                flask.session['messages'].append('Код підтвердженно')
+        return flask.redirect('/')
+    else:
+        if 'Неправильний код підтвердження' not in flask.session['messages']:
+            flask.session['messages'].append('Неправильний код підтвердження')
+        return flask.redirect('/user')
+
+
