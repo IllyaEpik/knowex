@@ -62,7 +62,10 @@ def render_create():
         return render_template("create.html", nickname='', email='', password='', 
                               is_authenticated=False, messages=session['messages'])
 
+<<<<<<< HEAD
 # <<<<<<< HEAD
+=======
+>>>>>>> 9319334cdfcac1ba7463e7cc4ad145a82efe5169
 @app1.route('/create', methods=['POST'])
 def create_test():
     if request.method == 'GET':
@@ -166,8 +169,13 @@ def get_all_tests():
 
         return jsonify(all_data)
 
+# <<<<<<< stel
     except Exception as ex:
         return jsonify({'status': 'error', 'message': str(ex)}), 500
 # =======
 
+<<<<<<< HEAD
 # >>>>>>> origin/Max
+=======
+# >>>>>>> master
+>>>>>>> 9319334cdfcac1ba7463e7cc4ad145a82efe5169
