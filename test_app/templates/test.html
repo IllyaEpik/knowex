@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Test page {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('report.static', filename='css/test.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="test-bg">
+    <div class="test-info-card">
+        <h1 class="test-title">Математика — 3 клас</h1>
+        <ul class="test-details">
+            <li><b>Автор:</b> name</li>
+            <li><b>Предмет:</b> Математика</li>
+            <li><b>Клас:</b> 3</li>
+            <li><b>Кількість питань:</b> 5</li>
+            <li><b>Опис:</b> Опис тесту</li>
+        </ul>
+        <a class="start-btn" href="/test_question">Почати тест</a>
+    </div>
+</div>
+{% endblock %}

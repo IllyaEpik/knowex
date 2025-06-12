@@ -62,6 +62,7 @@ def render_create():
         return render_template("create.html", nickname='', email='', password='', 
                               is_authenticated=False, messages=session['messages'])
 
+# <<<<<<< HEAD
 @app1.route('/create', methods=['POST'])
 def create_test():
     if request.method == 'GET':
@@ -167,3 +168,6 @@ def get_all_tests():
 
     except Exception as ex:
         return jsonify({'status': 'error', 'message': str(ex)}), 500
+# =======
+
+# >>>>>>> origin/Max

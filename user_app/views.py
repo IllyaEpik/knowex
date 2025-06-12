@@ -1,6 +1,11 @@
 import flask, flask_login
 from .models import User
 from project.settings import DATABASE
+# <<<<<<< HEAD
+# =======
+# from project.config_page import config_page
+from .confirm_email import code, send_code
+# >>>>>>> origin/Max
 
 
 def render_user():
@@ -23,13 +28,15 @@ def render_user():
                             flask.session['messages'].append('Неправильний пароль')
 
         else:
-            if flask.request.form['password'] == flask.request.form['confirm_password']:
-                try:
+
+            try:
+                if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+                    nickname = flask.request.form.get('nickname')
                     user = User(
-                        email = flask.request.form['email'],
-                        password = flask.request.form['password'],
-                        nickname = flask.request.form['nickname'],
-                        # profile_icon = 'profile.png',
+                        email = flask.request.form.get('email'),
+                        password = flask.request.form.get('password'),
+                        nickname = nickname,
+
                         complete_tests = 0,
                         create_tests  = 0,
                         is_mentor = False
@@ -38,8 +45,8 @@ def render_user():
                     DATABASE.session.commit()
                     flask.session['messages'].append('Користувач успішно доданий!')
     
-                except Exception as error:
-                    print(error)
+            except Exception as error:
+                print(error)
 # <<<<<<< HEAD
     return flask.render_template("user.html", error = error)            
     
