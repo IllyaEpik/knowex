@@ -1,6 +1,6 @@
 import flask
 
-test = flask.Blueprint(
+test_page = flask.Blueprint(
     name = "test",
     import_name = "test_app",
     template_folder= "templates",

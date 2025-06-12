@@ -5,6 +5,9 @@ from project.settings import DATABASE
 # =========
 from project.config_page import config_page
 from .confirm_email import code, send_code
+import os
+abspath = os.path.abspath
+join = os.path.join
 # >>>>>>>>> Temporary merge branch 2
 
 
