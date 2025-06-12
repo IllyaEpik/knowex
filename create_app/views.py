@@ -37,8 +37,12 @@ def init_db():
 
 init_db()
 
-@app1.route('/create', methods=['GET'])
+# @app1.route('/create', methods=['GET'])
 def render_create():
+    # print('rtyuiopuiuytrewe')
+    # if
+    # if request.method == 'POST':
+    #     return create_test()
     if 'messages' not in session:
         session['messages'] = []
 
@@ -66,112 +70,85 @@ def render_create():
 # <<<<<<< HEAD
 # =======
 # >>>>>>> 9319334cdfcac1ba7463e7cc4ad145a82efe5169
-@app1.route('/create', methods=['POST'])
+# @app1.route('/create', methods=['POST'])
 def create_test():
-    if request.method == 'GET':
-        print("Warning: GET request received, redirecting to render_create")
-        return render_create()  # Перенаправлення GET-запитів на render_create
+    # class Questions(DATABASE.Model):
+    #     id = DATABASE.Column(DATABASE.Integer, primary_key=True)
+    #     text = DATABASE.Column(DATABASE.String(255))
+    #     image = DATABASE.Column(DATABASE.String(255))
+    #     answers = DATABASE.Column(DATABASE.String(255))
+    #     correct_answer = DATABASE.Column(DATABASE.String(255))
+    #     def __repr__(self):
+    #         return self.id
+    all_questions = ''
+    for question in json.loads( request.form.get('data')):
+        
+        question_object = Questions(
+            text = question['question'],
+            correct_answer = question['correct'],
+            answers = json.dumps(question['options'])
+        )
+        DATABASE.session.add(question_object)
+        DATABASE.session.commit()
+        all_questions += f"{question_object.id} "
+    # data
+    # print()
+    test = Test(
+        subject = request.form.get('subject'),
+        class_name = request.form.get('class_name'),
+        questions = all_questions,
+        name = request.form.get('name'),
+        user = flask_login.current_user.id,
+    )
+    DATABASE.session.add(test)
+    DATABASE.session.commit()
 
-    try:
-        print("1. Start of create_test function")  # Перевірка 1: Початок функції
-        print(f"Request form data: {dict(request.form)}")  # Логування всіх даних форми
-        questions = json.loads(request.form.get('data') or '[]')
-        print(f"2. Parsed questions data: {questions}")  # Перевірка 2: Розпакування JSON
-
-        subject = request.form.get('subject', '').strip()
-        class_name = request.form.get('class_name', '').strip()
-        test_name = request.form.get('name', '').strip()
-        print(f"3. Extracted form data - subject: {subject}, class_name: {class_name}, test_name: {test_name}")  # Перевірка 3: Отримані дані
-
-        if not subject or not class_name or not test_name:
-            print("4. Validation failed: Missing required fields")  # Перевірка 4: Перевірка полів
-            return jsonify({'status': 'error', 'message': 'Не заполнены поля test_name, subject или class_name'}), 400
-
-        user_id = str(uuid.uuid4())
-        print(f"5. Generated user_id: {user_id}")  # Перевірка 5: Генерація user_id
-
-        with sqlite3.connect(DB_NAME) as conn:
-            print("6. Starting database connection")  # Перевірка 6: Початок з’єднання з БД
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                INSERT INTO test (test_name, subject, class_name, user_id)
-                VALUES (?, ?, ?, ?)
-            ''', (test_name, subject, class_name, user_id))
-            test_id = cursor.lastrowid
-            print(f"7. Inserted into test table, test_id: {test_id}")  # Перевірка 7: Вставка в test
-
-            for q in questions:
-                print(f"8. Processing question: {q}")  # Перевірка 8: Обробка кожного питання
-                question_text = q.get('question', '').strip()
-                correct_answer = q.get('correct', '').strip()
-                options_list = q.get('options', [])
-
-                if not question_text or not correct_answer or not isinstance(options_list, list) or len(options_list) == 0:
-                    print(f"9. Skipping invalid question: {q}")  # Перевірка 9: Пропуск некоректних питань
-                    continue
-
-                options_str = '|'.join([opt.strip() for opt in options_list])
-                print(f"10. Formatted options: {options_str}")  # Перевірка 10: Форматування опцій
-
-                cursor.execute('''
-                    INSERT INTO question (test_id, question_text, correct_answer, options)
-                    VALUES (?, ?, ?, ?)
-                ''', (test_id, question_text, correct_answer, options_str))
-                print(f"11. Inserted question into question table")  # Перевірка 11: Вставка в question
-
-            conn.commit()
-            print("12. Database commit successful")  # Перевірка 12: Завершення транзакції
-
-        return jsonify({'status': 'success', 'test_id': test_id, 'user_id': user_id})
-
-    except Exception as e:
-        print(f"13. Exception occurred: {str(e)}")  # Перевірка 13: Обробка винятку
-        return jsonify({'status': 'error', 'message': str(e)}), 400
+    return jsonify({'ok':True})
 
 @app1.route('/all_tests', methods=['GET'])
 def get_all_tests():
-    try:
-        with sqlite3.connect(DB_NAME) as conn:
-            cursor = conn.cursor()
-            cursor.execute('SELECT id, test_name, subject, class_name, user_id FROM test')
-            tests_rows = cursor.fetchall()
+    
+    # try:
+    #     with sqlite3.connect(DB_NAME) as conn:
+    #         cursor = conn.cursor()
+    #         cursor.execute('SELECT id, test_name, subject, class_name, user_id FROM test')
+    #         tests_rows = cursor.fetchall()
 
-            all_data = []
-            for t in tests_rows:
-                t_id, t_name, t_subject, t_class, t_user_id = t
-                cursor.execute('''
-                    SELECT id, question_text, correct_answer, options
-                    FROM question
-                    WHERE test_id = ?
-                ''', (t_id,))
-                question_rows = cursor.fetchall()
+    #         all_data = []
+    #         for t in tests_rows:
+    #             t_id, t_name, t_subject, t_class, t_user_id = t
+    #             cursor.execute('''
+    #                 SELECT id, question_text, correct_answer, options
+    #                 FROM question
+    #                 WHERE test_id = ?
+    #             ''', (t_id,))
+    #             question_rows = cursor.fetchall()
 
-                questions_list = []
-                for qr in question_rows:
-                    q_id, q_text, q_correct, q_opts_str = qr
-                    opts = q_opts_str.split('|') if q_opts_str else []
-                    questions_list.append({
-                        'question_id': q_id,
-                        'question_text': q_text,
-                        'correct_answer': q_correct,
-                        'options': opts
-                    })
+    #             questions_list = []
+    #             for qr in question_rows:
+    #                 q_id, q_text, q_correct, q_opts_str = qr
+    #                 opts = q_opts_str.split('|') if q_opts_str else []
+    #                 questions_list.append({
+    #                     'question_id': q_id,
+    #                     'question_text': q_text,
+    #                     'correct_answer': q_correct,
+    #                     'options': opts
+    #                 })
 
-                all_data.append({
-                    'test_id': t_id,
-                    'test_name': t_name,
-                    'subject': t_subject,
-                    'class_name': t_class,
-                    'user_id': t_user_id,
-                    'questions': questions_list
-                })
+    #             all_data.append({
+    #                 'test_id': t_id,
+    #                 'test_name': t_name,
+    #                 'subject': t_subject,
+    #                 'class_name': t_class,
+    #                 'user_id': t_user_id,
+    #                 'questions': questions_list
+    #             })
 
-        return jsonify(all_data)
+        return jsonify( {'tests':Test.query.all()})
 
 # <<<<<<< stel
-    except Exception as ex:
-        return jsonify({'status': 'error', 'message': str(ex)}), 500
+    # except Exception as ex:
+    #     return jsonify({'status': 'error', 'message': str(ex)}), 500
 # =======
 
 # <<<<<<< HEAD

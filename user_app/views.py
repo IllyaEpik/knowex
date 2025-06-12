@@ -47,7 +47,6 @@ def render_user():
                         email = flask.request.form.get('email'),
                         password = flask.request.form.get('password'),
                         nickname = nickname,
-# >>>>>>>>> Temporary merge branch 2
                         complete_tests = 0,
                         create_tests  = 0,
                         is_mentor = False
@@ -104,14 +103,14 @@ def render_user():
     # return {}
 
 def render_icon():
-        if flask.request.method == 'POST':
-            image = flask.request.files.get('image')
-            if image and image.filename:
-                print(f"{image.filename} uploaded for user {flask_login.current_user.nickname}")
-                image.save(abspath(join(__file__, '..', '..', "project", 'static', 'images', 'user_icons', f'{flask_login.current_user.nickname}.png'))) 
-            else:
-                print("No image provided, using default profile image.")
-        return flask.redirect(flask.request.referrer or '/')
+    if flask.request.method == 'POST':
+        image = flask.request.files.get('image')
+        if image and image.filename:
+            print(f"{image.filename} uploaded for user {flask_login.current_user.nickname}")
+            image.save(abspath(join(__file__, '..', '..', "project", 'static', 'images', 'user_icons', f'{flask_login.current_user.nickname}.png'))) 
+        else:
+            print("No image provided, using default profile image.")
+    return flask.redirect(flask.request.referrer or '/')
 
 def send_email_code():
     email = flask.request.json.get('email')

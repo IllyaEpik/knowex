@@ -101,6 +101,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             correct: questionForm.querySelector('#correctAnswer').value,
             options: allInputs
         };
+        console.log(questionData)
         localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
     }
 
@@ -124,7 +125,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         }
     }
 
-    $.ajax('/create', {
+    $.ajax('/create_test', {
         type: "POST",
         data: {
             data: JSON.stringify(listAllQuestions),
@@ -226,6 +227,26 @@ function updateDOM() {
 }
 
 function selectQuestion(index) {
+    const questionForm = document.getElementById("questionForm");
+    const selectedButton = document.querySelector('.question_button_choosen');
+
+    if (selectedButton) {
+        const questionId = selectedButton.id.replace('question_', '');
+        const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
+        
+        if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
+            alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+            return;
+        }
+
+        const questionData = {
+            question: questionForm.querySelector('#question').value,
+            correct: questionForm.querySelector('#correctAnswer').value,
+            options: allInputs
+        };
+        console.log(questionData)
+        localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+    }
     const form = document.getElementById('questionForm');
     const questionTitle = form.querySelector('h3');
     questionTitle.textContent = `Питання №${index + 1}:`;
