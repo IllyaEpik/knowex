@@ -49,6 +49,7 @@
         <a class="profile"></a>
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>
+    
     <div class="messages" id="messages">
         {% for message in session.get('messages', []) %}
             <div class="message" id = "message">
@@ -56,7 +57,6 @@
                 {% do session.update({'messages': []}) %}
             </div>
         {% endfor %}
-           
     </div>
 
     <div class="content" id="content">

@@ -165,5 +165,9 @@ def get_all_tests():
 
         return jsonify(all_data)
 
+# <<<<<<< stel
     except Exception as ex:
         return jsonify({'status': 'error', 'message': str(ex)}), 500
+# =======
+
+# >>>>>>> master
