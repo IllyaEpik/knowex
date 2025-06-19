@@ -9,15 +9,17 @@
 {% block content %}
 <div class="test-bg">
     <div class="test-info-card">
-        <h1 class="test-title">Математика — 3 клас</h1>
-        <ul class="test-details">
-            <li><b>Автор:</b> name</li>
-            <li><b>Предмет:</b> Математика</li>
-            <li><b>Клас:</b> 3</li>
-            <li><b>Кількість питань:</b> 5</li>
-            <li><b>Опис:</b> Опис тесту</li>
-        </ul>
-        <a class="start-btn" href="/test_question">Почати тест</a>
+        {% for test in tests %}
+                <h1 class="test-title">{{ test.name }}</h1>
+                <ul class="test-details">
+                    <!-- <li><b>Автор:</b> {{ test.user }}</li> -->
+                    <li><b>Предмет:</b> {{ test.subject }}</li>
+                    <li><b>Клас:</b> {{ test.class_name }}</li>
+                    <!-- <li><b>Кількість питань:</b> {{ test.count }}</li> -->
+                    <!-- <li><b>Опис:</b> {{ test.description }}</li> -->
+                </ul>
+                <a class="start-btn" href="/test_question">Почати тест</a>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

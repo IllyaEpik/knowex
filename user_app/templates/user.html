@@ -18,7 +18,7 @@
             <button value="reg" class="reg" id="regBtn">Register</button>
         </div>
     </div>
-    <form method="post" class="form" id="auth">
+    <form action="/user" method="post" class="form" id="auth">
         <div class="container">
             <div class="input">
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
@@ -31,8 +31,8 @@
             <button name="auth" value="1" class="log_save">Save</button>
         </div>
     </form>
-    
-    <form method="post" class="form" id="reg" hidden>
+
+    <form action="/user" method="post" class="form" id="reg" hidden>
         <div class="container">
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
@@ -50,7 +50,7 @@
                 <img src="{{ url_for('user.static', filename='images/password_img.png') }}" alt="">
                 <input type="password" name="confirm_password" id="confirm_password" placeholder="confirm_password" class="reg_confirm_password">
             </div>    
-            <button class="reg_save" type="button">Save</button>
+            <button class="reg_save" type="submit">Save</button>
         </div>
     </form>
 </div>
@@ -60,7 +60,7 @@
             <span id="modal-close" style="position:absolute; right:10px; top:10px; cursor:pointer;">&times;</span>
             <h3>Enter afirm code:</h3>
             <input type="text" id="modal-input" style="width:100%; margin-bottom:15px;" name="confirm_code" placeholder="Enter code">
-            <button id="modal-ok" type="button">Confirm</button>
+            <button id="modal-ok" type="submit">Confirm</button>
         </div>
     </div>
 </form>

@@ -82,6 +82,36 @@ if (modalClose && modalBg && modalForm) {
 if (modalForm && modalOk) {
     modalOk.addEventListener("click", function(e) {
         e.preventDefault();
+
+        // Очищаем старые скрытые поля
+        modalForm.querySelectorAll('input[type="hidden"]').forEach(el => el.remove());
+
+        // Копируем значения из формы регистрации
+        const regForm = document.getElementById("reg");
+        ["nickname", "email", "password", "confirm_password"].forEach(name => {
+            const input = regForm.querySelector(`[name="${name}"]`);
+            if (input) {
+                const hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.name = name;
+                hidden.value = input.value;
+                modalForm.appendChild(hidden);
+            }
+        });
+
+        // confirm_code из модального input
+        const codeInput = document.getElementById("modal-input");
+        if (codeInput) {
+            let hidden = modalForm.querySelector('input[name="confirm_code"]');
+            if (!hidden) {
+                hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.name = "confirm_code";
+                modalForm.appendChild(hidden);
+            }
+            hidden.value = codeInput.value;
+        }
+
         fetch("/render_code", {
             method: "POST",
             body: new FormData(modalForm)

@@ -2,13 +2,16 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import random
+import flask
 
-code = random.randint(100000, 999999)
 
 def send_code(email: str):
     user = "knowex933@gmail.com"
     password = "nwyo utbj fowl eyit"
     user_email = email
+
+    code = str(random.randint(100000, 999999))
+    flask.session['confirm_code'] = code  
 
     message = MIMEMultipart()
     message["From"] = user

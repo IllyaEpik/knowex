@@ -37,12 +37,14 @@
             <div id="settings_modal" class="modal">
                 <form id="settings_form">
                     <h3>Налаштування тесту</h3>
-                    <label>Предмет:</label>
+                    <label>Назва тесту:</label><br>
+                    <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту"><br><br>
+                    <label>Фото тесту:</label><br>
+                    <input type="file" id="image" name="image"><br><br>
+                    <label>Предмет:</label><br>
                     <input type="text" id="subject" name="subject" placeholder="Введіть предмет"><br><br>
                     <label>Клас:</label><br>
                     <input type="text" id="class_name" name="class_name" placeholder="Введіть клас"><br><br>
-                    <label>Назва тесту:</label><br>
-                    <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту"><br><br>
                     <button type="submit">Зберегти</button>
                     <button type="button" id="close_settings">← Назад до питань</button>
                 </form>

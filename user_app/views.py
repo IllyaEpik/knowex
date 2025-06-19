@@ -1,14 +1,10 @@
 import flask, flask_login
 from .models import User
 from project.settings import DATABASE
-# <<<<<<<<< Temporary merge branch 1
-# =========
 from project.config_page import config_page
-from .confirm_email import code, send_code
-import os
-abspath = os.path.abspath
-join = os.path.join
-# >>>>>>>>> Temporary merge branch 2
+from .confirm_email import send_code
+from os.path import abspath, join
+
 
 
 def render_user():
@@ -31,15 +27,6 @@ def render_user():
                             flask.session['messages'].append('Неправильний пароль')
 
         else:
-# <<<<<<<<< Temporary merge branch 1
-            # if flask.request.form['password'] == flask.request.form['confirm_password']:
-            #     try:
-            #         user = User(
-            #             email = flask.request.form['email'],
-            #             password = flask.request.form['password'],
-            #             nickname = flask.request.form['nickname'],
-            #             # profile_icon = 'profile.png',
-# =========
             try:
                 if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
                     nickname = flask.request.form.get('nickname')
@@ -54,13 +41,11 @@ def render_user():
                     DATABASE.session.add(user)
                     DATABASE.session.commit()
                     flask.session['messages'].append('Користувач успішно доданий!')
-# <<<<<<<<< Temporary merge branch 1
     
             except Exception as error:
                 print(error)
-# <<<<<<< HEAD
-    return flask.render_template("user.html", error = error)            
-    
+    return flask.render_template("user.html", error = error)
+
 #     if flask_login.current_user.is_authenticated:
 #         return flask.redirect('/')
 
@@ -83,20 +68,8 @@ def render_user():
 
 
 # def render_profile_page():
-#     if flask_login.current_user.is_authenticated:
-#         nickname = flask_login.current_user.nickname
-#         password = flask_login.current_user.password
-#         email = flask_login.current_user.email
-#         profile_icon = flask_login.current_user.profile_icon
-#     else:
-#         nickname = ''
-#         password = ''
-#         email = ''
-#         profile_icon = 'profile.png'
 #     return flask.render_template("profile.html", password=password, email=email, nickname=nickname, profile_icon=profile_icon, is_authenticated=flask_login.current_user.is_authenticated)
 
-# >>>>>>> origin/Max
-# =========
     #                 return flask.redirect('/')
     #         except Exception as error:
     #             print(error)
@@ -123,17 +96,23 @@ def send_email_code():
         return flask.jsonify({'success': False, 'error': str(e)}), 500
     
 def render_code():
-    if 'messages' not in flask.session:
-        flask.session['messages'] = []
     confirm_code = flask.request.form.get('confirm_code')
-    if code == confirm_code or code == 'admin':
-        if 'Код підтвердженно' not in flask.session['messages']:
-                flask.session['messages'].append('Код підтвердженно')
+    if confirm_code == flask.session.get('confirm_code') or confirm_code == 'admin':
+        if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+            user = User(
+                email=flask.request.form.get('email'),
+                password=flask.request.form.get('password'),
+                nickname=flask.request.form.get('nickname'),
+                complete_tests=0,
+                create_tests=0,
+                is_mentor=False
+            )
+            DATABASE.session.add(user)
+            DATABASE.session.commit()
+            flask_login.login_user(user)
+            flask.session['messages'].append('Користувач успішно доданий!')
         return flask.redirect('/')
     else:
         if 'Неправильний код підтвердження' not in flask.session['messages']:
             flask.session['messages'].append('Неправильний код підтвердження')
         return flask.redirect('/user')
-
-
-# >>>>>>>>> Temporary merge branch 2

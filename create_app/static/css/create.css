@@ -305,6 +305,29 @@ label {
     cursor: pointer;
 }
 
+input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+input[type="file"]::before {
+    content: 'Вибрати файл';
+    display: inline-block;
+    background: #467fcf;
+    color: white;
+    border-radius: 4px;
+    padding: 6px 12px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+input[type="file"]:hover::before {
+    background: #345fa8;
+}
+input[type="file"] {
+    color: transparent;
+    width: 140px;
+}
 
 /* 
    dark
