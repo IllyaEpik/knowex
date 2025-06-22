@@ -299,9 +299,13 @@ function selectQuestion(index) {
 
         // Закриття вікна налаштувань
         document.getElementById('close_settings').addEventListener('click', function () {
-            document.getElementById('settings_modal').style.display = 'none';
-            document.querySelector('.question_form').style.display = 'block';
-            document.getElementById('save-form').style.display = 'block';
+            console.log(document.querySelectorAll('.question_button'))
+            if (document.querySelectorAll('.question_button').length){
+                document.getElementById('settings_modal').style.display = 'none';
+                document.querySelector('.question_form').style.display = 'block';
+                document.getElementById('save-form').style.display = 'block';
+
+            }
         });
         
 

@@ -21,7 +21,7 @@ def render_user():
                     if user.password == flask.request.form['password']:
                         flask.session['messages'].append('Ви успішно увійшли в аккаунт')
                         flask_login.login_user(user)
-                        return flask.redirect(flask.url_for('main.render_main'))
+                        return flask.redirect(location='/')
                     if user.password != flask.request.form['password']:
                         if 'Неправильний пароль' not in flask.session['messages']:
                             flask.session['messages'].append('Неправильний пароль')
