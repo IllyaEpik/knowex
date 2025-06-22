@@ -23,6 +23,7 @@ document.getElementById("add_question").addEventListener("click", function () {
 
     const newButton = document.createElement("button");
     newButton.className = "question_button";
+    newButton.type = 'button'
     newButton.id = `question_${questionCount}`;
     newButton.textContent = `Питання ${questionCount + 1}`;
     makeDraggable(newButton);
@@ -90,8 +91,9 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     if (selectedButton) {
         const questionId = selectedButton.id.replace('question_', '');
         const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
-        
-        if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
+        // correctAnswer
+        let correctAnswer = document.querySelector('#correctAnswer').value
+        if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
             alert('Заповніть питання та додайте хоча б один варіант відповіді!');
             return;
         }
@@ -124,16 +126,36 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             listAllQuestions.push(data);
         }
     }
-
-    $.ajax('/create_test', {
+    let Formdata = new FormData()
+    Formdata.append('data', JSON.stringify(listAllQuestions))
+    Formdata.append('subject', subject)
+    Formdata.append('class_name', className)
+    Formdata.append('name', testName)
+    try {
+        Formdata.append('image', document.querySelector('#image').files[0])
+    } catch (error) {
+        
+    }
+    
+    // image
+    // hour = 9
+    // minute = 8
+    // 9:8
+    // 09:08
+    // {
+    //     data: JSON.stringify(listAllQuestions),
+    //     subject: subject,
+    //     class_name: className,
+    //     name: testName
+    // }
+    $.ajax(
+        '/create_test', {
         type: "POST",
-        data: {
-            data: JSON.stringify(listAllQuestions),
-            subject: subject,
-            class_name: className,
-            name: testName
-        },
+        data: Formdata,
+        processData: false,
+        contentType: false,
         success: function () {
+            localStorage.clear()
             alert('Тест збережено!');
         },
         error: function () {
