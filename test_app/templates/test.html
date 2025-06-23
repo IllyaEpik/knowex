@@ -18,7 +18,8 @@
                     <!-- <li><b>Кількість питань:</b> {{ test.count }}</li> -->
                     <!-- <li><b>Опис:</b> {{ test.description }}</li> -->
                 </ul>
-                <a class="start-btn" href="/test_question">Почати тест</a>
+                {% set first_qid = test.questions.split()[0] %}
+                <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>
         {% endfor %}
     </div>
 </div>

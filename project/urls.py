@@ -18,7 +18,8 @@ user_app.user.add_url_rule(rule="/send_email_code", view_func=user_app.views.sen
 user_app.user.add_url_rule(rule="/render_code", view_func=user_app.views.render_code, methods = ['get', 'post'])
 test_app.test_page.add_url_rule(rule='/test/<int:test_id>', view_func=test_app.views.render_test, methods = ['get'])
 test_app.test_page.add_url_rule(rule="/create_test", view_func=create_app.views.create_test, methods = ['post'])
-test_app.test_page.add_url_rule(rule="/test_question", view_func=test_app.views.test_question, methods = ['get', 'post'])
+test_app.test_page.add_url_rule(rule="/test/<int:test_id>/question/<int:question_id>", view_func=test_app.views.test_question, methods = ['get', 'post'], endpoint="test_question")
+test_app.test_page.add_url_rule(rule="/test/<int:test_id>/result", view_func=test_app.views.test_result, methods=['get'], endpoint="test_result")
 # user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
 
 project.register_blueprint(blueprint=main_app.app.main)

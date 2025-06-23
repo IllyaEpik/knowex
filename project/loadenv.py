@@ -17,4 +17,5 @@ def load_env():
         os.system(os.environ['DB_INIT'])
     os.system(os.environ['DB_MIGRATE'])
     os.system(os.environ['DB_UPGRADE'])
-    
+    if not os.path.exists(os.path.join(__file__, '..', '..', 'test_app', 'static', 'images', 'test_icons')):
+        os.makedirs(os.path.join(__file__, '..', '..', 'test_app', 'static', 'images', 'test_icons'))

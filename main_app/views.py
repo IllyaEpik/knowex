@@ -8,10 +8,8 @@ def render_main():
     all_ids = [t.id for t in Test.query.with_entities(Test.id).all()]
     random_ids = random.sample(all_ids, min(5, len(all_ids)))
     tests = Test.query.filter(Test.id.in_(random_ids)).all()
-    id_image = str(Test.id)
     return {
         "tests": tests, 
-        "id_image": id_image
     }
 
 def logout():

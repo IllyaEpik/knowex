@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+test_app/static/images/test_icons/
 
 # C extensions
 *.so
