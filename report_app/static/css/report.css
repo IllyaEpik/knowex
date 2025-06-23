@@ -234,3 +234,8 @@ body.dark {
     background-color: #0b0c10;
     color: #e0e0e0;
 }
+.card {
+    background-color: #181c24; /* тот же цвет, что и у body */
+    border-radius: 16px;
+    padding: 16px;
+}
