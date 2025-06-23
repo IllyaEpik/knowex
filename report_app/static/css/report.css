@@ -1,4 +1,7 @@
 /* bright */
+body{
+    overflow: hidden;
+}
 
 #report{
     background-color: #dbeafe;

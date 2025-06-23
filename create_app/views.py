@@ -45,4 +45,4 @@ def create_test():
     return jsonify({'ok':True})
 
 def get_all_tests():
-        return jsonify( {'tests':Test.query.all()})
+    return jsonify( {'tests':Test.query.all()})

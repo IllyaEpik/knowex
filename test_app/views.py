@@ -1,7 +1,7 @@
-import flask
+import flask, random
 from project.config_page import config_page
 from create_app.models import Test, Questions
-
+import json
 
 def render_test(test_id: int):
     tests = Test.query.filter_by(id=test_id).all()
@@ -25,14 +25,22 @@ def test_question(test_id, question_id):
         return flask.abort(404)
     answers = []
     if question.answers:
-        import json
         try:
             answers = json.loads(question.answers)
         except Exception:
             answers = [question.answers]
+    print(answers)
+    answers += [question.correct_answer]
+    print(answers)
+    answers_list = random.sample(answers, len(answers))
+    print(answers_list)
+    # for answer in range(len(answers)):
+    #     answers_list
+    #     pass
     selected = None
     if flask.request.method == "POST":
         selected = flask.request.form.get("answer")
+        print(selected)
         flask.session.setdefault("test_answers", {})[f"{test_id}_{question_id}"] = selected
         if current_index + 1 < total_questions:
             next_question_id = question_ids[current_index + 1]
@@ -42,7 +50,7 @@ def test_question(test_id, question_id):
     return {
         "test": test,
         "question": question,
-        "answers": answers,
+        "answers": answers_list,
         "question_id": current_index + 1,  
         "total_questions": total_questions,
         "selected": selected
@@ -56,6 +64,7 @@ def test_result(test_id):
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     answers = flask.session.get("test_answers", {})
+    print(answers, 980)
     correct = 0
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
@@ -64,6 +73,7 @@ def test_result(test_id):
         user_answer = answers.get(f"{test_id}_{qid}")
         if user_answer and hasattr(question, "correct_answer") and user_answer == question.correct_answer:
             correct += 1
+        print(user_answer, hasattr(question, "correct_answer"),user_answer, question.correct_answer)
     return {
         "test": test,
         "total_questions": total_questions,

@@ -3,7 +3,8 @@
 {% block title %}Проходження тесту{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_question.css') }}">
+    <script src="{{ url_for('test.static', filename='js/test.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_question.css') }}" >
 {% endblock %}
 
 {% block content %}
