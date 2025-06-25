@@ -117,24 +117,24 @@ body.dark button {
 }
 
 body.dark #main {
-    background-color: #1e293b; 
-    border-radius: 15px;
+    background-color: #7e7f81;
+    /* border-radius: 15px; */
     color: #e0e7ff;
 }
 
 body.dark .description {
     background-color: #2e3a59; 
-    width: 100%; 
-    max-width: 1650px;
+    /* width: 100%;  */
+    /* max-width: 1650px; */
     height: auto; 
-    padding: 20px;
+    /* padding: 20px; */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 10px;
+    /* margin: 10px; */
     border: 1px solid #334155; 
-    border-radius: 30px;
+    /* border-radius: 30px; */
 }
 
 body.dark .description p {
@@ -143,12 +143,12 @@ body.dark .description p {
 }
 
 body.dark .login {
-    margin: 10px;
+    /* margin: 10px; */
     background-color: #2e3a59;
-    width: 100%;
-    max-width: 1250px;
-    padding: 30px;
-    border-radius: 60px;
+    /* width: 100%; */
+    /* max-width: 1250px; */
+    /* padding: 30px; */
+    /* border-radius: 60px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,30 +156,30 @@ body.dark .login {
 }
 
 body.dark .login p {
-    font-size: 30px;
+    /* font-size: 30px; */
     color: #e0e7ff;
 }
 
 body.dark .to_login {
-    font-size: 30px;
+    /* font-size: 30px; */
     color: #93c5fd; }
 
 body.dark .container_tests {
     display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
+    /* flex-wrap: wrap; */
+    /* gap: 24px; */
     justify-content: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 body.dark .container_test {
     background: #1e293b; 
-    border-radius: 16px;
+    /* border-radius: 16px; */
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-    width: 300px;
-    padding: 24px 16px;
+    /* width: 300px; */
+    /* padding: 24px 16px; */
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -189,15 +189,15 @@ body.dark .container_test:hover {
 }
 
 body.dark .test_name h2 {
-    font-size: 1.3rem;
+    /* font-size: 1.3rem; */
     color: #e0e7ff;
     text-align: center;
 }
 
 
 body.dark .test_description img {
-    width: 200px;
-    height: 200px;
+    /* width: 200px;
+    height: 200px; */
     object-fit: contain;
     background-color: #334155;
     border-radius: 8px;
@@ -206,12 +206,12 @@ body.dark .test_description img {
 
 body.dark .test_link a {
     display: inline-block;
-    padding: 8px 20px;
+    /* padding: 8px 20px; */
     background: #4f8cff;
     color: #fff;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     text-decoration: none;
-    font-weight: 500;
+    /* font-weight: 500; */
     transition: background 0.2s ease;
 }
 body.dark .test_link a:hover {
@@ -226,8 +226,8 @@ body.dark select {
     background-color: #1e293b;
     border: 1px solid #4f6bd1;
     color: #e0e7ff;
-    border-radius: 8px;
-    padding: 8px 12px;
+    /* border-radius: 8px; */
+    /* padding: 8px 12px; */
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 body.dark input[type="text"]::placeholder,
@@ -268,16 +268,16 @@ body.dark a:focus {
 }
 
 
-body.dark ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
+/* body.dark ::-webkit-scrollbar { */
+    /* width: 8px;
+    height: 8px; */
+/* } */
 body.dark ::-webkit-scrollbar-track {
     background: #1e293b;
 }
 body.dark ::-webkit-scrollbar-thumb {
     background-color: #4f6bd1;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     border: 2px solid #1e293b;
 }
 body.dark {

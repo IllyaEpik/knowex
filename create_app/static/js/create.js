@@ -92,11 +92,11 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         const questionId = selectedButton.id.replace('question_', '');
         const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
         // correctAnswer
-        let correctAnswer = document.querySelector('#correctAnswer').value
-        if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
-            alert('Заповніть питання та додайте хоча б один варіант відповіді!');
-            return;
-        }
+        // let correctAnswer = document.querySelector('#correctAnswer').value
+        // if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
+        //     alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //     return;
+        // }
 
         const questionData = {
             question: questionForm.querySelector('#question').value,
@@ -256,10 +256,10 @@ function selectQuestion(index) {
         const questionId = selectedButton.id.replace('question_', '');
         const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
         
-        if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-            alert('Заповніть питання та додайте хоча б один варіант відповіді!');
-            return;
-        }
+    //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
+    //         alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+    //         return;
+    //     }
 
         const questionData = {
             question: questionForm.querySelector('#question').value,
