@@ -1,3 +1,23 @@
+:root {
+    --bg-test-card: #fff;
+    --bg-test-btn: #2d6cdf;
+    --bg-test-btn-hover: #1b4e9b;
+    --color-test-title: #2d6cdf;
+    --color-test-details: #222;
+    --color-test-details-bold: #2d6cdf;
+    --color-test-btn: #fff;
+}
+
+body.dark {
+    --bg-test-card: #23243a;
+    --bg-test-btn: #4a5bbd;
+    --bg-test-btn-hover: #2563eb;
+    --color-test-title: #80bcf8;
+    --color-test-details: #dbeafe;
+    --color-test-details-bold: #80bcf8;
+    --color-test-btn: #fff;
+}
+
 body, html {
     height: 100%;
     margin: 0;
@@ -22,12 +42,13 @@ body, html {
     width: 100%;
     text-align: center;
     position: relative;
+    background: var(--bg-test-card);
 }
 
 .test-title {
     font-size: 2em;
     font-weight: 700;
-    color: #2d6cdf;
+    color: var(--color-test-title);
     margin-bottom: 32px;
     letter-spacing: 1px;
 }
@@ -43,18 +64,18 @@ body, html {
 
 .test-details li {
     margin-bottom: 14px;
-    color: #222;
+    color: var(--color-test-details);
 }
 
 .test-details b {
-    color: #2d6cdf;
+    color: var(--color-test-details-bold);
     font-weight: 600;
 }
 
 .start-btn {
     display: inline-block;
-    background: #2d6cdf;
-    color: #fff;
+    background: var(--bg-test-btn);
+    color: var(--color-test-btn);
     text-decoration: none;
     padding: 16px 44px;
     border-radius: 12px;
@@ -64,4 +85,8 @@ body, html {
     box-shadow: 0 2px 12px rgba(45,108,223,0.10);
     transition: background 0.2s, transform 0.15s;
     margin-top: 10px;
+}
+
+.start-btn:hover {
+    background: var(--bg-test-btn-hover);
 }

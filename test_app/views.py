@@ -1,7 +1,10 @@
 import flask
 from project.config_page import config_page
 from create_app.models import Test, Questions
-
+import json
+import random
+import flask_login 
+from project.settings import DATABASE
 
 def render_test(test_id: int):
     tests = Test.query.filter_by(id=test_id).all()
@@ -25,24 +28,33 @@ def test_question(test_id, question_id):
         return flask.abort(404)
     answers = []
     if question.answers:
-        import json
         try:
             answers = json.loads(question.answers)
+            print(answers)
         except Exception:
             answers = [question.answers]
+    answers += [question.correct_answer]
+    answers_list = random.sample(answers, len(answers))
     selected = None
+    global list_selected
+    list_selected = []
     if flask.request.method == "POST":
         selected = flask.request.form.get("answer")
-        flask.session.setdefault("test_answers", {})[f"{test_id}_{question_id}"] = selected
+        test_answers = flask.session.get("test_answers", [])
+        test_answers = [item for item in test_answers if item["question_id"] != question_id]
+        test_answers.append({"question_id": question_id, "answer": selected})
+        flask.session["test_answers"] = test_answers
+        flask.session.modified = True
         if current_index + 1 < total_questions:
             next_question_id = question_ids[current_index + 1]
             return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
         else:
             return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
+
     return {
         "test": test,
         "question": question,
-        "answers": answers,
+        "answers": answers_list,
         "question_id": current_index + 1,  
         "total_questions": total_questions,
         "selected": selected
@@ -55,18 +67,29 @@ def test_result(test_id):
         return flask.abort(404)
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
-    answers = flask.session.get("test_answers", {})
+    test_answers = flask.session.get("test_answers", [])
     correct = 0
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
             continue
-        user_answer = answers.get(f"{test_id}_{qid}")
-        if user_answer and hasattr(question, "correct_answer") and user_answer == question.correct_answer:
+        user_answer = next((item["answer"] for item in test_answers if item["question_id"] == qid), None)
+        if user_answer and user_answer == question.correct_answer:
             correct += 1
+    if flask_login.current_user.is_authenticated:
+        user = flask_login.current_user
+        if user.complete_tests:
+            ids = user.complete_tests.split()
+            if str(test.id) not in ids:
+                user.complete_tests += f" {test.id}"
+        else:
+            user.complete_tests = str(test.id)
+        DATABASE.session.commit()
+    flask.session.pop("test_answers", None)
+
     return {
         "test": test,
         "total_questions": total_questions,
-        "correct": correct,
-        "answers": answers
+        "answers": test_answers,
+        "correct": correct
     }

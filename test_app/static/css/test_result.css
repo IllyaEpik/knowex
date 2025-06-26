@@ -1,7 +1,25 @@
+:root {
+    --bg-result: #fff;
+    --color-result-title: #2d7ff9;
+    --color-result-text: #333;
+    --bg-result-btn: #2d7ff9;
+    --bg-result-btn-hover: #195bb5;
+    --color-result-btn: #fff;
+}
+
+body.dark {
+    --bg-result: #23243a;
+    --color-result-title: #80bcf8;
+    --color-result-text: #dbeafe;
+    --bg-result-btn: #4a5bbd;
+    --bg-result-btn-hover: #2563eb;
+    --color-result-btn: #fff;
+}
+
 .result-container {
     max-width: 500px;
     margin: 40px auto;
-    background: #fff;
+    background: var(--bg-result);
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     padding: 32px 24px;
@@ -9,7 +27,7 @@
 }
 
 .result-container h2 {
-    color: #2d7ff9;
+    color: var(--color-result-title);
     margin-bottom: 24px;
     font-size: 2rem;
     font-weight: 700;
@@ -18,14 +36,14 @@
 .result-container p {
     font-size: 1.2rem;
     margin-bottom: 32px;
-    color: #333;
+    color: var(--color-result-text);
 }
 
 .result-container a {
     display: inline-block;
     padding: 10px 28px;
-    background: #2d7ff9;
-    color: #fff;
+    background: var(--bg-result-btn);
+    color: var(--color-result-btn);
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
@@ -33,5 +51,5 @@
 }
 
 .result-container a:hover {
-    background: #195bb5;
+    background: var(--bg-result-btn-hover);
 }

@@ -9,7 +9,7 @@
 {% block content %}
 <div class="create_container">
     <div class="header_flex">
-        <h1 class="page_title">Створити тест</h1>
+        <h1 class="page_title">Create test</h1>
         <button id="open_settings">Налаштування тесту</button>
     </div>
     <div class="create_content">
@@ -37,16 +37,22 @@
             <div id="settings_modal" class="modal">
                 <form id="settings_form">
                     <h3>Налаштування тесту</h3>
-                    <label>Назва тесту:</label><br>
-                    <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту"><br><br>
-                    <label>Фото тесту:</label><br>
-                    <input type="file" id="image" name="image"><br><br>
-                    <label>Предмет:</label><br>
-                    <input type="text" id="subject" name="subject" placeholder="Введіть предмет"><br><br>
-                    <label>Клас:</label><br>
-                    <input type="text" id="class_name" name="class_name" placeholder="Введіть клас"><br><br>
-                    <button type="submit">Зберегти</button>
-                    <button type="button" id="close_settings">← Назад до питань</button>
+                    <label>Назва тесту:</label>
+                    <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту">
+                    <div class="file-row">
+                        <label for="image">Фото тесту:</label>
+                        <input type="file" id="image" name="image">
+                    </div>
+                    <label for="description">Опис тесту:</label>
+                    <textarea id="description" name="description" placeholder="Введіть опис тесту"></textarea>
+                    <label>Предмет:</label>
+                    <input type="text" id="subject" name="subject" placeholder="Введіть предмет">
+                    <label>Клас:</label>
+                    <input type="text" id="class_name" name="class_name" placeholder="Введіть клас">
+                    <div class="button-row">
+                        <button type="submit">Зберегти</button>
+                        <button type="button" id="close_settings">← Назад до питань</button>
+                    </div>
                 </form>
             </div>
         </div>

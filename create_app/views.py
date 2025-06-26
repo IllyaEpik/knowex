@@ -1,4 +1,4 @@
-from flask import request, jsonify, render_template, session
+from flask import request, jsonify, session
 import flask
 import json
 import flask_login
@@ -32,16 +32,24 @@ def create_test():
         class_name = request.form.get('class_name'),
         questions = all_questions,
         name = request.form.get('name'),
+        description = request.form.get('description'),
         user = flask_login.current_user.id,
     )
     DATABASE.session.add(test)
     DATABASE.session.commit()
-
+    
     image = flask.request.files.get('image')
     if image:
         image.save(abspath(join(__file__, '..', '..', "test_app", 'static', 'images', 'test_icons', f'{test.id}.png')))
     else:
         print("No image provided, using default profile image.")
+    
+    user = flask_login.current_user
+    if user.create_tests:
+        user.create_tests += f" {test.id}"
+    else:
+        user.create_tests = str(test.id)
+    DATABASE.session.commit()
     return jsonify({'ok':True})
 
 def get_all_tests():
