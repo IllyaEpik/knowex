@@ -339,7 +339,7 @@ input[type="file"] {
 /* b: #121817 */
 body.dark {
     /* color: ; */
-    background-color: #121827;
+    background-color: #23242a;
     color: #e0e7ff;
     /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
     display: flex;
@@ -351,7 +351,7 @@ body.dark {
 }
 
 body.dark #create {
-    background-color: #7e7f81;
+    background-color: #23242a;
     /* border-radius: 15px; */
     color: #cbd5e1;
     /* padding: 20px; */
@@ -359,7 +359,7 @@ body.dark #create {
 }
 
 body.dark #content {
-    background-color: #18203c;
+    background-color: #23242a;
     /* border-radius: 15px; */
     /* padding: 20px; */
 }
