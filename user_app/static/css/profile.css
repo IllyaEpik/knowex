@@ -1,4 +1,16 @@
-.top_container{
+:root {
+    --bg-profile-main: #ACDDFF;
+    --bg-profile-info: #e7e7e7;
+    --color-profile-text: #000;
+}
+
+body.dark {
+    --bg-profile-main: #024b80;
+    --bg-profile-info: #181f2a;
+    --color-profile-text: #dbeafe;
+}
+
+.top_container {
     position: fixed;
     left: 105px;
     top: 110px;
@@ -9,23 +21,24 @@
     width: 500px;
 }
 
-.top_container img{
+.top_container img {
     margin-right: 15px;
 }
 
-.top_container div{
-    background-color: #ACDDFF;
+.top_container div {
+    background-color: var(--bg-profile-main);
     font-size: 12px;
     width: 225px;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--color-profile-text);
 }
-/* --------------------------------------------------------------------- */
 
-.profile_page{
-    background-color: #ACDDFF;
+
+.profile_page {
+    background-color: var(--bg-profile-main);
     width: 850px;
     height: 500px;
     position: fixed;
@@ -36,45 +49,42 @@
     flex-direction: column;
     gap: 30px;
     padding: 20px;
+    color: var(--color-profile-text);
 }
 
-.user_info{
-    margin: 10px; 
-    width: 850px; 
-    height: 60px;  
+.user_info {
+    margin: 10px;
+    width: 850px;
+    height: 60px;
     position: relative;
     gap: 10px;
     display: flex;
     flex-direction: row;
 }
 
-.user_info #hide{
-    width: 45px; 
-    height: 45px;  
+.user_info #hide,
+.user_info #close {
+    width: 45px;
+    height: 45px;
     position: relative;
+    background-size: cover;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    margin-top: 20px;
+}
+
+.user_info #hide {
     background-image: url("../images/hide_open.png");
-    background-size: cover;
-    background-position: center;
-    border: none;
-    background-color: transparent;
-    margin-top: 20px;
 }
-.user_info #close{
-    width: 45px; 
-    height: 45px;  
-    position: relative;
+
+.user_info #close {
     background-image: url("../images/hide_close.png");
-    background-size: cover;
-    background-position: center;
-    border: none;
-    background-color: transparent;
-    margin-top: 20px;
 }
-.user_info #change_password{
-    width: 750px; 
-    height: 60px;  
+
+.user_info #change_password {
+    width: 750px;
+    height: 60px;
     position: relative;
-    background-color: #e7e7e7;
+    background-color: var(--bg-profile-info);
 }
-
-
