@@ -41,6 +41,7 @@ def test_question(test_id, question_id):
     if flask.request.method == "POST":
         selected = flask.request.form.get("answer")
         test_answers = flask.session.get("test_answers", [])
+        print(test_answers)
         test_answers = [item for item in test_answers if item["question_id"] != question_id]
         test_answers.append({"question_id": question_id, "answer": selected})
         flask.session["test_answers"] = test_answers

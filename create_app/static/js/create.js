@@ -15,6 +15,7 @@ let yQuestion = -60;
 let questionOrder = [];
 
 document.getElementById("add_question").addEventListener("click", function () {
+    if (saveSettings()){
     const listQuestions = document.querySelector(".list_questions");
     let questionCount = 0;
     while (document.getElementById(`question_${questionCount}`)) {
@@ -37,7 +38,7 @@ document.getElementById("add_question").addEventListener("click", function () {
 
     listQuestions.appendChild(newButton);
     questionOrder.push(newButton);
-    newButton.click();
+    newButton.click();}
 });
 
 document.getElementById("delete_question").addEventListener("click", function () {
@@ -184,33 +185,32 @@ function makeDraggable(element) {
 
     document.addEventListener('mouseup', function (event) {
         if (isDragging) {
-            let old_list = getCoor()
-            
             isDragging = false;
-            element.style.cursor = 'grab';
-            const currentTop = parseInt(element.style.top);
-            let newIndex = Math.round(currentTop / getSlotHeight());
-            newIndex = Math.max(0, Math.min(questionOrder.length - 1, newIndex));
-            const currentIndex = questionOrder.indexOf(element);
-            if (currentIndex !== -1) {
-                questionOrder.splice(currentIndex, 1);
-                questionOrder.splice(newIndex, 0, element);
-            }
-            updateDOM();
             
-            let new_list = getCoor()
-            let match = true
-            for (let count=0;count<=old_list.length;count++){
-                match = old_list[count] == new_list[count]                
-                if (!match){
-                    break
+                let old_list = getCoor()
+                
+                element.style.cursor = 'grab';
+                const currentTop = parseInt(element.style.top);
+                let newIndex = Math.round(currentTop / getSlotHeight());
+                newIndex = Math.max(0, Math.min(questionOrder.length - 1, newIndex));
+                const currentIndex = questionOrder.indexOf(element);
+                if (currentIndex !== -1) {
+                    questionOrder.splice(currentIndex, 1);
+                    questionOrder.splice(newIndex, 0, element);
                 }
-            }
-            if (match){
-
-                selectQuestion(Number(event.target.textContent[event.target.textContent.length-1])-1)
-            }
-            console.log(match)
+                updateDOM();
+                
+                let new_list = getCoor()
+                let match = true
+                for (let count=0;count<=old_list.length;count++){
+                    match = old_list[count] == new_list[count]                
+                    if (!match){
+                        break
+                    }
+                }
+                if (match){
+                    selectQuestion(Number(event.target.textContent[event.target.textContent.length-1])-1)
+                }
         }
     });
 }
@@ -249,61 +249,64 @@ function updateDOM() {
 }
 
 function selectQuestion(index) {
-    const questionForm = document.getElementById("questionForm");
-    const selectedButton = document.querySelector('.question_button_choosen');
+    
+    if (saveSettings()){
+        const questionForm = document.getElementById("questionForm");
+        const selectedButton = document.querySelector('.question_button_choosen');
 
-    if (selectedButton) {
-        const questionId = selectedButton.id.replace('question_', '');
-        const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
-        
-    //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-    //         alert('Заповніть питання та додайте хоча б один варіант відповіді!');
-    //         return;
-    //     }
+        if (selectedButton) {
+            const questionId = selectedButton.id.replace('question_', '');
+            const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
+            
+        //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
+        //         alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //         return;
+        //     }
 
-        const questionData = {
-            question: questionForm.querySelector('#question').value,
-            correct: questionForm.querySelector('#correctAnswer').value,
-            options: allInputs
-        };
-        console.log(questionData)
-        localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+            const questionData = {
+                question: questionForm.querySelector('#question').value,
+                correct: questionForm.querySelector('#correctAnswer').value,
+                options: allInputs
+            };
+            console.log(questionData)
+            localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+        }
+        const form = document.getElementById('questionForm');
+        const questionTitle = form.querySelector('h3');
+        questionTitle.textContent = `Питання №${index + 1}:`;
+
+        const data = JSON.parse(localStorage.getItem(`question_${index}`)) || {};
+        form.querySelector('#question').value = data.question || '';
+        form.querySelector('#correctAnswer').value = data.correct || '';
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        (data.options || []).forEach(opt => {
+            const div = document.createElement('div');
+            const input = document.createElement('input');
+            const button = document.createElement('button');
+            input.type = 'text';
+            input.value = opt;
+            input.className = 'option';
+            input.placeholder = 'Новий варіант';
+            button.className = 'remove_option';
+            button.name = 'answer';
+            button.type = 'button';
+            button.textContent = '➖';
+            button.addEventListener('click', () => div.remove());
+            div.append(input);
+            div.append(button);
+            optionsDiv.append(div);
+        });
+
+        document.getElementById('settings_modal').style.display = 'none';
+        document.querySelector('.question_form').style.display = 'block';
+        document.getElementById('save-form').style.display = 'block';
+
+        for (let btn of listQuestions.children) {
+            btn.classList.remove('question_button_choosen');
+        }
+        document.getElementById(`question_${index}`).classList.add('question_button_choosen');
     }
-    const form = document.getElementById('questionForm');
-    const questionTitle = form.querySelector('h3');
-    questionTitle.textContent = `Питання №${index + 1}:`;
-
-    const data = JSON.parse(localStorage.getItem(`question_${index}`)) || {};
-    form.querySelector('#question').value = data.question || '';
-    form.querySelector('#correctAnswer').value = data.correct || '';
-    const optionsDiv = document.getElementById('options');
-    optionsDiv.innerHTML = '';
-    (data.options || []).forEach(opt => {
-        const div = document.createElement('div');
-        const input = document.createElement('input');
-        const button = document.createElement('button');
-        input.type = 'text';
-        input.value = opt;
-        input.className = 'option';
-        input.placeholder = 'Новий варіант';
-        button.className = 'remove_option';
-        button.name = 'answer';
-        button.type = 'button';
-        button.textContent = '➖';
-        button.addEventListener('click', () => div.remove());
-        div.append(input);
-        div.append(button);
-        optionsDiv.append(div);
-    });
-
-    document.getElementById('settings_modal').style.display = 'none';
-    document.querySelector('.question_form').style.display = 'block';
-    document.getElementById('save-form').style.display = 'block';
-
-    for (let btn of listQuestions.children) {
-        btn.classList.remove('question_button_choosen');
-    }
-    document.getElementById(`question_${index}`).classList.add('question_button_choosen');
 }
         // Завантаження поточних налаштувань із localStorage при завантаженні сторінки
         document.addEventListener('DOMContentLoaded', function () {
@@ -321,31 +324,38 @@ function selectQuestion(index) {
 
         // Закриття вікна налаштувань
         document.getElementById('close_settings').addEventListener('click', function () {
-            console.log(document.querySelectorAll('.question_button'))
-            if (document.querySelectorAll('.question_button').length){
-                document.getElementById('settings_modal').style.display = 'none';
-                document.querySelector('.question_form').style.display = 'block';
-                document.getElementById('save-form').style.display = 'block';
+            if (saveSettings()){
+                if (document.querySelectorAll('.question_button').length){
+                    document.getElementById('settings_modal').style.display = 'none';
+                    document.querySelector('.question_form').style.display = 'block';
+                    document.getElementById('save-form').style.display = 'block';
 
+                }
             }
         });
         
 
         // Збереження налаштувань
-        document.getElementById('settings_form').addEventListener('submit', function (event) {
-            event.preventDefault();
+        function saveSettings() {
             const subject = document.getElementById('subject').value.trim();
             const className = document.getElementById('class_name').value.trim();
             const testName = document.getElementById('test_name').value.trim();
 
             if (!subject || !className || !testName) {
                 alert('Будь ласка, заповніть усі поля!');
-                return;
+                return false;
             }
 
             localStorage.setItem('test_subject', subject);
             localStorage.setItem('test_class_name', className);
             localStorage.setItem('test_name', testName);
             document.getElementById('close_settings').click();
-        });
+            return true;
+        }
+    
+
+    document.getElementById('settings_form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        saveSettings();
+    });
 

@@ -47,8 +47,8 @@
 
 body.dark {
     --bg-create: #7e7f80;
-    --bg-body: #121827;
-    --bg-content: #18203c;
+    --bg-body: #23242a;
+    --bg-content: #23242a;
     --bg-list: #222f54;
     --bg-list-questions: #2d3a6a;
     --bg-question-form: #1e2a53;
@@ -203,7 +203,7 @@ body {
     font-weight: 600;
 }
 
-.list_header button {
+#open_settings, .list_header button{
     padding: 10px 20px;
     background-color: var(--bg-header-btn);
     color: var(--color-header-btn);
@@ -213,7 +213,7 @@ body {
     cursor: pointer;
 }
 
-.list_header button:hover {
+#open_settings:hover, .list_header button:hover {
     background-color: var(--bg-header-btn-hover);
 }
 
