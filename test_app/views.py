@@ -79,12 +79,13 @@ def test_result(test_id):
             correct += 1
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
-        if user.complete_tests:
-            ids = user.complete_tests.split()
-            if str(test.id) not in ids:
-                user.complete_tests += f" {test.id}"
-        else:
-            user.complete_tests = str(test.id)
+        if not (test.id in user.complete_tests):
+            if user.complete_tests:
+                ids = user.complete_tests.split()
+                if str(test.id) not in ids:
+                    user.complete_tests += f" {test.id}"
+            else:
+                user.complete_tests = str(test.id)
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
 

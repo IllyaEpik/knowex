@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Test page {% endblock %}
+{% block title %} Сторінка тесту {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test.css') }}">
@@ -12,11 +12,11 @@
         {% for test in tests %}
                 <h1 class="test-title">{{ test.name }}</h1>
                 <ul class="test-details">
-                    <!-- <li><b>Автор:</b> {{ test.user }}</li> -->
+                    <li><b>Автор:</b> {{ test.user.nickname }}</li>
                     <li><b>Предмет:</b> {{ test.subject }}</li>
                     <li><b>Клас:</b> {{ test.class_name }}</li>
-                    <!-- <li><b>Кількість питань:</b> {{ test.count }}</li> -->
-                    <!-- <li><b>Опис:</b> {{ test.description }}</li> -->
+                    <!-- <li><b>Кількість питань:</b> {{ test.count }}</li>
+                    <li><b>Опис:</b> {{ test.description }}</li> -->
                 </ul>
                 {% set first_qid = test.questions.split()[0] %}
                 <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>

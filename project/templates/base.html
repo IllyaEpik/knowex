@@ -18,15 +18,15 @@
         <button id="theme_change" class="theme_change"></button>
         <div class="menu_item" id="main">
             <img src="{{ url_for('static', filename='new_icons/main.png') }}" alt="Main" class="main_photo">
-            <a href="/" class="main">Main</a>
+            <a href="/" class="main">Головна</a>
         </div>
         <div class="menu_item" id="create">
             <img src="{{ url_for('static', filename='new_icons/report.png') }}" alt="Report" class="report_photo">
-            <a href="/create" class="create">Create</a>
+            <a href="/create" class="create">Створити</a>
         </div>
         <div class="menu_item" id="report">
             <img src="{{ url_for('static', filename='new_icons/create.png') }}" alt="Create" class="create_photo">
-            <a href="/report" class="report">Report</a>
+            <a href="/report" class="report">Звіти</a>
         </div>
     </div>
     <div class="top_panel">
@@ -42,12 +42,12 @@
                 <button id="upload"></button>
                 <h1 class="nickname_profile">{{ nickname }}</h1>
                 <h1 class="email_profile">email: {{ email }}</h1>
-                <h1 class="password_profile">password: {{ password }}</h1>
-                <a href="/logout" id="logout" class="logout">Logout</a>
+                <h1 class="password_profile">Пароль: {{ password }}</h1>
+                <a href="/logout" id="logout" class="logout">Вийти</a>
             </div>
         {% endif %}
         {% if is_authenticated == False %}
-            <a href="/user" class="login_page">login</a>
+            <a href="/user" class="login_page">Увійти</a>
         {% endif %}
         <a class="profile"></a>
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>

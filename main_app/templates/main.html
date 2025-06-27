@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Main page {% endblock %}
+{% block title %} Головна Сторінка {% endblock %}
 
 {% block head %} 
 <link rel="stylesheet" href="{{ url_for('main.static', filename='css/main.css') }}">
@@ -14,8 +14,8 @@
     </div>
     {% if is_authenticated == False %}
         <div class="login">
-            <p>Бажаете почати?</p>
-            <a href="/user" class="to_login">login</a>
+            <p>Бажаєте почати?</p>
+            <a href="/user" class="to_login">Увійти</a>
         </div>
     {% endif %}
     
