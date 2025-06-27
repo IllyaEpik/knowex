@@ -27,12 +27,14 @@ def create_test():
         DATABASE.session.add(question_object)
         DATABASE.session.commit()
         all_questions += f"{question_object.id} "
+    description = request.form.get('description')
+    print(description)
     test = Test(
         subject = request.form.get('subject'),
         class_name = request.form.get('class_name'),
         questions = all_questions,
         name = request.form.get('name'),
-        description = request.form.get('description'),
+        description = description,
         user = flask_login.current_user.id,
     )
     DATABASE.session.add(test)

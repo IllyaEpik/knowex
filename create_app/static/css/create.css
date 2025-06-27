@@ -16,6 +16,7 @@
     --bg-scrollbar-track: #E0F7FF;
     --bg-message: #fff;
 
+    --bg-container: #ffffff;
     --color-main: #004C99;
     --color-title: #004C99;
     --color-header-btn: #fff;
@@ -63,6 +64,7 @@ body.dark {
     --bg-scrollbar-track: #222f54;
     --bg-message: #1e293b;
 
+    --bg-container: #181818;
     --color-main: #93c5fd;
     --color-title: #93c5fd;
     --color-header-btn: #e0e7ff;
@@ -156,6 +158,7 @@ body {
     align-items: center;
     width: 100%;
     padding: 20px;
+    background-color: var(--bg-container);
 }
 
 .create_container h1 {
@@ -480,6 +483,7 @@ input[type="file"] {
     height: 40px;
 }
 
+
 #settings_form textarea {
     width: 100%;
     min-height: 70px;
@@ -534,4 +538,41 @@ input[type="file"] {
 #settings_form {
     scrollbar-width: thin;
     scrollbar-color: var(--bg-scrollbar-thumb) var(--bg-scrollbar-track);
+}
+
+#open_settings {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 10px;
+}
+#open_settings:hover,
+#open_settings:focus {
+    background-color: var(--bg-btn-hover);
+    color: var(--color-btn);
+    outline: none;
+}
+body.dark #open_settings {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+}
+body.dark #open_settings:hover,
+body.dark #open_settings:focus {
+    background-color: var(--bg-btn-hover);
+    color: var(--color-btn);
+    outline: none;
+}
+body.dark #settings_form input[type="file"]::before {
+    background: var(--bg-btn);
+    color: var(--color-btn);
+}
+body.dark #settings_form input[type="file"]:hover::before {
+    background: var(--bg-btn-hover);
+    color: var(--color-btn);
 }

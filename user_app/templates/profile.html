@@ -1,33 +1,89 @@
-<!-- {% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %} User page {% endblock %}
 
 {% block head %} 
-<link rel="stylesheet" href="{{ url_for('user.static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}">
+<script defer src="{{ url_for('profile.static', filename = '/js/profile.js') }}"></script>
 {% endblock %}
 
 {% block content %} 
-<div class="top_container">
-    <img src="{{ url_for('user.static', filename='images/user_photo.png') }}" alt="">
-    <div>
-        <h1 class="name_user">{{ nickname }}</h1> 
+<div class="profile_user_block">
+    <div class="profile_fields">
+        <div class="user_info">
+            <div class="field_label">Nickname:</div>
+            <div class="field_value">{{ user.nickname }}</div>
+        </div>
+        <div class="user_info">
+            <div class="field_label">E-mail:</div>
+            <div class="field_value">{{ user.email }}</div>
+        </div>
+        <div class="user_info">
+            <div class="field_label">Password:</div>
+            <div class="field_value">{{ user.password }}</div>
+        </div>
+        <div class="user_info">
+            <div class="field_label">Is mentor:</div>
+            <div class="field_value">{{ user.is_mentor }}</div>
+        </div>
+        {% if list_created_tests %}
+        <div class="tests_section">
+            <h2>Створені тести: {{ count_created_tests }}</h2>
+            <div class="carousel_wrapper">
+                <button class="carousel_btn left" onclick="scrollCarousel(this, -1)">&lt;</button>
+                <div class="carousel_container">
+                    <div class="container_tests">
+                        {% for tid in list_created_tests %}
+                            {% set test = Test.query.get(tid) %}
+                            {% if test %}
+                            <div class="container_test">
+                                <div class="test_name">
+                                    <h3>{{ test.name }}</h3>
+                                </div>
+                                <div class="test_description">
+                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                                </div>
+                                <div class="test_link">
+                                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="carousel_btn right" onclick="scrollCarousel(this, 1)">&gt;</button>
+            </div>
+        </div>
+        {% endif %}
+        {% if list_completed_tests %}
+        <div class="tests_section">
+            <h2>Пройдені тести: {{ count_completed_tests }}</h2>
+            <div class="carousel_wrapper">
+                <button class="carousel_btn left" onclick="scrollCarousel(this, -1)">&lt;</button>
+                <div class="carousel_container">
+                    <div class="container_tests">
+                        {% for tid in list_completed_tests %}
+                            {% set test = Test.query.get(tid) %}
+                            {% if test %}
+                            <div class="container_test">
+                                <div class="test_name">
+                                    <h3>{{ test.name }}</h3>
+                                </div>
+                                <div class="test_description">
+                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                                </div>
+                                <div class="test_link">
+                                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="carousel_btn right" onclick="scrollCarousel(this, 1)">&gt;</button>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
-
-<div class="profile_page">
-    <div class="user_info">
-        <h1 class="password">password: <span>{{ password }}</span></h1>
-        <button id="hide" value=""></button>
-    </div>
-    <div class="user_info">
-        <h1 class="email">E-mail: <span>{{ email }}</span></h1>
-        <button id="hide"></button>
-    </div>
-    <div class="user_info">
-        <button id="change_password">change_password</button>
-    </div>
-</div>
-
-<script defer src="{{ url_for('user.static', filename = '/js/profile.js') }}"></script>
-
-{% endblock %} -->
+{% endblock %}

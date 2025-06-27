@@ -5,7 +5,6 @@
     {% block head %}{% endblock %}
     <title>Knowex</title>
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/knowex_icon.png') }}">
 </head>
@@ -16,9 +15,13 @@
             <h1 class="name">Knowex</h1>
         </div>
         <button id="theme_change" class="theme_change"></button>
+        <!-- <div class="menu_item" id="main">
+            <img src="{{ url_for('static', filename='new_icons/main.png') }}" alt="Main" class="main_photo">
+            <a href="/" class="main">головна</a>
+        </div> -->
         <div class="menu_item" id="main">
             <img src="{{ url_for('static', filename='new_icons/main.png') }}" alt="Main" class="main_photo">
-            <a href="/" class="main">Головна</a>
+            <a href="/profile" class="main">Кабінет</a>
         </div>
         <div class="menu_item" id="create">
             <img src="{{ url_for('static', filename='new_icons/report.png') }}" alt="Report" class="report_photo">
@@ -26,7 +29,7 @@
         </div>
         <div class="menu_item" id="report">
             <img src="{{ url_for('static', filename='new_icons/create.png') }}" alt="Create" class="create_photo">
-            <a href="/report" class="report">Звіти</a>
+            <a href="/report" class="report">Тести</a>
         </div>
     </div>
     <div class="top_panel">
@@ -37,14 +40,6 @@
         {% if is_authenticated == True %}
             <img class="profile_icon" src="{{ url_for('static', filename='images/user_icons/profile.png') }}" alt="">
             <button class="nickname">{{ nickname }}</button>
-            <div class = "profile_info">
-                <img class="profile_ico" src="{{ url_for('static', filename='images/user_icons/profile.png') }}" alt="">
-                <button id="upload"></button>
-                <h1 class="nickname_profile">{{ nickname }}</h1>
-                <h1 class="email_profile">email: {{ email }}</h1>
-                <h1 class="password_profile">Пароль: {{ password }}</h1>
-                <a href="/logout" id="logout" class="logout">Вийти</a>
-            </div>
         {% endif %}
         {% if is_authenticated == False %}
             <a href="/user" class="login_page">Увійти</a>
