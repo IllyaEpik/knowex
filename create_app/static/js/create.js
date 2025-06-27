@@ -111,10 +111,8 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     const className = localStorage.getItem('test_class_name') || '';
     const testName = localStorage.getItem('test_name') || '';
 
-    // 🛡️ Защита: если настройки не заданы, не отправляем
     if (!subject || !className || !testName) {
         alert('Будь ласка, заповніть налаштування тесту!');
-        document.getElementById('settings_modal').style.display = 'block';
         return;
     }
 
@@ -131,23 +129,12 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     Formdata.append('subject', subject)
     Formdata.append('class_name', className)
     Formdata.append('name', testName)
+    Formdata.append('description', document.getElementById('description').value || '')
     try {
         Formdata.append('image', document.querySelector('#image').files[0])
     } catch (error) {
         
     }
-    
-    // image
-    // hour = 9
-    // minute = 8
-    // 9:8
-    // 09:08
-    // {
-    //     data: JSON.stringify(listAllQuestions),
-    //     subject: subject,
-    //     class_name: className,
-    //     name: testName
-    // }
     $.ajax(
         '/create_test', {
         type: "POST",

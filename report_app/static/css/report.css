@@ -5,7 +5,7 @@
     --bg-filter: transparent;
     --bg-btn: #2876cf;
     --bg-btn-hover: #1595c7;
-    --bg-link: #4f8cff;
+    --bg-link: #5f97ff;
     --bg-link-hover: #2563eb;
     --color-main: #1b80d3;
     --color-title: #2d3a4b;
@@ -27,7 +27,7 @@ body.dark {
     --bg-filter: transparent;
     --bg-btn: #3a3a7d;
     --bg-btn-hover: #5a5aa5;
-    --bg-link: #4f8cff;
+    --bg-link: #4a5bbd;
     --bg-link-hover: #2563eb;
     --color-main: #6cb8ff;
     --color-title: #ffffff;
@@ -47,6 +47,24 @@ body.dark {
 body {
     background-color: var(--bg-body);
     color: var(--color-title);
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: var(--bg-btn) var(--bg-body);
+    scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background: var(--bg-body);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--bg-btn);
+    border-radius: 8px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-btn-hover);
 }
 
 #report {
@@ -65,7 +83,7 @@ body {
     margin: 10px;
     color: var(--color-main);
     font-size: 30px;
-    margin-top: 90px; 
+    margin-top: 170px; 
     position: relative;
 }
 
@@ -189,6 +207,13 @@ body {
 }
 .test_link a:hover {
     background: var(--bg-link-hover);
+}
+body.dark .test_link a {
+    background-color: var(--bg-link);
+}
+body.dark .test_link a:hover,
+body.dark .test_link a:focus {
+    background-color: var(--bg-link-hover);
 }
 
 select option {

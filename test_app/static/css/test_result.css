@@ -17,20 +17,31 @@ body.dark {
 }
 
 .result-container {
-    max-width: 500px;
-    margin: 40px auto;
+    max-width: 600px;
+    margin: 40px auto 24px auto;
     background: var(--bg-result);
     border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    padding: 32px 24px;
-    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 32px 28px 24px 28px;
+    color: var(--color-result-text);
+    font-size: 20px;
+    text-align: left;
+}
+
+body.dark .result-container {
+    background: var(--bg-result);
+    color: var(--color-result-text);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
 }
 
 .result-container h2 {
-    color: var(--color-result-title);
-    margin-bottom: 24px;
     font-size: 2rem;
-    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--color-result-title);
+}
+
+body.dark .result-container h2 {
+    color: var(--color-result-title);
 }
 
 .result-container p {
@@ -41,15 +52,76 @@ body.dark {
 
 .result-container a {
     display: inline-block;
+    margin-top: 24px;
     padding: 10px 28px;
     background: var(--bg-result-btn);
     color: var(--color-result-btn);
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 18px;
     transition: background 0.2s;
 }
 
 .result-container a:hover {
     background: var(--bg-result-btn-hover);
+}
+
+body.dark .result-container a {
+    background: var(--bg-result-btn);
+    color: var(--color-result-btn);
+}
+
+body.dark .result-container a:hover {
+    background: var(--bg-result-btn-hover);
+    color: #fff;
+}
+
+.questions-result-list {
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    background: var(--bg-result);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 24px 22px 18px 22px;
+    color: var(--color-result-text);
+    font-size: 18px;
+}
+
+body.dark .questions-result-list {
+    background: var(--bg-result);
+    color: var(--color-result-text);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+
+.questions-result-list h3 {
+    margin-bottom: 18px;
+    font-size: 1.3rem;
+    color: var(--color-result-title);
+}
+
+body.dark .questions-result-list h3 {
+    color: var(--color-result-title);
+}
+
+.questions-result-list ol {
+    padding-left: 22px;
+}
+
+.questions-result-list li {
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+body.dark .questions-result-list li {
+    border-bottom: 1px solid #2d3a6a;
+}
+
+.questions-result-list b {
+    font-weight: 600;
+}
+
+.questions-result-list span {
+    font-weight: 500;
 }

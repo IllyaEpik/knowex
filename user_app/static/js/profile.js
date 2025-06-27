@@ -22,3 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+window.scrollCarousel = function(btn, dir) {
+    const wrapper = btn.closest('.carousel_wrapper');
+    if (!wrapper) return;
+    // ищем .carousel_container и .container_tests
+    const carouselContainer = wrapper.querySelector('.carousel_container');
+    if (!carouselContainer) return;
+    const tests = carouselContainer.querySelector('.container_tests');
+    if (!tests) return;
+    const testCard = tests.querySelector('.container_test');
+    if (!testCard) return;
+    const cardWidth = testCard.offsetWidth + 24; // 24px gap
+
+    // Важно: скроллим carouselContainer, а не tests!
+    carouselContainer.scrollBy({ left: dir * cardWidth * 2, behavior: 'smooth' });
+};

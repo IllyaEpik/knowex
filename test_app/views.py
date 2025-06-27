@@ -69,6 +69,7 @@ def test_result(test_id):
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
     correct = 0
+    questions = []
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
@@ -76,6 +77,12 @@ def test_result(test_id):
         user_answer = next((item["answer"] for item in test_answers if item["question_id"] == qid), None)
         if user_answer and user_answer == question.correct_answer:
             correct += 1
+        
+        questions.append({
+            "text": question.text,
+            "correct_answer": question.correct_answer,
+            "user_answer": user_answer
+        })
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
         if user.complete_tests:
@@ -91,5 +98,6 @@ def test_result(test_id):
         "test": test,
         "total_questions": total_questions,
         "answers": test_answers,
-        "correct": correct
+        "correct": correct,
+        "questions": questions
     }

@@ -4,6 +4,7 @@ from project.settings import DATABASE
 from project.config_page import config_page
 from .confirm_email import send_code
 from os.path import abspath, join
+from create_app.models import Test  # Добавить импорт Test
 
 
 
@@ -14,8 +15,8 @@ def render_user():
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
             if not User.query.filter_by(nickname=flask.request.form['nickname']).all():
-                if 'Неправильный логін' not in flask.session['messages']:
-                    flask.session['messages'].append('Неправильный логін')
+                if 'Неправильний логін' not in flask.session['messages']:
+                    flask.session['messages'].append('Неправильний логін')
             else:
                 for user in User.query.filter_by(nickname=flask.request.form['nickname']):
                     if user.password == flask.request.form['password']:
@@ -46,34 +47,21 @@ def render_user():
                 print(error)
     return flask.render_template("user.html", error = error)
 
-#     if flask_login.current_user.is_authenticated:
-#         return flask.redirect('/')
-
-# def render_profile_page():
-#     return flask.render_template("user.html", nickname=flask_login.current_user.nickname)            
-     
-
-# def render_profile_page():
-#     password = flask_login.current_user.password
-#     email = flask_login.current_user.email
-#     # nickname = flask_login.current_user.nickname
-#     return flask.render_template("profile.html", password=password, email=email)
-# # =======
-#                     flask.session['messages'].append(f'Помилка при додавані користувача: {error}')
-#             else:
-#                 flask.session['messages'].append('Паролі не співпадають')
-#     print(flask.session['messages'])
-#     return flask.render_template("user.html")                 
-  
-
-
-# def render_profile_page():
-#     return flask.render_template("profile.html", password=password, email=email, nickname=nickname, profile_icon=profile_icon, is_authenticated=flask_login.current_user.is_authenticated)
-
-    #                 return flask.redirect('/')
-    #         except Exception as error:
-    #             print(error)
-    # return {}
+@config_page('profile.html')
+def render_profile_page():
+    user = User.query.filter_by(nickname=flask_login.current_user.nickname).first()
+    list_created_tests = user.create_tests.split(' ') if user.create_tests else []
+    list_completed_tests = user.complete_tests.split(' ') if user.complete_tests else []
+    count_created_tests = len(list_created_tests)
+    count_completed_tests = len(list_completed_tests)
+    return {
+        "user": user,
+        "list_created_tests": list_created_tests,
+        "list_completed_tests": list_completed_tests,
+        "count_created_tests": count_created_tests,
+        "count_completed_tests": count_completed_tests,
+        "Test": Test
+    }
 
 def render_icon():
     if flask.request.method == 'POST':
