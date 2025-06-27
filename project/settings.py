@@ -10,3 +10,4 @@ project = flask.Flask(
 project.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
 DATABASE  = flask_sqlalchemy.SQLAlchemy(app=project)
 MIGRATE = flask_migrate.Migrate(app=project , db= DATABASE)
+project.jinja_env.add_extension('jinja2.ext.do')

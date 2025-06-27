@@ -1,13 +1,76 @@
-.user_page{
-    background-color: #ACDDFF;
+:root {
+    --bg-user-page: #ACDDFF;
+    --bg-input: #fff;
+    --bg-button: #007BFF;
+    --bg-button-hover: #005bbd88;
+    --bg-reglog-select: #FC5B46;
+    --bg-line: #000000;
+    --color-main: #000000;
+    --color-accent: #FC5B46;
+    --color-button: #fff;
+    --color-button-alt: #000000;
+    --color-placeholder: #888;
+}
+
+body.dark {
+    --bg-user-page: #024b80;
+    --bg-input: #181f2a;
+    --bg-button: #056ad6;
+    --bg-button-hover: #416bdfea;
+    --bg-reglog-select: #b93321;
+    --bg-line: #ffffff;
+    --color-main: #dbeafe;
+    --color-accent: #b93321;
+    --color-button: #dbeafe;
+    --color-button-alt: #fff;
+    --color-placeholder: #aaa;
+}
+
+.messages {
+    position: fixed;
+    top: 115px;
+    right: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px; 
+    z-index: 1000;
+}
+
+.message {
+    background-color: var(--bg-input);
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    opacity: 1;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.message.hide {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.user_page {
+    background-color: var(--bg-user-page);
     width: 750px;
     height: 620px;
     position: fixed;
     margin-top: 60px;
     border-radius: 10px;
+    padding: 10px;
 }
 
-.form{
+.form {
     padding: 20px;
     width: 750px;
     height: 620px;
@@ -15,15 +78,15 @@
     z-index: 1; 
 }
 
-.name_knowex{
+.name_knowex {
     position: relative;
     font-size: 48px;
-    color: #000000;
+    color: var(--color-main);
     margin-bottom: 20px;
     text-align: center;
 }
 
-.container{
+.container {
     position: absolute;
     width: 750px;
     height: 620px;
@@ -36,7 +99,7 @@
     pointer-events: none;
 }
 
-.input{
+.input {
     display: flex;
     align-items: center;
     pointer-events: all;
@@ -65,9 +128,15 @@
     font-size: 16px;
     border: 1px solid #ccc; 
     border-radius: 5px; 
+    background: var(--bg-input);
+    color: var(--color-main);
 }
 
-.profile_photo_bt{
+.input input::placeholder {
+    color: var(--color-placeholder);
+}
+
+.profile_photo_bt {
     width: 45px; 
     height: 45px;  
     position: fixed;
@@ -76,7 +145,7 @@
     background-position: center;
 }
 
-.reg_log{
+.reg_log {
     display: flex; 
     justify-content: center; 
     gap: 100px; 
@@ -84,7 +153,7 @@
     z-index: 5;
 }
 
-button{
+button {
     pointer-events: all;
     cursor: pointer;
 }
@@ -92,43 +161,41 @@ button{
 button.log, button.reg {
     background: none; 
     border: none; 
-    color: #000000; 
+    color: var(--color-main); 
     font-size: 32px; 
     font-family: inherit; 
     cursor: pointer; 
     padding: 0; 
     text-decoration: none;
-    
 }
 
 button.log:hover, button.reg:hover { 
-    color: #005bbd88; 
+    color: var(--bg-button-hover); 
     pointer-events: all;
 }
 
-.line_reg, .line_log{
+.line_reg, .line_log {
     position: relative;
     width: 200px;
     height: 50px;
-    border-bottom: 3px solid #000000;
+    border-bottom: 3px solid var(--bg-line);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.select{
+.select {
     position: relative;
     width: 200px;
     height: 50px;
-    border-bottom: 3px solid #FC5B46;
+    border-bottom: 3px solid var(--bg-reglog-select);
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
-.select button{
-    color: #FC5B46;
+.select button {
+    color: var(--bg-reglog-select);
 }
 
 .log_nickname,
@@ -146,6 +213,8 @@ button.log:hover, button.reg:hover {
     border: 1px solid #ccc; 
     border-radius: 5px; 
     top: 40px;
+    background: var(--bg-input);
+    color: var(--color-main);
 }
 
 .reg_save, .log_save {
@@ -153,8 +222,8 @@ button.log:hover, button.reg:hover {
     width: 60%; 
     height: 45px; 
     margin-top: 20px; 
-    background-color: #007BFF; 
-    color: #fff; 
+    background-color: var(--bg-button); 
+    color: var(--color-button); 
     font-size: 18px; 
     font-family: inherit; 
     border: none; 
@@ -164,92 +233,54 @@ button.log:hover, button.reg:hover {
     top: 40px;
 }
 
-/* For dark */
-
-body.dark .user_page{
-    background-color: #05263d;
-    width: 750px;
-    height: 620px;
-    position: fixed;
-    margin-top: 60px;
-    border-radius: 10px;
+.reg_save:hover, .log_save:hover {
+    background-color: var(--bg-button-hover);
 }
 
-body.dark .name_knowex{
-    position: relative;
-    font-size: 48px;
-    color: #ffffff;
-    margin-bottom: 20px;
-    text-align: center;
+body.dark #message {
+    color: #dbeafe;
+    background-color: #005F99;
+}
+
+body.dark .user_page {
+    background-color: var(--bg-user-page);
+}
+
+body.dark .name_knowex {
+    color: var(--color-main);
 }
 
 body.dark .reg_save, body.dark .log_save {
-    position: relative;
-    width: 60%; 
-    height: 45px; 
-    margin-top: 20px; 
-    background-color: #0f4783; 
-    color: #fff; 
-    font-size: 18px; 
-    font-family: inherit; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-    top: 40px;
+    background-color: var(--bg-button);
+    color: var(--color-button);
 }
 
 body.dark .input input {
-    width: 50%; 
-    height: 40px; 
-    padding: 10px; 
-    padding-left: 30px;
-    font-size: 16px;
+    background: var(--bg-input);
+    color: var(--color-main);
     border: 1px solid #081933; 
-    border-radius: 5px; 
 }
 
 body.dark button.log, body.dark button.reg {
-    background: none; 
-    border: none; 
-    color: #ffffff; 
-    font-size: 32px; 
-    font-family: inherit; 
-    cursor: pointer; 
-    padding: 0; 
-    text-decoration: none;
+    color: var(--color-main);
 }
 
-body.dark .line_reg, body.dark .line_log{
-    position: relative;
-    width: 200px;
-    height: 50px;
-    border-bottom: 3px solid #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body.dark .line_reg, body.dark .line_log {
+    border-bottom: 3px solid var(--bg-line);
 }
 
-body.dark .select{
-    position: relative;
-    width: 200px;
-    height: 50px;
-    border-bottom: 3px solid #b93321;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+body.dark .select {
+    border-bottom: 3px solid var(--bg-reglog-select);
 }
 
-body.dark .select button{
-    color: #b93321;
+body.dark .select button {
+    color: var(--bg-reglog-select);
 }
 
-body.dark .select button:hover{
-    color: #b93321;
+body.dark .select button:hover {
+    color: var(--bg-reglog-select);
 }
 
 body.dark button.log:hover, body.dark button.reg:hover { 
-    color: #416bdfea; 
-    pointer-events: all;
+    color: var(--bg-button-hover); 
 }

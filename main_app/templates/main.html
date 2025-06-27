@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Main page {% endblock %}
+{% block title %} Головна Сторінка {% endblock %}
 
 {% block head %} 
 <link rel="stylesheet" href="{{ url_for('main.static', filename='css/main.css') }}">
@@ -8,6 +8,31 @@
 
 
 {% block content %} 
-    <h1 class="{{theme}}">hi</h1>
+    <div class="description">
+        <h1>Ласкаво просимо у Knovex</h1>
+        <p>Knowex — це освітня платформа для школярів, студентів та всіх охочих навчатися. Тут ви знайдете уроки, тести, модулі та систему прогресу, щоб зробити навчання простим і ефективним. Обирайте предмет, проходьте тести, вдосконалюйте знання та слідкуйте за своїми досягненнями!</p>
+    </div>
+    {% if is_authenticated == False %}
+        <div class="login">
+            <p>Бажаєте почати?</p>
+            <a href="/user" class="to_login">Увійти</a>
+        </div>
+    {% endif %}
+    
+    <div class="container_tests">
+        {% for test in tests %}
+            <div class="container_test">
+                <div class="test_name">
+                    <h2>{{ test.name }}</h2>
+                </div>
+                <div class="test_description">
+                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                </div>
+                <div class="test_link">
+                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}

@@ -18,3 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+function goToTest(event) {
+    event.preventDefault();
+    const id = document.getElementById('test_id_input').value.trim();
+    if (id) {
+        fetch(`/test/${id}`, { method: 'HEAD' })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = `/test/${id}`;
+                } else {
+                    alert("Test not found. Please check the ID and try again.");
+                }
+            })
+            .catch(() => {
+            });
+    }
+    return false;
+}
