@@ -86,7 +86,8 @@ def test_result(test_id):
         })
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
-        if not (test.id in user.complete_tests):
+        print(f"User {user.id} completed test {user.complete_tests}")
+        if not (str(test.id) in user.complete_tests):
             if user.complete_tests:
                 ids = user.complete_tests.split()
                 if str(test.id) not in ids:

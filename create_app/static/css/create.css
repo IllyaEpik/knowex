@@ -48,15 +48,19 @@
 
 body.dark {
     --bg-create: #7e7f80;
+    /*  */
+    --bg-description: #005c9e;
+    --bg-login: #005c9e;
+/*  */
     --bg-body: #23242a;
     --bg-content: #23242a;
-    --bg-list: #222f54;
-    --bg-list-questions: #2d3a6a;
+    --bg-list: #23242a;
+    --bg-list-questions: #1c1c22;
     --bg-question-form: #1e2a53;
     --bg-options: #18244f;
-    --bg-btn: #4a5bbd;
-    --bg-btn-hover: #738ef6;
-    --bg-btn-choosen: #007ACC;
+    --bg-btn: #474e7a;
+    --bg-btn-hover: #2b3969;
+    --bg-btn-choosen: rgb(82, 72, 124);
     --bg-btn-choosen-hover: #0064a7;
     --bg-header-btn: #4a5bbd;
     --bg-header-btn-hover: #738ef6;
@@ -65,20 +69,20 @@ body.dark {
     --bg-message: #1e293b;
 
     --bg-container: #181818;
-    --color-main: #93c5fd;
-    --color-title: #93c5fd;
-    --color-header-btn: #e0e7ff;
-    --color-btn: #e0e7ff;
+    --color-main: #7b91aa;
+    --color-title: #7b91aa;
+    --color-header-btn: #7b91aa;
+    --color-btn: #eaf0f7;
     --color-btn-choosen: #121827;
-    --color-btn-choosen-hover: #e0e7ff;
+    --color-btn-choosen-hover: #7b91aa;
     --color-list-header: #a3bffa;
-    --color-list-btn: #e0e7ff;
+    --color-list-btn: #7b91aa;
     --color-list-btn-hover: #e0e7ff;
     --color-list-btn-choosen: #121827;
     --color-list-btn-choosen-hover: #e0e7ff;
     --color-question-form: #a5b4fc;
-    --color-label: #aabbff;
-    --color-input: #d0dbff;
+    --color-label: #7b91aa;
+    --color-input: #7b91aa;
     --color-input-placeholder: #8b9dd9;
     --color-message: #a5b4fc;
 
