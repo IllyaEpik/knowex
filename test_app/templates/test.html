@@ -9,18 +9,17 @@
 {% block content %}
 <div class="test-bg">
     <div class="test-info-card">
-        {% for test in tests %}
-                <h1 class="test-title">{{ test.name }}</h1>
-                <ul class="test-details">
-                    <li><b>Автор:</b> {{ test.user.nickname }}</li>
-                    <li><b>Предмет:</b> {{ test.subject }}</li>
-                    <li><b>Клас:</b> {{ test.class_name }}</li>
-                    <!-- <li><b>Кількість питань:</b> {{ test.count }}</li> -->
-                    <li><b>Опис:</b> {{ test.description }}</li>
-                </ul>
-                {% set first_qid = test.questions.split()[0] %}
-                <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>
-        {% endfor %}
+            <h1 class="test-title">{{ test.name }}</h1>
+            <ul class="test-details">
+                <li><b>Автор:</b> {{ name }}</li>
+                <li><b>Предмет:</b> {{ test.subject }}</li>
+                <li><b>Клас:</b> {{ test.class_name }}</li>
+                <li><b>Дата створення: {{ name }}</b></li>
+                <li><b>Кількість питань:</b> {{ total_questions }}</li>
+                <li><b>Опис:</b> {{ test.description }}</li>
+            </ul>
+            {% set first_qid = test.questions.split()[0] %}
+            <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>
     </div>
 </div>
 {% endblock %}

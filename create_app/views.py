@@ -6,7 +6,7 @@ from .models import Questions, Test
 from project.settings import DATABASE
 from project.config_page import config_page
 from os.path import abspath, join
-
+import time
 
 @config_page("create.html")
 def render_create():
@@ -28,14 +28,14 @@ def create_test():
         DATABASE.session.commit()
         all_questions += f"{question_object.id} "
     description = request.form.get('description')
-    print(description)
     test = Test(
         subject = request.form.get('subject'),
         class_name = request.form.get('class_name'),
         questions = all_questions,
         name = request.form.get('name'),
         description = description,
-        user = flask_login.current_user.id,
+        # user = flask_login.current_user.id,
+        date = time.time()
     )
     DATABASE.session.add(test)
     DATABASE.session.commit()
