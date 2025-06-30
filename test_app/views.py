@@ -1,17 +1,28 @@
 import flask, random
 from project.config_page import config_page
 from create_app.models import Test, Questions
+from user_app.models import User
 import json
 import random
 import flask_login 
 from project.settings import DATABASE
+import time
 
+@config_page("test.html")
 def render_test(test_id: int):
-    tests = Test.query.filter_by(id=test_id).all()
-    if not tests:
+    test = Test.query.filter_by(id=test_id).first()
+    if not test:
         return flask.abort(404)
+    user = User.query.filter(User.create_tests.contains(str(test_id))).first()
+    user = user.nickname if user else "Unknown"
+    question_ids = [int(qid) for qid in test.questions.split()]
+    total_questions = len(question_ids)
 
-    return flask.render_template('test.html', tests=tests)
+    return {
+        "test": test,
+        "name": user,
+        "total_questions": total_questions
+    }
 
 @config_page("test_question.html")
 def test_question(test_id, question_id):
@@ -66,6 +77,8 @@ def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
+    time_complete = time.localtime(test.date)
+    time_complete = time.strftime('%y,%m,%d,%H:%M', time_complete)
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
@@ -100,6 +113,7 @@ def test_result(test_id):
     return {
         "test": test,
         "total_questions": total_questions,
+        "time": time_complete,
         "answers": test_answers,
         "correct": correct,
         "questions": questions
