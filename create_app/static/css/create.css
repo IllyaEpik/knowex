@@ -75,16 +75,16 @@ body.dark {
     --color-btn: #eaf0f7;
     --color-btn-choosen: #121827;
     --color-btn-choosen-hover: #7b91aa;
-    --color-list-header: #a3bffa;
+    --color-list-header: #566077;
     --color-list-btn: #7b91aa;
     --color-list-btn-hover: #e0e7ff;
     --color-list-btn-choosen: #121827;
     --color-list-btn-choosen-hover: #e0e7ff;
-    --color-question-form: #a5b4fc;
+    --color-question-form: #5c6383;
     --color-label: #7b91aa;
     --color-input: #7b91aa;
-    --color-input-placeholder: #8b9dd9;
-    --color-message: #a5b4fc;
+    --color-input-placeholder: #7983a5;
+    --color-message: #7982aa;
 
     --border-radius: 15px;
     --border-radius-create: 10px;
