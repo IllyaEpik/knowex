@@ -20,7 +20,9 @@
         </div>
         <div class="user_info">
             <div class="field_label">Password:</div>
-            <div class="field_value">{{ user.password }}</div>
+                <div class="field_value">
+                    <span id="password-text" data-password="{{ user.password }}"></span> <button id="togglePassword" type="button" class="toggle-password">👁️</button>
+                </div> 
         </div>
         <div class="user_info">
             <div class="field_label">Is mentor:</div>

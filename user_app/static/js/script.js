@@ -83,10 +83,8 @@ if (modalForm && modalOk) {
     modalOk.addEventListener("click", function(e) {
         e.preventDefault();
 
-        // Очищаем старые скрытые поля
         modalForm.querySelectorAll('input[type="hidden"]').forEach(el => el.remove());
 
-        // Копируем значения из формы регистрации
         const regForm = document.getElementById("reg");
         ["nickname", "email", "password", "confirm_password"].forEach(name => {
             const input = regForm.querySelector(`[name="${name}"]`);
@@ -99,7 +97,6 @@ if (modalForm && modalOk) {
             }
         });
 
-        // confirm_code из модального input
         const codeInput = document.getElementById("modal-input");
         if (codeInput) {
             let hidden = modalForm.querySelector('input[name="confirm_code"]');

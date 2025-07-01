@@ -4,7 +4,7 @@ from project.settings import DATABASE
 from project.config_page import config_page
 from .confirm_email import send_code
 from os.path import abspath, join
-from create_app.models import Test  # Добавить импорт Test
+from create_app.models import Test 
 
 
 
@@ -58,8 +58,8 @@ def render_profile_page():
         "user": user,
         "list_created_tests": list_created_tests,
         "list_completed_tests": list_completed_tests,
-        "count_created_tests": count_created_tests,
-        "count_completed_tests": count_completed_tests,
+        "count_created_tests": count_created_tests -1,
+        "count_completed_tests": count_completed_tests -1,
         "Test": Test
     }
 
