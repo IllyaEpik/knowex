@@ -18,7 +18,10 @@ def render_test(test_id: int):
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     date = time.localtime(test.date)
+    date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
     date = time.strftime('%y,%m,%d,%H:%M', date)
+    # date = date_text
+    # print(date)
     return {
         "test": test,
         "name": user,
@@ -80,7 +83,9 @@ def test_result(test_id):
     if not test:
         return flask.abort(404)
     time_complete = time.localtime(test.date)
-    time_complete = time.strftime('%y,%m,%d,%H:%M', time_complete)
+    time_date = time.strftime('%d.%m.20%y', time_complete)
+    time_text = time.strftime('%H:%M', time_complete)
+    # time_complete = time.strftime('%y,%m,d,%H:%M', time_complete)
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
@@ -111,11 +116,15 @@ def test_result(test_id):
                 user.complete_tests = str(test.id)
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
-
+    # date = time_complete
+    # date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
+    # time_text = f"{date.tm_hour}:{date.tm_min}"
+    # time_text = time_complete
     return {
         "test": test,
         "total_questions": total_questions,
-        "time": time_complete,
+        "time_date": time_date,
+        'time_text':time_text,
         "answers": test_answers,
         "correct": correct,
         "questions": questions

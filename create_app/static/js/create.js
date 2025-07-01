@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initPositions();
 });
-
+function rightPrint(text){
+    alert(text)
+}
 let yQuestion = -60;
 let questionOrder = [];
 
@@ -56,7 +58,7 @@ document.getElementById("delete_question").addEventListener("click", function ()
     }
 
     if (!removed) {
-        alert("Список тестів порожній або жодне питання не вибрано!");
+       rightPrint("Список тестів порожній або жодне питання не вибрано!");
     } else {
         const questionForm = document.querySelector('.question_form');
         questionForm.reset();
@@ -95,7 +97,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         // correctAnswer
         // let correctAnswer = document.querySelector('#correctAnswer').value
         // if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
-        //     alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //    rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
         //     return;
         // }
 
@@ -113,7 +115,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     const testName = localStorage.getItem('test_name') || '';
 
     if (!subject || !className || !testName) {
-        alert('Будь ласка, заповніть налаштування тесту!');
+       rightPrint('Будь ласка, заповніть налаштування тесту!');
         return;
     }
 
@@ -144,10 +146,10 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         contentType: false,
         success: function () {
             localStorage.clear()
-            alert('Тест збережено!');
+            rightPrint('Тест збережено!');
         },
         error: function () {
-            alert('Помилка при збереженні!');
+            rightPrint('Помилка при збереженні!');
         }
     });
 });
@@ -246,7 +248,7 @@ function selectQuestion(index) {
             const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
             
         //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-        //         alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //         rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
         //         return;
         //     }
 
@@ -329,7 +331,7 @@ function selectQuestion(index) {
             const testName = document.getElementById('test_name').value.trim();
 
             if (!subject || !className || !testName) {
-                alert('Будь ласка, заповніть усі поля!');
+                rightPrint('Будь ласка, заповніть усі поля!');
                 return false;
             }
 

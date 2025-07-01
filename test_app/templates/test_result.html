@@ -9,7 +9,8 @@
 {% block content %}
 <div class="result-container">
     <h2>Результати тесту: {{ test.name }}</h2>
-    <p>Час завершення: {{ time }}</p>
+    <p>Дата завершення: {{ time_date }}</p>
+    <p>Час завершення: {{ time_text }}</p>
     <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p> 
     <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
 </div>

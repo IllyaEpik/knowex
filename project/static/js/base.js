@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", 
+function () {
     const messagesContainer = document.getElementById("messages");
     if (messagesContainer) {
         const messages = messagesContainer.querySelectorAll(".message");
@@ -39,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 5000 + index * 1000); 
         });
     }
-});
-
+}
+);
 function goToTest(event) {
     event.preventDefault();
     const id = document.getElementById('test_id_input').value.trim();
@@ -55,6 +56,6 @@ function goToTest(event) {
             })
             .catch(() => {
             });
+        }
+        return false;
     }
-    return false;
-}

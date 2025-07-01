@@ -205,12 +205,14 @@ body::-webkit-scrollbar-thumb:hover {
     font-weight: 500;
     transition: background 0.2s;
 }
+
 .test_link a:hover {
     background: var(--bg-link-hover);
 }
 body.dark .test_link a {
     background-color: var(--bg-link);
 }
+
 body.dark .test_link a:hover,
 body.dark .test_link a:focus {
     background-color: var(--bg-link-hover);
