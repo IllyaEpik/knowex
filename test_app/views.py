@@ -17,11 +17,13 @@ def render_test(test_id: int):
     user = user.nickname if user else "Unknown"
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
-
+    date = time.localtime(test.date)
+    date = time.strftime('%y,%m,%d,%H:%M', date)
     return {
         "test": test,
         "name": user,
-        "total_questions": total_questions
+        "total_questions": total_questions,
+        "date": date
     }
 
 @config_page("test_question.html")

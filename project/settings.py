@@ -1,11 +1,13 @@
-import flask, flask_sqlalchemy, flask_migrate, flask_login
+import flask, flask_sqlalchemy, flask_migrate, flask_login, flask_socketio
 import os
 
+from flask_socketio import SocketIO
 
 project = flask.Flask(
     import_name="project",
     template_folder="templates"
 )
+socketio = SocketIO(project)
 
 project.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
 DATABASE  = flask_sqlalchemy.SQLAlchemy(app=project)
