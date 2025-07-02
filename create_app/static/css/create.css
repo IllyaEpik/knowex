@@ -16,6 +16,7 @@
     --bg-scrollbar-track: #E0F7FF;
     --bg-message: #fff;
 
+    --bg-container: #ffffff;
     --color-main: #004C99;
     --color-title: #004C99;
     --color-header-btn: #fff;
@@ -47,15 +48,19 @@
 
 body.dark {
     --bg-create: #7e7f80;
+    /*  */
+    --bg-description: #005c9e;
+    --bg-login: #005c9e;
+/*  */
     --bg-body: #23242a;
     --bg-content: #23242a;
-    --bg-list: #222f54;
-    --bg-list-questions: #2d3a6a;
+    --bg-list: #23242a;
+    --bg-list-questions: #1c1c22;
     --bg-question-form: #1e2a53;
     --bg-options: #18244f;
-    --bg-btn: #4a5bbd;
-    --bg-btn-hover: #738ef6;
-    --bg-btn-choosen: #007ACC;
+    --bg-btn: #474e7a;
+    --bg-btn-hover: #2b3969;
+    --bg-btn-choosen: rgb(82, 72, 124);
     --bg-btn-choosen-hover: #0064a7;
     --bg-header-btn: #4a5bbd;
     --bg-header-btn-hover: #738ef6;
@@ -63,22 +68,23 @@ body.dark {
     --bg-scrollbar-track: #222f54;
     --bg-message: #1e293b;
 
-    --color-main: #93c5fd;
-    --color-title: #93c5fd;
-    --color-header-btn: #e0e7ff;
-    --color-btn: #e0e7ff;
+    --bg-container: #181818;
+    --color-main: #7b91aa;
+    --color-title: #7b91aa;
+    --color-header-btn: #7b91aa;
+    --color-btn: #eaf0f7;
     --color-btn-choosen: #121827;
-    --color-btn-choosen-hover: #e0e7ff;
-    --color-list-header: #a3bffa;
-    --color-list-btn: #e0e7ff;
+    --color-btn-choosen-hover: #7b91aa;
+    --color-list-header: #566077;
+    --color-list-btn: #7b91aa;
     --color-list-btn-hover: #e0e7ff;
     --color-list-btn-choosen: #121827;
     --color-list-btn-choosen-hover: #e0e7ff;
-    --color-question-form: #a5b4fc;
-    --color-label: #aabbff;
-    --color-input: #d0dbff;
-    --color-input-placeholder: #8b9dd9;
-    --color-message: #a5b4fc;
+    --color-question-form: #5c6383;
+    --color-label: #7b91aa;
+    --color-input: #7b91aa;
+    --color-input-placeholder: #7983a5;
+    --color-message: #7982aa;
 
     --border-radius: 15px;
     --border-radius-create: 10px;
@@ -156,6 +162,7 @@ body {
     align-items: center;
     width: 100%;
     padding: 20px;
+    background-color: var(--bg-container);
 }
 
 .create_container h1 {
@@ -426,7 +433,7 @@ input[type="file"] {
     width: 140px;
 }
 
-#message {
+.messages#messages {
     background-color: var(--bg-message);
     color: var(--color-message);
     border-radius: 15px;
@@ -479,6 +486,7 @@ input[type="file"] {
     width: 150px;
     height: 40px;
 }
+
 
 #settings_form textarea {
     width: 100%;
@@ -534,4 +542,41 @@ input[type="file"] {
 #settings_form {
     scrollbar-width: thin;
     scrollbar-color: var(--bg-scrollbar-thumb) var(--bg-scrollbar-track);
+}
+
+#open_settings {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 10px;
+}
+#open_settings:hover,
+#open_settings:focus {
+    background-color: var(--bg-btn-hover);
+    color: var(--color-btn);
+    outline: none;
+}
+body.dark #open_settings {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+}
+body.dark #open_settings:hover,
+body.dark #open_settings:focus {
+    background-color: var(--bg-btn-hover);
+    color: var(--color-btn);
+    outline: none;
+}
+body.dark #settings_form input[type="file"]::before {
+    background: var(--bg-btn);
+    color: var(--color-btn);
+}
+body.dark #settings_form input[type="file"]:hover::before {
+    background: var(--bg-btn-hover);
+    color: var(--color-btn);
 }

@@ -13,12 +13,13 @@ class Questions(DATABASE.Model):
 
 class Test(DATABASE.Model):
     id = DATABASE.Column(DATABASE.Integer, primary_key=True)
-    user = DATABASE.Column(DATABASE.Integer)
+    # user = DATABASE.Column(DATABASE.Integer)
     questions = DATABASE.Column(DATABASE.String(255))
     subject = DATABASE.Column(DATABASE.String(255))
     class_name = DATABASE.Column(DATABASE.String(255))
     name = DATABASE.Column(DATABASE.String(255))
     description = DATABASE.Column(DATABASE.String(255))
     count = DATABASE.Column(DATABASE.Integer)
+    date = DATABASE.Column(DATABASE.Integer)
     def __repr__(self):
         return self.name

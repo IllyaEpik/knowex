@@ -36,19 +36,19 @@
         <div class="container">
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
-                <input type="text" name="Ім’я користувача" id="nickname" placeholder="nickname" class="reg_nickname">
+                <input type="text" name="nickname" id="nickname" placeholder="Ім’я користувача" class="reg_nickname">
             </div>
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/name_img.png') }}" alt="">
-                <input type="email" name="Ел. пошта" id="email" placeholder="email" class="reg_email">
+                <input type="email" name="email" id="email" placeholder="Ел. пошта" class="reg_email">
             </div>
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/password_img.png') }}" alt="">
-                <input type="password" name="Пароль" id="password" placeholder="password" class="reg_password">
+                <input type="password" name="password" id="password" placeholder="Пароль" class="reg_password">
             </div>
             <div class = "input">
                 <img src="{{ url_for('user.static', filename='images/password_img.png') }}" alt="">
-                <input type="password" name="Повторіть пароль" id="confirm_password" placeholder="confirm_password" class="reg_confirm_password">
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Повторіть пароль" class="reg_confirm_password">
             </div>    
             <button class="reg_save" type="submit">Save</button>
         </div>
@@ -59,7 +59,7 @@
         <div id="modal-window" style="background:#fff; padding:30px; border-radius:10px; width:300px; margin:100px auto; position:relative;">
             <span id="modal-close" style="position:absolute; right:10px; top:10px; cursor:pointer;">&times;</span>
             <h3>Введіть код підтвердження:</h3>
-            <input type="text" id="modal-input" style="width:100%; margin-bottom:15px;" name="confirm_code" placeholder="Enter code">
+            <input type="text" id="modal-input" style="width:100%; margin-bottom:15px;" name="confirm_code" placeholder="введіть код">
             <button id="modal-ok" type="submit">Підтвердити</button>
         </div>
     </div>

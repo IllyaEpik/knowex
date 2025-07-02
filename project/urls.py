@@ -7,7 +7,6 @@ from .settings import project
 
 
 
-
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main, methods = ['get', 'post'])
 main_app.main.add_url_rule(rule="/logout", view_func=main_app.views.logout)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])
@@ -16,15 +15,15 @@ user_app.user.add_url_rule(rule="/user", view_func=user_app.views.render_user, m
 user_app.user.add_url_rule(rule="/render_icon", view_func=user_app.views.render_icon, methods = ['post'])
 user_app.user.add_url_rule(rule="/send_email_code", view_func=user_app.views.send_email_code, methods = ['post', 'get'])
 user_app.user.add_url_rule(rule="/render_code", view_func=user_app.views.render_code, methods = ['get', 'post'])
-test_app.test_page.add_url_rule(rule='/test/<int:test_id>', view_func=test_app.views.render_test, methods = ['get'])
+user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
+test_app.test_page.add_url_rule(rule='/test/<int:test_id>', view_func=test_app.views.render_test, methods = ['get', 'post'], endpoint='render_test')
 test_app.test_page.add_url_rule(rule="/create_test", view_func=create_app.views.create_test, methods = ['post'])
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/question/<int:question_id>", view_func=test_app.views.test_question, methods = ['get', 'post'], endpoint="test_question")
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/result", view_func=test_app.views.test_result, methods=['get'], endpoint="test_result")
-# user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
 
 project.register_blueprint(blueprint=main_app.app.main)
 project.register_blueprint(blueprint=create_app.app.create)
 project.register_blueprint(blueprint=report_app.app.report)
 project.register_blueprint(blueprint=user_app.app.user)
+project.register_blueprint(blueprint=user_app.app.profile)
 project.register_blueprint(blueprint=test_app.app.test_page)
-# project.register_blueprint(blueprint=user_app.app.profile)
