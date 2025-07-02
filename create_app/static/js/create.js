@@ -11,6 +11,28 @@ document.addEventListener('DOMContentLoaded', function () {
     initPositions();
 });
 function rightPrint(text){
+    function rightPrint(text) {
+    const messagesContainer = document.querySelector(".messages#messages");
+
+    if (messagesContainer) {
+        const message = document.createElement("div");
+        message.className = "message";
+        message.id = "message";
+        message.textContent = text;
+        messagesContainer.appendChild(message);
+
+        setTimeout(() => {
+            message.classList.add("show");
+        }, 100);
+
+        setTimeout(() => {
+            message.classList.add("hide");
+            setTimeout(() => {
+                message.remove();
+            }, 500); 
+        }, 5000);
+    }
+}
     alert(text)
 }
 let yQuestion = -60;

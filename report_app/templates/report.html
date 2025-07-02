@@ -4,6 +4,7 @@
 
 {% block head %} 
     <link rel="stylesheet" href="{{ url_for('report.static', filename='css/report.css') }}">
+    <script defer src="{{ url_for('report.static', filename = '/js/report.js') }}"></script>
 {% endblock %}
 
 {% block content %} 
@@ -96,6 +97,12 @@
             <div class="test_description">
                 <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
             </div>
+            <div class="test_info" hidden>
+                <input class="test_class" value="{{ test.class }}" readonly hidden>
+                <input class="test_subject" value="{{ test.subject }}" readonly hidden>
+                <input class="test_question_count" value="{{ test.questions | length }}" readonly hidden>
+                <input class="test_date" value="{{ test.date }}" readonly hidden>
+            </div>
             <div class="test_link">
                 <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
             </div>
@@ -103,5 +110,4 @@
     {% endfor %}
 </div>
 
-<script defer src="{{ url_for('report.static', filename = '/js/report.js') }}"></script>
 {% endblock %}
