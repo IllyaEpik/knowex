@@ -51,7 +51,7 @@ body.dark {
     /*  */
     --bg-description: #005c9e;
     --bg-login: #005c9e;
-/*  */
+    /*  */
     --bg-body: #23242a;
     --bg-content: #23242a;
     --bg-list: #23242a;
@@ -580,3 +580,73 @@ body.dark #settings_form input[type="file"]:hover::before {
     background: var(--bg-btn-hover);
     color: var(--color-btn);
 }
+
+
+
+
+
+
+
+
+/* ...existing code... */
+
+.to-test {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 16px;
+}
+
+.to-test input[type="text"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: var(--color-input);
+    background-color: var(--bg-list-questions);
+}
+
+.to-test button {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.to-test button:hover {
+    background-color: var(--bg-btn-hover);
+}
+
+.login_page {
+    background-color: var(--bg-btn);
+    color: var(--color-btn);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 16px;
+    transition: background 0.2s;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.login_page:hover {
+    background-color: var(--bg-btn-hover);
+}
+
+.top_panel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+
+/* ...existing code... */
