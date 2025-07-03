@@ -103,7 +103,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* CHANGE justify-content: center; CHANGE by Andrey 03.07.25 */ 
     overflow-y: scroll;
     user-select: none;
 }
