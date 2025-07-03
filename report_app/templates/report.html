@@ -102,6 +102,7 @@
                 <input class="test_subject" value="{{ test.subject }}" readonly hidden>
                 <input class="test_question_count" value="{{ test.questions | length }}" readonly hidden>
                 <input class="test_date" value="{{ test.date }}" readonly hidden>
+                <input class="test_count" value="{{ test.count }}" readonly hidden>
             </div>
             <div class="test_link">
                 <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>

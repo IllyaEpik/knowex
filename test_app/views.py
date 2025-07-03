@@ -18,7 +18,6 @@ def render_test(test_id: int):
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     date = time.localtime(test.date)
-    date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
     date = time.strftime('%y,%m,%d,%H:%M', date)
     # date = date_text
     # print(date)
@@ -112,8 +111,10 @@ def test_result(test_id):
                 ids = user.complete_tests.split()
                 if str(test.id) not in ids:
                     user.complete_tests += f" {test.id}"
+                    test.count += 1
             else:
                 user.complete_tests = str(test.id)
+                test.count += 1
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
     # date = time_complete

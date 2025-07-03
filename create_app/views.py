@@ -35,7 +35,8 @@ def create_test():
         name = request.form.get('name'),
         description = description,
         # user = flask_login.current_user.id,
-        date = int(time.time())
+        date = int(time.time()),
+        count = 0
     )
     DATABASE.session.add(test)
     DATABASE.session.commit()
