@@ -89,7 +89,11 @@
 
 <div class="container_tests">
     {% for test in tests %}
-        <div class="container_test">
+        <div class="container_test"
+             data-class="{{ test.class_name }}"
+             data-subject="{{ test.subject }}"
+             data-question-count="{{ test.questions|length }}"
+             data-date="{{ test.date }}">
             <div class="test_name">
                 <h2>{{ test.name }}</h2>
             </div>

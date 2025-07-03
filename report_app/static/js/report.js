@@ -22,42 +22,47 @@ if (button) {
         let question = document.querySelector("#questions");
         let date = document.querySelector("#date");
         let popularity = document.querySelector("#popularity");
-        // container_test
         let container_test = document.querySelectorAll(".container_test");
         let testList = [];
 
         container_test.forEach(function(test) {
-            let test_class = test.querySelector(".test_class").value;
-            let test_subject = test.querySelector(".test_subject").value;
-            let test_question_count = test.querySelector(".test_question_count").value;
-            let test_date = test.querySelector(".test_date").value;
-            
-            
-            if (question.value !== "all" && question.value !== test_class) {
-                test.style.display = "none";
+            let test_class = test.dataset.class;
+            let test_subject = test.dataset.subject;
+            let test_question_count = test.dataset.questionCount;
+            let test_date = test.dataset.date;
 
-                return; 
+            // Фильтр по классу
+            let classFilter = document.querySelector("#class").value;
+            if (classFilter !== "all" && classFilter !== test_class) {
+                test.style.display = "none";
+                return;
+            }
+            // Фильтр по предмету
+            let subjectFilter = document.querySelector("#subject").value;
+            if (subjectFilter !== "all" && subjectFilter !== test_subject) {
+                test.style.display = "none";
+                return;
             }
 
             if (checkTestCount(question.value, test_question_count, test)) {
                 testList.push(test);
             }
         });
-            
-        
+
+        // Сортировка по дате
         if (date.value == 'new') {
-            testList.sort((a, b) => a.querySelector(".test_date").value - b.querySelector(".test_date").value);
-            
-        }else if (date.value == 'old') {
-            testList.sort((a, b) => b.querySelector(".test_date").value - a.querySelector(".test_date").value);
+            testList.sort((a, b) => Number(b.dataset.date) - Number(a.dataset.date));
+        } else if (date.value == 'old') {
+            testList.sort((a, b) => Number(a.dataset.date) - Number(b.dataset.date));
         }
-        if (popularity && popularity.value === 'most') {
-            testList.sort((a, b) => Number(b.querySelector(".test_question_count").value) - Number(a.querySelector(".test_question_count").value));
-        } else if (popularity && popularity.value === 'least') {
-            testList.sort((a, b) => Number(a.querySelector(".test_question_count").value) - Number(b.querySelector(".test_question_count").value));
+        // Сортировка по популярности
+        if (popularity && popularity.value === 'desc') {
+            testList.sort((a, b) => Number(b.dataset.questionCount) - Number(a.dataset.questionCount));
+        } else if (popularity && popularity.value === 'asc') {
+            testList.sort((a, b) => Number(a.dataset.questionCount) - Number(b.dataset.questionCount));
         }
 
-        container_tests.innerHTML = ""; 
+        container_tests.innerHTML = "";
         testList.forEach(function(container) {
             container_tests.append(container);
         });
