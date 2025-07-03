@@ -1,17 +1,33 @@
 import flask, random
 from project.config_page import config_page
 from create_app.models import Test, Questions
+from user_app.models import User
 import json
 import random
 import flask_login 
 from project.settings import DATABASE
+import time
 
+@config_page("test.html")
 def render_test(test_id: int):
-    tests = Test.query.filter_by(id=test_id).all()
-    if not tests:
+    test = Test.query.filter_by(id=test_id).first()
+    if not test:
         return flask.abort(404)
-
-    return flask.render_template('test.html', tests=tests)
+    user = User.query.filter(User.create_tests.contains(str(test_id))).first()
+    user = user.nickname if user else "Unknown"
+    question_ids = [int(qid) for qid in test.questions.split()]
+    total_questions = len(question_ids)
+    date = time.localtime(test.date)
+    date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
+    date = time.strftime('%y,%m,%d,%H:%M', date)
+    # date = date_text
+    # print(date)
+    return {
+        "test": test,
+        "name": user,
+        "total_questions": total_questions,
+        "date": date
+    }
 
 @config_page("test_question.html")
 def test_question(test_id, question_id):
@@ -66,10 +82,15 @@ def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
+    time_complete = time.localtime(test.date)
+    time_date = time.strftime('%d.%m.20%y', time_complete)
+    time_text = time.strftime('%H:%M', time_complete)
+    # time_complete = time.strftime('%y,%m,d,%H:%M', time_complete)
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
     correct = 0
+    questions = []
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
@@ -77,20 +98,34 @@ def test_result(test_id):
         user_answer = next((item["answer"] for item in test_answers if item["question_id"] == qid), None)
         if user_answer and user_answer == question.correct_answer:
             correct += 1
+        
+        questions.append({
+            "text": question.text,
+            "correct_answer": question.correct_answer,
+            "user_answer": user_answer
+        })
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
-        if user.complete_tests:
-            ids = user.complete_tests.split()
-            if str(test.id) not in ids:
-                user.complete_tests += f" {test.id}"
-        else:
-            user.complete_tests = str(test.id)
+        print(f"User {user.id} completed test {user.complete_tests}")
+        if not (str(test.id) in user.complete_tests):
+            if user.complete_tests:
+                ids = user.complete_tests.split()
+                if str(test.id) not in ids:
+                    user.complete_tests += f" {test.id}"
+            else:
+                user.complete_tests = str(test.id)
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
-
+    # date = time_complete
+    # date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
+    # time_text = f"{date.tm_hour}:{date.tm_min}"
+    # time_text = time_complete
     return {
         "test": test,
         "total_questions": total_questions,
+        "time_date": time_date,
+        'time_text':time_text,
         "answers": test_answers,
-        "correct": correct
+        "correct": correct,
+        "questions": questions
     }

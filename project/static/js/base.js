@@ -19,6 +19,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", 
+function () {
+    const messagesContainer = document.getElementById("messages");
+    if (messagesContainer) {
+        const messages = messagesContainer.querySelectorAll(".message");
+
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                message.classList.add("show");
+            }, index * 100); 
+        });
+
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                message.classList.add("hide");
+                setTimeout(() => {
+                    message.remove();
+                }, 500);
+            }, 5000 + index * 1000); 
+        });
+    }
+}
+);
 function goToTest(event) {
     event.preventDefault();
     const id = document.getElementById('test_id_input').value.trim();
@@ -33,6 +56,6 @@ function goToTest(event) {
             })
             .catch(() => {
             });
+        }
+        return false;
     }
-    return false;
-}

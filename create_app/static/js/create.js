@@ -10,6 +10,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initPositions();
 });
+function rightPrint(text) {
+    const messagesContainer = document.querySelector(".messages#messages");
+
+    if (messagesContainer) {
+        const message = document.createElement("div");
+        message.className = "message";
+        message.id = "message";
+        message.textContent = text;
+        messagesContainer.appendChild(message);
+
+        setTimeout(() => {
+            message.classList.add("show");
+        }, 100);
+
+        setTimeout(() => {
+            message.classList.add("hide");
+            setTimeout(() => {
+                message.remove();
+            }, 500); 
+        }, 5000);
+    }
+}
 
 let yQuestion = -60;
 let questionOrder = [];
@@ -56,7 +78,7 @@ document.getElementById("delete_question").addEventListener("click", function ()
     }
 
     if (!removed) {
-        alert("Список тестів порожній або жодне питання не вибрано!");
+       rightPrint("Список тестів порожній або жодне питання не вибрано!");
     } else {
         const questionForm = document.querySelector('.question_form');
         questionForm.reset();
@@ -95,7 +117,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         // correctAnswer
         // let correctAnswer = document.querySelector('#correctAnswer').value
         // if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
-        //     alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //    rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
         //     return;
         // }
 
@@ -112,10 +134,8 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     const className = localStorage.getItem('test_class_name') || '';
     const testName = localStorage.getItem('test_name') || '';
 
-    // 🛡️ Защита: если настройки не заданы, не отправляем
     if (!subject || !className || !testName) {
-        alert('Будь ласка, заповніть налаштування тесту!');
-        document.getElementById('settings_modal').style.display = 'block';
+       rightPrint('Будь ласка, заповніть налаштування тесту!');
         return;
     }
 
@@ -132,23 +152,12 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     Formdata.append('subject', subject)
     Formdata.append('class_name', className)
     Formdata.append('name', testName)
+    Formdata.append('description', document.getElementById('description').value || '')
     try {
         Formdata.append('image', document.querySelector('#image').files[0])
     } catch (error) {
         
     }
-    
-    // image
-    // hour = 9
-    // minute = 8
-    // 9:8
-    // 09:08
-    // {
-    //     data: JSON.stringify(listAllQuestions),
-    //     subject: subject,
-    //     class_name: className,
-    //     name: testName
-    // }
     $.ajax(
         '/create_test', {
         type: "POST",
@@ -157,10 +166,10 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         contentType: false,
         success: function () {
             localStorage.clear()
-            alert('Тест збережено!');
+            rightPrint('Тест збережено!');
         },
         error: function () {
-            alert('Помилка при збереженні!');
+            rightPrint('Помилка при збереженні!');
         }
     });
 });
@@ -259,7 +268,7 @@ function selectQuestion(index) {
             const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
             
         //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-        //         alert('Заповніть питання та додайте хоча б один варіант відповіді!');
+        //         rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
         //         return;
         //     }
 
@@ -342,7 +351,7 @@ function selectQuestion(index) {
             const testName = document.getElementById('test_name').value.trim();
 
             if (!subject || !className || !testName) {
-                alert('Будь ласка, заповніть усі поля!');
+                rightPrint('Будь ласка, заповніть усі поля!');
                 return false;
             }
 

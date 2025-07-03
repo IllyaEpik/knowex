@@ -19,7 +19,6 @@
 }
 
 body.dark {
-    --bg-main-choosen: #7e7f80;
     --bg-description: #005c9e;
     --bg-login: #005c9e;
     --bg-test: #1a1a2d;
@@ -49,15 +48,11 @@ button {
     cursor: pointer;
 }
 
-#main {
-    background-color: var(--bg-main-choosen);
-    border-radius: var(--border-radius-main);
-}
 
 .description {
     background-color: var(--bg-description);
-    width: 1650px;
-    height: 250px;
+    width: 1550px;
+    height: 200px;
     padding: 20px;
     display: flex;
     justify-content: center;
