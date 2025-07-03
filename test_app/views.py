@@ -19,8 +19,6 @@ def render_test(test_id: int):
     total_questions = len(question_ids)
     date = time.localtime(test.date)
     date = time.strftime('%y,%m,%d,%H:%M', date)
-    # date = date_text
-    # print(date)
     return {
         "test": test,
         "name": user,
