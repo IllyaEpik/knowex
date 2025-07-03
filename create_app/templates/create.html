@@ -46,10 +46,40 @@
                     </div>
                     <label for="description">Опис тесту:</label>
                     <textarea id="description" name="description" placeholder="Введіть опис тесту"></textarea>
-                    <label>Предмет:</label>
-                    <input type="text" id="subject" name="subject" placeholder="Введіть предмет">
-                    <label>Клас:</label>
-                    <input type="text" id="class_name" name="class_name" placeholder="Введіть клас">
+                    <div class="filter">
+                        <label for="subject">Предмет:</label>
+                        <select name="subject" id="subject">
+                            <option value="all">Всі</option>
+                            <option value="other">Інше</option>
+                            <option value="math">Математика</option>
+                            <option value="geometry">Геометрія</option>
+                            <option value="algebra">Алгебра</option>
+                            <option value="physics">Фізика</option>
+                            <option value="chemistry">Хімія</option>
+                            <option value="biology">Біологія</option>
+                            <option value="history">Історія</option>
+                            <option value="geography">Географія</option>
+                            <option value="english">Англійська</option>
+                        </select>
+                    </div>
+                    <div class="filter">
+                        <label for="class">Клас:</label>
+                        <select name="class" id="class">
+                            <option value="all">Всі</option>
+                            <option value="none">Без класу</option>
+                            <option value="1">1 клас</option>
+                            <option value="2">2 клас</option>
+                            <option value="3">3 клас</option>
+                            <option value="4">4 клас</option>
+                            <option value="5">5 клас</option>
+                            <option value="6">6 клас</option>
+                            <option value="7">7 клас</option>
+                            <option value="8">8 клас</option>
+                            <option value="9">9 клас</option>
+                            <option value="10">10 клас</option>
+                            <option value="11">11 клас</option>
+                        </select>
+                    </div>
                     <div class="button-row">
                         <button type="submit">Зберегти</button>
                         <button type="button" id="close_settings">← Назад до питань</button>
