@@ -3,7 +3,7 @@ let container_tests = document.querySelector(".container_tests");
 function checkTestCount(count,test_count,test) {
     console.log(count);
     console.log(test_count);
-    test_count--;
+    test_count -= 1;
     let counts = count.split("-");
     console.log(test);
     console.log(counts);

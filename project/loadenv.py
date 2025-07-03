@@ -3,9 +3,9 @@ import os
 
 def load_env():
     commands = {
-        "DB_INIT": "flask --app project db init",
-        "DB_MIGRATE": "flask --app project db migrate",
-        "DB_UPGRADE": "flask --app project db upgrade"
+        "DB_INIT": "python -m flask --app project db init",
+        "DB_MIGRATE": "python -m flask --app project db migrate",
+        "DB_UPGRADE": "python -m flask --app project db upgrade"
     }
     env_path = os.path.abspath(os.path.join(__file__, "..", "..", ".env"))
     if not os.path.exists(env_path):

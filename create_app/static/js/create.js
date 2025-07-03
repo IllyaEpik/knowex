@@ -10,8 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initPositions();
 });
-function rightPrint(text){
-    function rightPrint(text) {
+function rightPrint(text) {
     const messagesContainer = document.querySelector(".messages#messages");
 
     if (messagesContainer) {
@@ -33,8 +32,7 @@ function rightPrint(text){
         }, 5000);
     }
 }
-    alert(text)
-}
+
 let yQuestion = -60;
 let questionOrder = [];
 
