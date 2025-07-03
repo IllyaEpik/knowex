@@ -104,7 +104,7 @@ body {
     flex-direction: column;
     align-items: center;
     /* CHANGE justify-content: center; CHANGE by Andrey 03.07.25 */ 
-    overflow-y: scroll;
+    overflow-y: hidden;
     user-select: none;
 }
 
@@ -122,7 +122,7 @@ body {
     margin: 10px 0 30px 0;
     padding: 5px 0 5px 20px;
     border-radius: 10px;
-    gap: 12px;
+    gap: 0px;
 }
 
 .icon_photo {
@@ -179,7 +179,7 @@ body {
 }
 
 .to-test {
-    margin-right: 160px;
+    margin-right: 135px;
     margin-top: 15px;
     display: flex;
     align-items: center;
@@ -192,10 +192,11 @@ body {
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 16px;
+    gap: 8px;
 }
 
 .to-test button {
-    padding: 4px 12px;
+    padding: 5px 12px;
     border-radius: 6px;
     border: none;
     background: #4f8cff;
@@ -320,7 +321,8 @@ body.dark .theme_change {
 }
 
 .name {
-    margin-left: 30px;
+    margin-left: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: #2C7DF6;
     text-align: center;
