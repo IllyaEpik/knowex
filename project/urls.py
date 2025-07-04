@@ -5,8 +5,6 @@ import user_app
 import test_app
 from .settings import project
 
-
-
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main, methods = ['get', 'post'])
 main_app.main.add_url_rule(rule="/logout", view_func=main_app.views.logout)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])
