@@ -8,12 +8,12 @@
 
 [Особиста сторінка / Personal Account Page](######особиста-сторінка/personal-account-page)
 ##### виконавці / create by: 
-[Ілля Епік / Illya Epik](https://github.com/IllyaEpik/knowex)
-[Макс Субач / Max Subach]()
-[Марк Попович / Mark Popovich]()
-[Конев Олексій / Konev Oleksii]()
-[Маринченко Андрій / Marynchenko Andrey]()
-[Олександр Шорніков / Oleksandr Shornikov](https://github.com/sasha-stelc)
+* [Ілля Епік / Illya Epik](https://github.com/IllyaEpik/knowex)
+* [Макс Субач / Max Subach]()
+* [Марк Попович / Mark Popovich]()
+* [Конев Олексій / Konev Oleksii]()
+* [Маринченко Андрій / Marynchenko Andrey]()
+* [Олександр Шорніков / Oleksandr Shornikov](https://github.com/sasha-stelc)
 ```mermaid
 graph TD
     P{project structure}

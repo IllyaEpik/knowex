@@ -130,14 +130,7 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
     }
 
-    const subject = localStorage.getItem('test_subject') || '';
-    const className = localStorage.getItem('test_class_name') || '';
-    const testName = localStorage.getItem('test_name') || '';
-
-    if (!subject || !className || !testName) {
-       rightPrint('Будь ласка, заповніть налаштування тесту!');
-        return;
-    }
+    
 
     let listAllQuestions = [];
     for (let question of listQuestions.children) {
@@ -147,31 +140,43 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             listAllQuestions.push(data);
         }
     }
-    let Formdata = new FormData()
-    Formdata.append('data', JSON.stringify(listAllQuestions))
-    Formdata.append('subject', subject)
-    Formdata.append('class_name', className)
-    Formdata.append('name', testName)
-    Formdata.append('description', document.getElementById('description').value || '')
-    try {
-        Formdata.append('image', document.querySelector('#image').files[0])
-    } catch (error) {
-        
-    }
-    $.ajax(
-        '/create_test', {
-        type: "POST",
-        data: Formdata,
-        processData: false,
-        contentType: false,
-        success: function () {
-            localStorage.clear()
-            rightPrint('Тест збережено!');
-        },
-        error: function () {
-            rightPrint('Помилка при збереженні!');
+    
+    const subject = localStorage.getItem('test_subject') || '';
+    const className = localStorage.getItem('test_class_name') || '';
+    const testName = localStorage.getItem('test_name') || '';
+    const img = document.querySelector('#image').files[0];
+
+    if (!subject || !className || !testName || !img) {
+       rightPrint('Будь ласка, заповніть налаштування тесту!');
+        return;
+    }else{
+        let Formdata = new FormData()
+        Formdata.append('data', JSON.stringify(listAllQuestions))
+        Formdata.append('subject', subject)
+        Formdata.append('class_name', className)
+        Formdata.append('name', testName)
+        Formdata.append('description', document.getElementById('description').value || '')
+        try {
+            Formdata.append('image', document.querySelector('#image').files[0])
+        } catch (error) {
+            
         }
-    });
+        $.ajax(
+        '/create_test', {
+            type: "POST",
+            data: Formdata,
+            processData: false,
+            contentType: false,
+            success: function () {
+                localStorage.clear()
+                rightPrint('Тест збережено!');
+            },
+            error: function () {
+                rightPrint('Помилка при збереженні!');
+            }
+        });
+    }
+    
 });
 
 
