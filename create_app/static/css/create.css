@@ -636,10 +636,6 @@ body.dark #settings_form input[type="file"]:hover::before {
     display: inline-block;
 } */
 
-.login_page:hover {
-    background-color: var(--bg-btn-hover);
-}
-
 .top_panel {
     display: flex;
     align-items: center;
