@@ -134,8 +134,13 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     const className = localStorage.getItem('test_class_name') || '';
     const testName = localStorage.getItem('test_name') || '';
 
-    if (!subject || !className || !testName) {
-       rightPrint('Будь ласка, заповніть налаштування тесту!');
+    let missingFields = [];
+    if (!subject) missingFields.push('предмет');
+    if (!className) missingFields.push('клас');
+    if (!testName) missingFields.push('назва тесту');
+
+    if (missingFields.length > 0) {
+        rightPrint('Будь ласка, заповніть: ' + missingFields.join(', ') + '!');
         return;
     }
 
@@ -168,9 +173,21 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             localStorage.clear()
             rightPrint('Тест збережено!');
         },
-        error: function () {
-            rightPrint('Помилка при збереженні!');
-        }
+        error: function (xhr) {
+            let msg = 'Помилка при збереженні тесту!';
+            if (xhr.status === 401) {
+                msg = 'Помилка: Ви не авторизовані. Увійдіть у свій акаунт.';
+            } else if (xhr.status === 400) {
+                msg = 'Помилка: Некоректні дані. Перевірте всі поля.';
+            } else if (xhr.status === 413) {
+                msg = 'Помилка: Завеликий файл зображення.';
+            } else if (xhr.responseJSON && xhr.responseJSON.error) {
+                msg = 'Помилка: ' + xhr.responseJSON.error;
+            } else if (xhr.status >= 500) {
+                msg = 'Внутрішня помилка сервера. Спробуйте пізніше.';
+            }
+            rightPrint(msg);
+    }
     });
 });
 
@@ -267,11 +284,14 @@ function selectQuestion(index) {
             const questionId = selectedButton.id.replace('question_', '');
             const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
             
-        //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-        //         rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
-        //         return;
-        //     }
-
+        let missing = [];
+        if (!questionForm.querySelector('#question').value) missing.push('текст питання');
+        if (allInputs.length === 0) missing.push('варіанти відповіді');
+        if (!questionForm.querySelector('#correctAnswer').value) missing.push('правильну відповідь');
+        if (missing.length) {
+            rightPrint('Будь ласка, заповніть: ' + missing.join(', ') + '!');
+            return;
+}
             const questionData = {
                 question: questionForm.querySelector('#question').value,
                 correct: questionForm.querySelector('#correctAnswer').value,
@@ -347,18 +367,22 @@ function selectQuestion(index) {
         // Збереження налаштувань
         function saveSettings() {
             const subject = document.getElementById('subject').value.trim();
-            const className = document.getElementById('class_name').value.trim();
+            const className = document.getElementById('class').value.trim();
             const testName = document.getElementById('test_name').value.trim();
 
-            if (!subject || !className || !testName) {
-                rightPrint('Будь ласка, заповніть усі поля!');
+            let missing = [];
+            if (!subject) missing.push('предмет');
+            if (!className) missing.push('клас');
+            if (!testName) missing.push('назва тесту');
+            if (missing.length) {
+                rightPrint('Будь ласка, заповніть: ' + missing.join(', ') + '!');
                 return false;
             }
 
             localStorage.setItem('test_subject', subject);
             localStorage.setItem('test_class_name', className);
             localStorage.setItem('test_name', testName);
-            document.getElementById('close_settings').click();
+            // document.getElementById('close_settings').click();
             return true;
         }
     
