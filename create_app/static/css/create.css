@@ -16,7 +16,7 @@
     --bg-scrollbar-track: #E0F7FF;
     --bg-message: #fff;
 
-    --bg-container: #ffffff;
+    /* --bg-container: #ffffff; */
     --color-main: #004C99;
     --color-title: #004C99;
     --color-header-btn: #fff;
@@ -54,6 +54,7 @@ body.dark {
     /*  */
     --bg-body: #23242a;
     --bg-content: #23242a;
+    --bg-content-a: #181818;
     --bg-list: #23242a;
     --bg-list-questions: #1c1c22;
     --bg-question-form: #1e2a53;
@@ -119,7 +120,7 @@ body {
 }
 
 #content {
-    background-color: var(--bg-content);
+    background-color: var(--bg-content-a);
     border-radius: var(--border-radius);
     padding: 5px 20px 30px 20px;
     overflow: hidden;
