@@ -16,6 +16,8 @@ def render_create():
                             
 
 def create_test():
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'error': 1})
     all_questions = ''
     for question in json.loads( request.form.get('data')):
         
@@ -53,7 +55,7 @@ def create_test():
     else:
         user.create_tests = str(test.id)
     DATABASE.session.commit()
-    return jsonify({'ok':True})
+    return jsonify({'ok':True,'error':0})
 
 def get_all_tests():
-    return jsonify( {'tests':Test.query.all()})
+    return jsonify( {'tests':Test.query.all()} )

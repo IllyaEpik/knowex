@@ -1,53 +1,67 @@
 let button = document.querySelector(".button_filter");
 let container_tests = document.querySelector(".container_tests");
-function checkTestCount(count,test_count,test) {
-    console.log(count);
-    console.log(test_count);
+
+function checkTestCount(count, test_count, test) {
     test_count -= 1;
     let counts = count.split("-");
-    console.log(test);
-    console.log(counts);
     if (count === "all") {
-        test.style.display = "flex";
         return true;
+    } else if (counts[1] === "+") {
+        return Number(test_count) >= Number(counts[0]);
     } else if (Number(counts[0]) <= test_count && Number(counts[1]) >= test_count) {
-        test.style.display = "flex";
         return true;
-    }else{
-        test.style.display = "none";
+    } else {
+        return false;
     }
 }
+
 if (button) {
     button.addEventListener("click", function() {
         let question = document.querySelector("#questions");
         let date = document.querySelector("#date");
-        // container_test
-        let container_test = document.querySelectorAll(".container_test");
-        testList = [];
-        
-        container_test.forEach(function(test) {
-            // test_class
-            let test_class = test.querySelector(".test_class").value;
-            let test_subject = test.querySelector(".test_subject").value;
-            let test_question_count = test.querySelector(".test_question_count").value;
-            let test_date = test.querySelector(".test_date").value;
+        let popularity = document.querySelector("#popularity");
+        let classFilter = document.querySelector("#class").value;
+        let subjectFilter = document.querySelector("#subject").value;
+        let container_test = Array.from(document.querySelectorAll(".container_test"));
+        let testList = [];
 
-            if (checkTestCount(question.value,test_question_count,test)) {
-                testList.push(test);
-            }
-            console.log(test_date);
+        container_test.forEach(test => {
+            test.style.display = "flex";
         });
-        
+
+        container_test.forEach(function(test) {
+            let test_class = test.dataset.class;
+            let test_subject = test.dataset.subject;
+            let test_question_count = test.dataset.questionCount;
+
+            if (classFilter !== "all" && classFilter !== test_class) {
+                test.style.display = "none";
+                return;
+            }
+            if (subjectFilter !== "all" && subjectFilter !== test_subject) {
+                test.style.display = "none";
+                return;
+            }
+            if (checkTestCount(question.value, test_question_count, test)) {
+                testList.push(test);
+            } else {
+                test.style.display = "none";
+            }
+        });
+
         if (date.value == 'new') {
-            testList.sort((a, b) => a.querySelector(".test_date").value - b.querySelector(".test_date").value);
-            
-        }else if (date.value == 'old') {
-            testList.sort((a, b) => b.querySelector(".test_date").value - a.querySelector(".test_date").value);
+            testList.sort((a, b) => Number(b.dataset.date) - Number(a.dataset.date));
+        } else if (date.value == 'old') {
+            testList.sort((a, b) => Number(a.dataset.date) - Number(b.dataset.date));
         }
-        container_tests.innerHTML = ""; // Clear the container before appending new tests
+        if (popularity && popularity.value === 'desc') {
+            testList.sort((a, b) => Number(b.dataset.questionCount) - Number(a.dataset.questionCount));
+        } else if (popularity && popularity.value === 'asc') {
+            testList.sort((a, b) => Number(a.dataset.questionCount) - Number(b.dataset.questionCount));
+        }
+
         testList.forEach(function(container) {
             container_tests.append(container);
         });
-        console.log(testList);
     });
 }

@@ -130,7 +130,21 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
     }
 
+    const subject = localStorage.getItem('test_subject') || '';
+    const className = localStorage.getItem('test_class_name') || '';
+    const testName = localStorage.getItem('test_name') || '';
+    const image = document.querySelector('#image').files[0] || null;
+
+    let missingFields = [];
+    if (!subject) { missingFields.push('предмет'); }
+    if (!className) { missingFields.push('клас'); }
+    if (!testName) { missingFields.push('назва тесту'); }
+    if (!image) { missingFields.push('зображення'); }
     
+    if (missingFields.length > 0) {
+        rightPrint('Будь ласка, заповніть: ' + missingFields.join(', ') + '!');
+        return;
+    }
 
     let listAllQuestions = [];
     for (let question of listQuestions.children) {
@@ -140,43 +154,48 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
             listAllQuestions.push(data);
         }
     }
-    
-    const subject = localStorage.getItem('test_subject') || '';
-    const className = localStorage.getItem('test_class_name') || '';
-    const testName = localStorage.getItem('test_name') || '';
-    const img = document.querySelector('#image').files[0];
-
-    if (!subject || !className || !testName || !img) {
-       rightPrint('Будь ласка, заповніть налаштування тесту!');
-        return;
-    }else{
-        let Formdata = new FormData()
-        Formdata.append('data', JSON.stringify(listAllQuestions))
-        Formdata.append('subject', subject)
-        Formdata.append('class_name', className)
-        Formdata.append('name', testName)
-        Formdata.append('description', document.getElementById('description').value || '')
-        try {
-            Formdata.append('image', document.querySelector('#image').files[0])
-        } catch (error) {
-            
-        }
-        $.ajax(
-        '/create_test', {
-            type: "POST",
-            data: Formdata,
-            processData: false,
-            contentType: false,
-            success: function () {
-                localStorage.clear()
-                rightPrint('Тест збережено!');
-            },
-            error: function () {
-                rightPrint('Помилка при збереженні!');
-            }
-        });
+    let Formdata = new FormData()
+    Formdata.append('data', JSON.stringify(listAllQuestions))
+    Formdata.append('subject', subject)
+    Formdata.append('class_name', className)
+    Formdata.append('name', testName)
+    Formdata.append('description', document.getElementById('description').value || '')
+    try {
+        Formdata.append('image', document.querySelector('#image').files[0])
+    } catch (error) {
+        
     }
-    
+    $.ajax(
+        '/create_test', {
+        type: "POST",
+        data: Formdata,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response)
+            if (Number(response.error)) {
+                rightPrint('Помилка: Ви не авторизовані. Увійдіть у свій акаунт.');
+            } else {
+                localStorage.clear();
+                rightPrint('Тест збережено!');
+            }
+        },
+        error: function (xhr) {
+            let msg = 'Помилка при збереженні тесту!';
+            if (xhr.status === 401) {
+                msg = 'Помилка: Ви не авторизовані. Увійдіть у свій акаунт.';
+            } else if (xhr.status === 400) {
+                msg = 'Помилка: Некоректні дані. Перевірте всі поля.';
+            } else if (xhr.status === 413) {
+                msg = 'Помилка: Завеликий файл зображення.';
+            } else if (xhr.responseJSON && xhr.responseJSON.error) {
+                msg = 'Помилка: ' + xhr.responseJSON.error;
+            } else if (xhr.status >= 500) {
+                msg = 'Внутрішня помилка сервера. Спробуйте пізніше.';
+            }
+            rightPrint(msg);
+    }
+    });
 });
 
 
@@ -272,11 +291,14 @@ function selectQuestion(index) {
             const questionId = selectedButton.id.replace('question_', '');
             const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
             
-        //     if (!questionForm.querySelector('#question').value || allInputs.length === 0) {
-        //         rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
-        //         return;
-        //     }
-
+        let missing = [];
+        if (!questionForm.querySelector('#question').value) missing.push('текст питання');
+        if (allInputs.length === 0) missing.push('варіанти відповіді');
+        if (!questionForm.querySelector('#correctAnswer').value) missing.push('правильну відповідь');
+        if (missing.length) {
+            rightPrint('Будь ласка, заповніть: ' + missing.join(', ') + '!');
+            return;
+}
             const questionData = {
                 question: questionForm.querySelector('#question').value,
                 correct: questionForm.querySelector('#correctAnswer').value,
@@ -352,18 +374,21 @@ function selectQuestion(index) {
         // Збереження налаштувань
         function saveSettings() {
             const subject = document.getElementById('subject').value.trim();
-            const className = document.getElementById('class_name').value.trim();
+            const className = document.getElementById('class').value.trim();
             const testName = document.getElementById('test_name').value.trim();
 
-            if (!subject || !className || !testName) {
-                rightPrint('Будь ласка, заповніть усі поля!');
+            let missing = [];
+            if (!subject) missing.push('предмет');
+            if (!className) missing.push('клас');
+            if (!testName) missing.push('назва тесту');
+            if (missing.length) {
+                rightPrint('Будь ласка, заповніть: ' + missing.join(', ') + '!');
                 return false;
             }
 
             localStorage.setItem('test_subject', subject);
             localStorage.setItem('test_class_name', className);
             localStorage.setItem('test_name', testName);
-            document.getElementById('close_settings').click();
             return true;
         }
     
