@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Сторінка тесту {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
+{% endblock %}
+
+{% block content %}
+<div>
+    Код для подключення: <span id="test_code">{{ test_id }}</span>
+</div>
+<div>
+    <h3>Учасники:</h3>
+    <ul id="participants_list"></ul>
+</div>
+<button id="start_test_btn">Розпочати тест</button>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+
+<script>
+    testId = "{{ test_id }}"
+    hostName = "{{ host_name }}"
+</script>
+
+<script defer src="{{ url_for('test.static', filename='js/test_host.js') }}"></script>
+{% endblock %}

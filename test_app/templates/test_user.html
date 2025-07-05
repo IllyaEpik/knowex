@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} Участь у тесті №{{ test.id }} {% endblock %}
+
+{% block head %}
+    <script> window.TEST_ID = "{{ test.id }}";  window.FIRST_QID = "{{ first_qid }}";</script>
+    {% if current_user != " " %}
+        <script> window.USERNAME = "{{ current_user }}" </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+  <h2>Тест №{{ test.id }} – {{ test.title }}</h2>
+  <p>Очікуйте на початок тесту...</p>
+
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script src="{{ url_for('test.static', filename='js/test_user.js') }}"></script>
+{% endblock %}

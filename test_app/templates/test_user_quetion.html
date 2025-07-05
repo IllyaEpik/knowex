@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Проходження тесту{% endblock %}
+
+{% block head %}
+    <script src="{{ url_for('test.static', filename='js/test.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_question.css') }}" >
+{% endblock %}
+
+{% block content %}
+<div class="question-container">
+    <form method="post">
+        <div class="question-text">
+            <b>Питання {{ question_id }} з {{ total_questions }}:</b><br>
+            <span>Питання: {{ question.text }}</span>
+        </div>
+
+        <div class="answers">
+            {% for ans in answers %}
+                <label class="answer-option">
+                    <input type="radio" name="answer" value="{{ ans }}" required>
+                    {{ ans }}
+                </label>
+            {% endfor %}
+        </div>
+        <button class="submit-btn" type="submit">
+            {% if question_id < total_questions %}Далі{% else %}Завершити{% endif %}
+        </button>
+    </form>
+</div>
+{% endblock %}

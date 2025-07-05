@@ -20,6 +20,10 @@ test_app.test_page.add_url_rule(rule='/test/<int:test_id>', view_func=test_app.v
 test_app.test_page.add_url_rule(rule="/create_test", view_func=create_app.views.create_test, methods = ['post'])
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/question/<int:question_id>", view_func=test_app.views.test_question, methods = ['get', 'post'], endpoint="test_question")
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/result", view_func=test_app.views.test_result, methods=['get'], endpoint="test_result")
+test_app.test_page.add_url_rule(rule="/test/<int:test_id>/host", view_func=test_app.views.render_test_host, methods=['get', 'post'], endpoint="render_test_host")
+test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user", view_func=test_app.views.render_test_user, methods=['get', 'post'], endpoint="render_test_user")
+test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user/<int:question_id>", view_func=test_app.views.render_test_user_question, methods=['get', 'post'], endpoint="render_test_user_question")
+
 
 project.register_blueprint(blueprint=main_app.app.main)
 project.register_blueprint(blueprint=create_app.app.create)
