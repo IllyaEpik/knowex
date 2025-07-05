@@ -38,7 +38,7 @@
     --border-list: none;
     --border-list-questions: none;
     --border-options: 1px solid #ccc;
-    --border-question-form: 4px solid #007ACC;
+    /* --border-question-form: 4px solid #007ACC; */
 
     --shadow-list: 0px 4px 10px rgba(0, 0, 0, 0.1);
     --shadow-list-questions: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -53,8 +53,8 @@ body.dark {
     --bg-content-a: #181818;
     --bg-list: #23242a;
     --bg-list-questions: #1c1c22;
-    --bg-question-form: #1e2a53;
-    --bg-options: #18244f;
+    --bg-question-form: #23242a;
+    --bg-options: #23242a;
     --bg-btn: #474e7a;
     --bg-btn-hover: #2b3969;
     --bg-btn-choosen: rgb(82, 72, 124);
@@ -87,8 +87,8 @@ body.dark {
     --border-radius-create: 10px;
     --border-list: none;
     --border-list-questions: none;
-    --border-options: 1px solid #738ef6;
-    --border-question-form: 2px solid #82aaff;
+    --border-options: 1px solid #ccc
+    /* --border-question-form: 2px solid #82aaff; */
 
     --shadow-list: 0 4px 10px rgba(0, 0, 0, 0.4);
     --shadow-list-questions: inset 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -381,7 +381,7 @@ label {
     height: 150px;
     max-height: 150px;
     overflow-y: auto;
-    background-color: var(--bg-options);
+    background-color: var(--bg-list-questions);
     padding: 10px;
     border: var(--border-options);
     border-radius: 8px;
@@ -643,3 +643,26 @@ body.dark #settings_form input[type="file"]:hover::before {
 }
 
 /* ...existing code... */
+
+
+
+
+
+
+body.dark select {
+    background-color: var(--bg-list-questions);
+    color: var(--color-input);
+    border: 1px solid #444a60;
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 5px 5px 5px 5px;
+    min-width: 120px;
+    transition: border 0.2s, box-shadow 0.2s;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+body.dark select:focus {
+    border-color: var(--bg-btn-hover);
+    box-shadow: 0 0 0 2px var(--bg-btn-hover);
+}
