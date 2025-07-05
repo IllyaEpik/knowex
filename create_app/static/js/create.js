@@ -207,13 +207,15 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         Formdata.append('image', document.querySelector('#image').files[0]);
     } catch (error) {}
 
+
     $.ajax(
         '/create_test', {
         type: "POST",
         data: Formdata,
         processData: false,
         contentType: false,
-        success: function () {
+        success: function (response) {
+            
             // Сохраняем текущую тему
             const theme = localStorage.getItem('theme');
             localStorage.clear();

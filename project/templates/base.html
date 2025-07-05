@@ -48,7 +48,7 @@
         <h1 class="name_page">{% block title %}  {% endblock %}</h1>
     </div>
     <div class="messages" id="messages">
-        {% for message in session.get('messages', []) %}
+        {% for message in session.get('messages', []) %}  
             <div class="message" id = "message">
                 {{ message }}
                 {% do session.update({'messages': []}) %}
