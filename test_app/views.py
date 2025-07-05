@@ -56,50 +56,64 @@ def render_test_user_question(test_id, question_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
+
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
+
     if question_id not in question_ids:
         return flask.abort(404)
+
     current_index = question_ids.index(question_id)
     question = Questions.query.filter_by(id=question_id).first()
     if not question:
         return flask.abort(404)
+
     answers = []
     if question.answers:
         try:
             answers = json.loads(question.answers)
-            print(answers)
         except Exception:
             answers = [question.answers]
-    answers += [question.correct_answer]
+    answers.append(question.correct_answer)
     answers_list = random.sample(answers, len(answers))
     selected = None
-    global list_selected
-    list_selected = []
+
     if flask.request.method == "POST":
         selected = flask.request.form.get("answer")
-        is_correct = selected == question.correct_answer  # <-- проверка
+        is_correct = selected == question.correct_answer
 
         test_answers = flask.session.get("test_answers", [])
         test_answers = [item for item in test_answers if item["question_id"] != question_id]
         test_answers.append({
             "question_id": question_id,
             "answer": selected,
-            "is_correct": is_correct  
+            "is_correct": is_correct
         })
-
         flask.session["test_answers"] = test_answers
         flask.session.modified = True
-        if current_index + 1 < total_questions:
-            next_question_id = question_ids[current_index + 1]
-            return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
+
+        if flask.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if current_index + 1 < total_questions:
+                next_question_id = question_ids[current_index + 1]
+                return flask.jsonify({
+                    "next_url": flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id)
+                })
+            else:
+                return flask.jsonify({
+                    "result_url": flask.url_for("test.test_result", test_id=test_id)
+                })
         else:
-            return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
+            if current_index + 1 < total_questions:
+                next_question_id = question_ids[current_index + 1]
+                return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
+            else:
+                return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
+
     return {
         "test": test,
         "question": question,
         "answers": answers_list,
-        "question_id": current_index + 1,  
+        "question_id": current_index + 1,
         "total_questions": total_questions,
         "selected": selected,
         "correct_answer": question.correct_answer,
@@ -110,54 +124,69 @@ def test_question(test_id, question_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
+
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
+
     if question_id not in question_ids:
         return flask.abort(404)
+
     current_index = question_ids.index(question_id)
     question = Questions.query.filter_by(id=question_id).first()
     if not question:
         return flask.abort(404)
+
     answers = []
     if question.answers:
         try:
             answers = json.loads(question.answers)
-            print(answers)
         except Exception:
             answers = [question.answers]
-    answers += [question.correct_answer]
+    answers.append(question.correct_answer)
     answers_list = random.sample(answers, len(answers))
     selected = None
-    global list_selected
-    list_selected = []
+
     if flask.request.method == "POST":
         selected = flask.request.form.get("answer")
         is_correct = selected == question.correct_answer
+
         test_answers = flask.session.get("test_answers", [])
         test_answers = [item for item in test_answers if item["question_id"] != question_id]
         test_answers.append({
             "question_id": question_id,
             "answer": selected,
-            "is_correct": is_correct 
+            "is_correct": is_correct
         })
-
         flask.session["test_answers"] = test_answers
         flask.session.modified = True
-        if current_index + 1 < total_questions:
-            next_question_id = question_ids[current_index + 1]
-            return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
+
+        if flask.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if current_index + 1 < total_questions:
+                next_question_id = question_ids[current_index + 1]
+                return flask.jsonify({
+                    "next_url": flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id)
+                })
+            else:
+                return flask.jsonify({
+                    "result_url": flask.url_for("test.test_result", test_id=test_id)
+                })
         else:
-            return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
+            if current_index + 1 < total_questions:
+                next_question_id = question_ids[current_index + 1]
+                return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
+            else:
+                return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
 
     return {
         "test": test,
         "question": question,
         "answers": answers_list,
-        "question_id": current_index + 1,  
+        "question_id": current_index + 1,
         "total_questions": total_questions,
         "selected": selected,
         "correct_answer": question.correct_answer,
     }
+
 
 @config_page("test_result.html")
 def test_result(test_id):
