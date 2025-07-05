@@ -132,7 +132,9 @@ body::-webkit-scrollbar-thumb:hover {
     border-radius: 5px;
     cursor: pointer;
 }
-
+#content{
+    overflow-y: scroll;
+}
 .button_filter:hover {
     background-color: var(--bg-btn-hover);
 }

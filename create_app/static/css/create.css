@@ -116,7 +116,8 @@ body {
 }
 
 #content {
-    background-color: var(--bg-content-a);
+    /* background-color: var(--bg-content-a); */
+    /* background-color: var(--bg-content); */
     border-radius: var(--border-radius);
     padding: 5px 20px 30px 20px;
     overflow: hidden;

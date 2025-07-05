@@ -15,7 +15,9 @@ body.dark {
     --bg-result-btn-hover: #2563eb;
     --color-result-btn: #fff;
 }
-
+#content{
+    overflow-y: scroll;
+}
 .result-container {
     max-width: 600px;
     margin: 40px auto 24px auto;
