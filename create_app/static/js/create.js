@@ -10,14 +10,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initPositions();
 });
-function rightPrint(text) {
+function rightPrint(text, isHtml = false) {
     const messagesContainer = document.querySelector(".messages#messages");
 
     if (messagesContainer) {
         const message = document.createElement("div");
         message.className = "message";
         message.id = "message";
-        message.textContent = text;
+
+        // Цвет по содержимому
+        if (text.includes('збережено')) {
+            message.style.background = '#d4edda'; // светло-зеленый фон
+            message.style.color = '#155724';      // темно-зеленый текст
+            message.style.border = '1px solid #c3e6cb';
+        } else {
+            message.style.background = '#f8d7da'; // светло-красный фон
+            message.style.color = '#721c24';      // темно-красный текст
+            message.style.border = '1px solid #f5c6cb';
+        }
+
+        if (isHtml) {
+            message.innerHTML = text;
+        } else {
+            message.textContent = text;
+        }
         messagesContainer.appendChild(message);
 
         setTimeout(() => {
@@ -32,35 +48,63 @@ function rightPrint(text) {
         }, 5000);
     }
 }
-
 let yQuestion = -60;
 let questionOrder = [];
 
-document.getElementById("add_question").addEventListener("click", function () {
-    if (saveSettings()){
-    const listQuestions = document.querySelector(".list_questions");
-    let questionCount = 0;
-    while (document.getElementById(`question_${questionCount}`)) {
-        questionCount++;
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.question_form').style.display = 'none';
+    document.getElementById('save-form').style.display = 'none';
+    document.getElementById('settings_modal').style.display = 'block';
+
+    const listQuestions = document.querySelector('.list_questions');
+    if (!listQuestions) {
+        console.error('Елемент .list_questions не знайдено!');
+        return;
     }
+    initPositions();
 
-    const newButton = document.createElement("button");
-    newButton.className = "question_button";
-    newButton.type = 'button'
-    newButton.id = `question_${questionCount}`;
-    newButton.textContent = `Питання ${questionCount + 1}`;
-    makeDraggable(newButton);
+    document.getElementById("add_question").addEventListener("click", function () {
+        let questionCount = 0;
+        while (document.getElementById(`question_${questionCount}`)) {
+            questionCount++;
+        }
 
-    yQuestion += getSlotHeight() * 1.2;
-    newButton.style.top = `${yQuestion}px`;
+        const newButton = document.createElement("button");
+        newButton.className = "question_button";
+        newButton.type = 'button'
+        newButton.id = `question_${questionCount}`;
+        newButton.textContent = `Питання ${questionCount + 1}`;
+        makeDraggable(newButton);
 
-    newButton.addEventListener("click", function () {
-        selectQuestion(questionCount);
+        yQuestion += getSlotHeight() * 1.2;
+        newButton.style.top = `${yQuestion}px`;
+
+        newButton.addEventListener("click", function () {
+            selectQuestion(questionCount);
+        });
+
+        listQuestions.appendChild(newButton);
+        questionOrder.push(newButton);
+        newButton.click();
+    });
+    document.getElementById('add').addEventListener('click', function () {
+        const optionsDiv = document.getElementById('options');
+        const div = document.createElement('div');
+        const input = document.createElement('input');
+        const button = document.createElement('button');
+        input.type = 'text';
+        input.className = 'option';
+        input.placeholder = 'Новий варіант';
+        button.className = 'remove_option';
+        button.name = 'answer';
+        button.type = 'button';
+        button.textContent = '➖';
+        button.addEventListener('click', () => div.remove());
+        div.append(input);
+        div.append(button);
+        optionsDiv.append(div);
     });
 
-    listQuestions.appendChild(newButton);
-    questionOrder.push(newButton);
-    newButton.click();}
 });
 
 document.getElementById("delete_question").addEventListener("click", function () {
@@ -90,20 +134,6 @@ document.getElementById("delete_question").addEventListener("click", function ()
     }
 });
 
-document.getElementById("add").addEventListener("click", function (event) {
-    event.preventDefault();
-    const optionsDiv = document.getElementById("options");
-    const newOptionDiv = document.createElement("div");
-    newOptionDiv.innerHTML = `
-        <input type="text" class="option" placeholder="Новий варіант">
-        <button type="button" class="remove_option" name="answer">➖</button>
-    `;
-    newOptionDiv.querySelector(".remove_option").addEventListener("click", function () {
-        newOptionDiv.remove();
-    });
-    optionsDiv.appendChild(newOptionDiv);
-});
-
 document.querySelector('#save-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -114,19 +144,12 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     if (selectedButton) {
         const questionId = selectedButton.id.replace('question_', '');
         const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
-        // correctAnswer
-        // let correctAnswer = document.querySelector('#correctAnswer').value
-        // if (!questionForm.querySelector('#question').value || allInputs.length === 0 || !correctAnswer) {
-        //    rightPrint('Заповніть питання та додайте хоча б один варіант відповіді!');
-        //     return;
-        // }
 
         const questionData = {
             question: questionForm.querySelector('#question').value,
             correct: questionForm.querySelector('#correctAnswer').value,
             options: allInputs
         };
-        console.log(questionData)
         localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
     }
 
@@ -145,24 +168,43 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
     }
 
     let listAllQuestions = [];
+    let invalidQuestions = [];
+
     for (let question of listQuestions.children) {
         const questionId = question.id.replace('question_', '');
         const data = JSON.parse(localStorage.getItem(`question_${questionId}`));
+
         if (data) {
+            let missing = [];
+            if (!data.question || !data.question.trim()) missing.push('текст питання');
+            if (!data.correct || !data.correct.trim()) missing.push('правильну відповідь');
+            if (!Array.isArray(data.options) || data.options.length === 0 || data.options.some(opt => !opt.trim())) missing.push('варіанти відповіді');
+            if (missing.length) {
+                invalidQuestions.push(
+                    `Питання №${parseInt(questionId) + 1}:\n    • ${missing.join('\n    • ')}`
+                );
+            }
             listAllQuestions.push(data);
         }
     }
-    let Formdata = new FormData()
-    Formdata.append('data', JSON.stringify(listAllQuestions))
-    Formdata.append('subject', subject)
-    Formdata.append('class_name', className)
-    Formdata.append('name', testName)
-    Formdata.append('description', document.getElementById('description').value || '')
+
+    if (invalidQuestions.length > 0) {
+        const htmlMsg =
+            'Будь ласка, заповніть усі поля у питаннях:<br><br>' +
+            invalidQuestions.map(q => q.replace(/\n/g, '<br>')).join('<br><br>');
+        rightPrint(htmlMsg, true);
+        return;
+}
+    let Formdata = new FormData();
+    Formdata.append('data', JSON.stringify(listAllQuestions));
+    Formdata.append('subject', subject);
+    Formdata.append('class_name', className);
+    Formdata.append('name', testName);
+    Formdata.append('description', document.getElementById('description').value || '');
     try {
-        Formdata.append('image', document.querySelector('#image').files[0])
-    } catch (error) {
-        
-    }
+        Formdata.append('image', document.querySelector('#image').files[0]);
+    } catch (error) {}
+
     $.ajax(
         '/create_test', {
         type: "POST",
@@ -170,7 +212,13 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
         processData: false,
         contentType: false,
         success: function () {
-            localStorage.clear()
+            // Сохраняем текущую тему
+            const theme = localStorage.getItem('theme');
+            localStorage.clear();
+            // Восстанавливаем тему
+            if (theme) {
+                localStorage.setItem('theme', theme);
+            }
             rightPrint('Тест збережено!');
         },
         error: function (xhr) {
@@ -187,10 +235,9 @@ document.querySelector('#save-form').addEventListener('submit', function (event)
                 msg = 'Внутрішня помилка сервера. Спробуйте пізніше.';
             }
             rightPrint(msg);
-    }
+        }
     });
 });
-
 
 function makeDraggable(element) {
     let offsetY, isDragging = false;
@@ -277,29 +324,23 @@ function updateDOM() {
 function selectQuestion(index) {
     
     if (saveSettings()){
-        const questionForm = document.getElementById("questionForm");
-        const selectedButton = document.querySelector('.question_button_choosen');
+    const questionForm = document.getElementById("questionForm");
+    const selectedButton = document.querySelector('.question_button_choosen');
 
-        if (selectedButton) {
-            const questionId = selectedButton.id.replace('question_', '');
-            const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
-            
-        let missing = [];
-        if (!questionForm.querySelector('#question').value) missing.push('текст питання');
-        if (allInputs.length === 0) missing.push('варіанти відповіді');
-        if (!questionForm.querySelector('#correctAnswer').value) missing.push('правильну відповідь');
-        if (missing.length) {
-            rightPrint('Будь ласка, заповніть: ' + missing.join(', ') + '!');
-            return;
-}
-            const questionData = {
-                question: questionForm.querySelector('#question').value,
-                correct: questionForm.querySelector('#correctAnswer').value,
-                options: allInputs
-            };
-            console.log(questionData)
-            localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
-        }
+    if (selectedButton) {
+        const questionId = selectedButton.id.replace('question_', '');
+        const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
+
+        const questionData = {
+            question: questionForm.querySelector('#question').value,
+            correct: questionForm.querySelector('#correctAnswer').value,
+            options: allInputs
+        };
+        localStorage.setItem(`question_${questionId}`, JSON.stringify(questionData));
+    }
+
+
+
         const form = document.getElementById('questionForm');
         const questionTitle = form.querySelector('h3');
         questionTitle.textContent = `Питання №${index + 1}:`;
@@ -340,7 +381,7 @@ function selectQuestion(index) {
         // Завантаження поточних налаштувань із localStorage при завантаженні сторінки
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('subject').value = localStorage.getItem('test_subject') || '';
-            document.getElementById('class_name').value = localStorage.getItem('test_class_name') || '';
+            document.getElementById('class').value = localStorage.getItem('test_class_name') || '';
             document.getElementById('test_name').value = localStorage.getItem('test_name') || '';
         });
 
@@ -391,4 +432,5 @@ function selectQuestion(index) {
         event.preventDefault();
         saveSettings();
     });
+
 
