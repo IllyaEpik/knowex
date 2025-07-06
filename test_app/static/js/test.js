@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                 history.pushState({}, '', response.next_url);
                             },
+                            
                             error: function () {
                                 alert('Не вдалося завантажити наступне питання.');
                             }

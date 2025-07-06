@@ -34,7 +34,8 @@ def render_test_host(test_id):
     return{
         "test": test,
         "test_id": test_id,
-        "host_name": flask_login.current_user.nickname
+        "host_name": flask_login.current_user.nickname,
+        'countQuestions': len(test.questions.split(' '))
     }
 
 
@@ -239,6 +240,7 @@ def test_result(test_id):
     # date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
     # time_text = f"{date.tm_hour}:{date.tm_min}"
     # time_text = time_complete
+    
     return {
         "test": test,
         "total_questions": total_questions,

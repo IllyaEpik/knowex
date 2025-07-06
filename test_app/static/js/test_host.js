@@ -5,8 +5,13 @@ socket.emit('join_test', {
     username: hostName,
     role: 'host'
 });
-
+let currentQuestion = 1 
+let countQuestions = Number(document.getElementById('countQuestion').value)
 document.getElementById('start_test_btn').addEventListener('click', () => {
+    let Question = document.createElement("p") 
+    Question.id = "cocain"
+    Question.textContent = `текущий вопрос ${currentQuestion} из ${countQuestions}`
+
     socket.emit('start_test_command', { test_id: testId });
 });
 
