@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<input type="hidden" name="" id="countQuestion" value="{{ countQuestions }}">
 <div>
     Код для подключення: <span id="test_code">{{ test_id }}</span>
 </div>
@@ -17,6 +18,7 @@
 <button id="start_test_btn">Розпочати тест</button>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+<div id="answers_log"></div>
 
 <script>
     testId = "{{ test_id }}"

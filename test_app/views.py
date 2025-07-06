@@ -34,7 +34,8 @@ def render_test_host(test_id):
     return{
         "test": test,
         "test_id": test_id,
-        "host_name": flask_login.current_user.nickname
+        "host_name": flask_login.current_user.nickname,
+        'countQuestions': len(test.questions.split(' '))
     }
 
 
@@ -93,15 +94,19 @@ def render_test_user_question(test_id, question_id):
         flask.session.modified = True
 
         if flask.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            response_data = {
+                "correct_answer": question.correct_answer,
+                "question_text": question.text
+            }
+
             if current_index + 1 < total_questions:
                 next_question_id = question_ids[current_index + 1]
-                return flask.jsonify({
-                    "next_url": flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id)
-                })
+                response_data["next_url"] = flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id)
             else:
-                return flask.jsonify({
-                    "result_url": flask.url_for("test.test_result", test_id=test_id)
-                })
+                response_data["result_url"] = flask.url_for("test.test_result", test_id=test_id)
+
+            return flask.jsonify(response_data)
+
         else:
             if current_index + 1 < total_questions:
                 next_question_id = question_ids[current_index + 1]
@@ -239,6 +244,7 @@ def test_result(test_id):
     # date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
     # time_text = f"{date.tm_hour}:{date.tm_min}"
     # time_text = time_complete
+    
     return {
         "test": test,
         "total_questions": total_questions,
@@ -317,3 +323,25 @@ def handle_disconnect():
             if username and username in cell['participants']:
                 cell['participants'].remove(username)
                 emit('participants_update', list(cell['participants']), room=room_name)
+@socketio.on('participant_answered_with_correct')
+def handle_answer_with_correct(data):
+    test_id = data.get('test_id')
+    user = data.get('user')
+    selected = data.get('selected')
+    correct = data.get('correct')
+    question_text = data.get('question_text')
+
+    cell = active_tests.get(test_id)
+    if not cell:
+        return
+
+    host_sid = cell.get('host_sid')
+    if host_sid:
+        emit('show_correct_answer', {
+            'user': user,
+            'selected': selected,
+            'correct': correct,
+            'question_text': question_text
+        }, to=host_sid)
+
+

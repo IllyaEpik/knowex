@@ -5,10 +5,37 @@ socket.emit('join_test', {
     username: hostName,
     role: 'host'
 });
+const startBtn = document.getElementById('start_test_btn');
+const questionContainer = document.getElementById("question_container"); // <div id="question_container"></div>
+const questionText = document.createElement("p");
+questionText.id = "cocain";
+let currentQuestion = 1;
+let countQuestions = Number(document.getElementById('countQuestion').value);
+let testStarted = false;
 
-document.getElementById('start_test_btn').addEventListener('click', () => {
-    socket.emit('start_test_command', { test_id: testId });
+startBtn.addEventListener('click', () => {
+    if (!testStarted) {
+        testStarted = true;
+
+        questionText.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
+        questionContainer.appendChild(questionText);
+
+        startBtn.textContent = "Наступне питання";
+
+        socket.emit('start_test_command', { test_id: testId });
+    } else {
+        if (currentQuestion < countQuestions) {
+            currentQuestion++;
+            questionText.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
+            socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
+        } else {
+            questionText.textContent = `Тест завершено`;
+            startBtn.disabled = true;
+            socket.emit('end_test', { test_id: testId });
+        }
+    }
 });
+
 
 socket.on('host_ack', data => {
     console.log('Хост підключений:', data);
@@ -38,3 +65,33 @@ socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");
     location.reload();
 });
+
+socket.on('participant_answered', data => {
+    const container = document.getElementById('answers_log');
+    const entry = document.createElement('div');
+
+    entry.innerHTML = `
+        <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
+        Правильна відповідь: <strong style="color:green">${data.correct}</strong><br>
+        ${data.question_text ? `Питання: ${data.question_text}<br>` : ''}
+        <hr>
+    `;
+
+    container.prepend(entry); // новые сверху
+});
+
+// socket.on('show_correct_answer', data => {
+//     const log = document.getElementById('answers_log');
+//     const entry = document.createElement('div');
+
+//     entry.innerHTML = `
+//         <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
+//         Питання: <strong>${data.question_text}</strong><br>
+//         Правильна відповідь: <span style="color:green">${data.correct}</span><br><hr>
+//     `;
+
+//     log.prepend(entry); // новые сверху
+// });
+
+
+
