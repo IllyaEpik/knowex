@@ -97,7 +97,7 @@ body {
     position: absolute;
     border: none;
     top: 110px;
-    left: 80px;
+    left: 25px;
     background-color: var(--bg-main);
     padding-left: 25px;
     display: flex;
@@ -447,4 +447,15 @@ body.dark .to-test button:focus {
 
 body.dark .to-test button{
     background-color: #4a5bbd;
+}
+
+
+
+.top_panel {
+    margin-left: 250px; /* ширина .left_panel */
+    transition: margin 0.3s;
+}
+.top_panel.full {
+    margin-left: 0;
+    width: 100%;
 }
