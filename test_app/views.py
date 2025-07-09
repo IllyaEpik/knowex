@@ -220,12 +220,12 @@ def test_result(test_id):
         if is_correct:
             correct += 1
 
-    questions.append({
-        "text": question.text,
-        "correct_answer": question.correct_answer,
-        "user_answer": user_answer,
-        "is_correct": is_correct 
-    })
+        questions.append({
+            "text": question.text,
+            "correct_answer": question.correct_answer,
+            "user_answer": user_answer,
+            "is_correct": is_correct 
+        })
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
         print(f"User {user.id} completed test {user.complete_tests}")
@@ -240,10 +240,6 @@ def test_result(test_id):
                 test.count += 1
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
-    # date = time_complete
-    # date_text = f"{date.tm_mday}.{date.tm_mon}.{date.tm_year}"
-    # time_text = f"{date.tm_hour}:{date.tm_min}"
-    # time_text = time_complete
     
     return {
         "test": test,

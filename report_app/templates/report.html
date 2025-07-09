@@ -90,28 +90,30 @@
 
 <div class="container_tests">
     {% for test in tests %}
-        <div class="container_test"
-             data-class="{{ test.class_name }}"
-             data-subject="{{ test.subject }}"
-             data-question-count="{{ test.questions|length }}"
-             data-date="{{ test.date }}">
-            <div class="test_name">
-                <h2>{{ test.name }}</h2>
+        {% if not filters or test.id in filters %}
+            <div class="container_test"
+                data-class="{{ test.class_name }}"
+                data-subject="{{ test.subject }}"
+                data-question-count="{{ test.questions|length }}"
+                data-date="{{ test.date }}">
+                <div class="test_name">
+                    <h2>{{ test.name }}</h2>
+                </div>
+                <div class="test_description">
+                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                </div>
+                <div class="test_info" hidden>
+                    <input class="test_class" value="{{ test.class }}" readonly hidden>
+                    <input class="test_subject" value="{{ test.subject }}" readonly hidden>
+                    <input class="test_question_count" value="{{ test.questions | length }}" readonly hidden>
+                    <input class="test_date" value="{{ test.date }}" readonly hidden>
+                    <input class="test_count" value="{{ test.count }}" readonly hidden>
+                </div>
+                <div class="test_link">
+                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
+                </div>
             </div>
-            <div class="test_description">
-                <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
-            </div>
-            <div class="test_info" hidden>
-                <input class="test_class" value="{{ test.class }}" readonly hidden>
-                <input class="test_subject" value="{{ test.subject }}" readonly hidden>
-                <input class="test_question_count" value="{{ test.questions | length }}" readonly hidden>
-                <input class="test_date" value="{{ test.date }}" readonly hidden>
-                <input class="test_count" value="{{ test.count }}" readonly hidden>
-            </div>
-            <div class="test_link">
-                <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
-            </div>
-        </div>
+        {% endif %}
     {% endfor %}
 </div>
 

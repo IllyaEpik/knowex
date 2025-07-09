@@ -31,16 +31,12 @@
         </div>
         <div class="menu_item" id="report">
             <img src="{{ url_for('static', filename='new_icons/report.svg') }}" alt="Report" class="report_photo">
-            <a href="/report" class="report">Тести</a>
+            <a href="/report/0" class="report">Тести</a>
         </div>
     </div>
     {% endif %}
     
     <div class="top_panel{% if not is_authenticated %} full{% endif %}">
-        <form class="to-test" onsubmit="return goToTest(event)">
-            <input type="text" id="test_id_input" placeholder="ID тесту" min="1" required>
-            <button type="submit">Перейти</button>
-        </form>
         {% if is_authenticated %}
             <img class="profile_icon" src="{{ url_for('static', filename='images/user_icons/profile.png') }}" alt="">
             <button class="nickname">{{ nickname }}</button>

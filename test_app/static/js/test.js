@@ -1,5 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
+    let responseName = window.location.pathname
     document.addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent the default form submission
 
@@ -9,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
-
+            console.log(window.location.pathname,responseName)
             $.ajax({
-                url: window.location.pathname,
+                url: responseName,
                 type: 'POST',
                 data: { answer: selected.value },
                 success: function (response) {
@@ -24,10 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             url: response.next_url,
                             headers: { 'X-Requested-With': 'XMLHttpRequest' },
                             success: function (data) {
+                                // console.log(data)
+                                let elem = document.createElement('div')
+                                elem.innerHTML = data
+                                console.log(elem.querySelector('.question-container'))
+                                document.querySelector('.question-container').innerHTML = elem.querySelector('.question-container').innerHTML
+                                responseName = response.next_url
+                                // document.querySelector('.question-container').innerHTML = data;
 
-                                document.querySelector('.question-container').innerHTML = data;
-
-                                history.pushState({}, '', response.next_url);
+                                // history.pushState({}, '', response.next_url);
                             },
                             
                             error: function () {
