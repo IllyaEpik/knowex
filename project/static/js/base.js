@@ -1,20 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
+    let count = 0
     const themeToggleButton = document.getElementById("theme_change");
+    const input = document.querySelector(".input");
     const body = document.body;
-
+    console.log(themeToggleButton)
 
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
         body.classList.add(savedTheme);
+        input.checked = 'true'
     }
 
     themeToggleButton.addEventListener("click", () => {
-        if (body.classList.contains("dark")) {
-            body.classList.remove("dark");
-            localStorage.setItem("theme", "");
-        } else {
-            body.classList.add("dark");
-            localStorage.setItem("theme", "dark"); 
+        console.log(body.classList.contains("dark"))
+        if (count){
+
+            if (body.classList.contains("dark")) {
+                body.classList.remove("dark");
+                localStorage.setItem("theme", "");
+            } else {
+                body.classList.add("dark");
+                localStorage.setItem("theme", "dark"); 
+            }
+            count = false
+        }else{
+            count = true
         }
     });
 });

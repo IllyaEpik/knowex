@@ -246,18 +246,18 @@ body {
     transition: all 0.3s;
     margin-left: 5px;
 }
-body:not(.dark) .theme_change {
+/* body:not(.dark) .theme_change {
     background-image: url("images/theme_dark.png");
     margin-left: 20px;
     margin-bottom: 20px;
-}
+} */
 
-body.dark .theme_change {
+/* body.dark .theme_change {
     background-image: url("images/theme_bright.png");
     width: 75px;
     height: 75px;
     margin-right: 80px;
-}
+} */
 .theme_change:hover, body.dark .theme_change:hover {
     transform: scale(1.1);
 }
