@@ -31,9 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 console.log(elem.querySelector('.question-container'))
                                 document.querySelector('.question-container').innerHTML = elem.querySelector('.question-container').innerHTML
                                 responseName = response.next_url
-                                // document.querySelector('.question-container').innerHTML = data;
-
-                                // history.pushState({}, '', response.next_url);
+                                // document.querySelector('.question-container').innerHTML = data;e({}, '', response.next_url);
                             },
                             
                             error: function () {
