@@ -350,9 +350,13 @@ def handle_answer_with_correct(data):
     test = Test.query.filter_by(id=int(test_id)).first()
     question_id = test.questions.split(' ')[int(question_number)-1]
     question =Questions.query.get(question_id)
-    print()
     emit('nextQuestion', {
             'answers': json.loads(question.answers) + [question.correct_answer],
             'question_text': question.text,
             'question_number':question_number
         }, room=room_name)
+# @socketio.on('next_question')
+# def cqwwewqeweq(data):
+#     room_name = f'test_{test_id}'
+#     emit('url',{"data":'something'}, room=room)
+#     pass

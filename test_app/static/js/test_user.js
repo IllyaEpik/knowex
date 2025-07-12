@@ -26,8 +26,6 @@ socket.on('nextQuestion', data => {
         label.innerHTML = `<input type="radio" name="answer" value="${ans}" required>${ans} `
         answers.append(label)
     }
-
-    // question_text
 });
 if (!testId || !username) {
     console.error("TEST_ID або USERNAME не визначені");
