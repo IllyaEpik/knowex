@@ -6,7 +6,7 @@ socket.emit('join_test', {
     role: 'host'
 });
 const startBtn = document.getElementById('start_test_btn');
-const questionContainer = document.getElementById("question_container"); // <div id="question_container"></div>
+const questionContainer = document.getElementById("currentQuestion");
 const questionText = document.createElement("p");
 questionText.id = "cocain";
 let currentQuestion = 1;
@@ -18,11 +18,13 @@ startBtn.addEventListener('click', () => {
         testStarted = true;
 
         questionText.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
-        questionContainer.appendChild(questionText);
+        questionContainer.append(questionText)
+        // questionContainer.appendChild(questionText);
 
         startBtn.textContent = "Наступне питання";
 
         socket.emit('start_test_command', { test_id: testId });
+        socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
     } else {
         if (currentQuestion < countQuestions) {
             currentQuestion++;
@@ -35,8 +37,10 @@ startBtn.addEventListener('click', () => {
         }
     }
 });
-
-
+// nextQuestion
+socket.on('nextQuestion', data => {
+    console.log('data:', data);
+});
 socket.on('host_ack', data => {
     console.log('Хост підключений:', data);
 });

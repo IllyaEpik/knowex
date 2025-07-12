@@ -1,8 +1,34 @@
 const socket = io();
+const questionContainer = document.getElementById("questionContainer");
+const testWait = document.getElementById("testWait");
+const answers = document.querySelector(".answers");
+const count_questions = document.querySelector("#count_questions");
+// count_questions
+// test
 const testId = window.TEST_ID || null;
 let username = window.USERNAME || null;
 let firstQid = window.FIRST_QID || null;
+/* 
+    <label class="answer-option">
+    <input type="radio" name="answer" value="ans" required>
+    ans 
+    </label> 
+*/
+socket.on('nextQuestion', data => {
+    console.log('data:', data);
+    document.querySelector('#questionText').textContent = data['question_text']
+    count_questions.textContent = data['question_number']
+    // question_number
+    answers.innerHTML = ''
+    for (let ans of data['answers']){
+        let label = document.createElement('label')
+        label.className = 'answer-option'
+        label.innerHTML = `<input type="radio" name="answer" value="${ans}" required>${ans} `
+        answers.append(label)
+    }
 
+    // question_text
+});
 if (!testId || !username) {
     console.error("TEST_ID або USERNAME не визначені");
     alert("Помилка: неможливо підключитися до тесту.");
@@ -25,7 +51,9 @@ socket.on('participant_ack', (d) => {
 
 socket.on('test_started', (data) => {
     if (data.test_id && data.first_question_id) {
-        window.location.href = `/test/${data.test_id}/user/${data.first_question_id}`;
+        // window.location.href = `/test/${data.test_id}/user/${data.first_question_id}`;
+        questionContainer.classList.remove('hidden')
+        testWait.classList.add('hidden')
     } else {
         console.error("test_id або first_question_id не визначені", data.test_id, data.first_question_id);
     }

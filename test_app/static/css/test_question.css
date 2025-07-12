@@ -24,6 +24,9 @@ body.dark {
     padding: 36px 32px 32px 32px;
     text-align: center;
 }
+.hidden{
+    display: none;
+}
 #content{
     overflow-y: scroll;
 }

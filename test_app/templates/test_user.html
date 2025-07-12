@@ -7,12 +7,29 @@
     {% if current_user != " " %}
         <script> window.USERNAME = "{{ current_user }}" </script>
     {% endif %}
-
+    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_question.css') }}" >
 {% endblock %}
 
 {% block content %}
-  <h2>Тест №{{ test.id }} – {{ test.title }}</h2>
-  <p>Очікуйте на початок тесту...</p>
+<div class="question-container hidden" id="questionContainer">
+    <form method="post">
+        <div class="question-text">
+            <b class="countQuestions">Питання <span id="count_questions"></span> з {{count_questions}}:</b><br>
+            <span>Питання: <span id="questionText"></span></span>
+        </div>
+
+        <div class="answers">
+                
+        </div>
+        <button class="submit-btn" type="button">
+            відправити
+        </button>
+    </form>
+  </div>
+  <div id="testWait">
+    <h2>Тест №{{ test.id }} – {{ test.title }}</h2>
+    <p>Очікуйте на початок тесту...</p>
+  </div>
 
   <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
   <script src="{{ url_for('test.static', filename='js/test_user.js') }}"></script>

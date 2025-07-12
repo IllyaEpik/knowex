@@ -35,7 +35,7 @@ def render_test_host(test_id):
         "test": test,
         "test_id": test_id,
         "host_name": flask_login.current_user.nickname,
-        'countQuestions': len(test.questions.split(' '))
+        'countQuestions': len(test.questions.split(' '))-1
     }
 
 
@@ -49,6 +49,7 @@ def render_test_user(test_id):
     return {
         "current_user": flask_login.current_user.nickname if flask_login.current_user.nickname else " ",
         "test": test,
+        'count_questions':len(test.questions.split(' '))-1,
         "first_qid": first_qid,
     }
     
@@ -341,3 +342,17 @@ def handle_answer_with_correct(data):
         }, to=host_sid)
 
 
+@socketio.on('next_question')
+def handle_answer_with_correct(data):
+    test_id = data.get('test_id')
+    question_number = data.get('question_number')
+    room_name = f'test_{test_id}'
+    test = Test.query.filter_by(id=int(test_id)).first()
+    question_id = test.questions.split(' ')[int(question_number)-1]
+    question =Questions.query.get(question_id)
+    print()
+    emit('nextQuestion', {
+            'answers': json.loads(question.answers) + [question.correct_answer],
+            'question_text': question.text,
+            'question_number':question_number
+        }, room=room_name)
