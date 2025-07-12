@@ -130,7 +130,8 @@ body {
     height: 50px;
     display: block;
     object-fit: cover;
-    margin-right: 8px;
+    margin-right: 5px;
+    margin-left: 8px;
 }
 
 .name {
@@ -244,20 +245,8 @@ body {
     background-position: center;
     cursor: pointer;
     transition: all 0.3s;
-    margin-left: 5px;
 }
-/* body:not(.dark) .theme_change {
-    background-image: url("images/theme_dark.png");
-    margin-left: 20px;
-    margin-bottom: 20px;
-} */
 
-/* body.dark .theme_change {
-    background-image: url("images/theme_bright.png");
-    width: 75px;
-    height: 75px;
-    margin-right: 80px;
-} */
 .theme_change:hover, body.dark .theme_change:hover {
     transform: scale(1.1);
 }
@@ -488,6 +477,7 @@ body.dark .to-test button{
 
 
 .theme_change {
+  margin-left: 18px;
   font-size: 17px;
   position: relative;
   display: inline-block;
