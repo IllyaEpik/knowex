@@ -360,3 +360,34 @@ def handle_answer_with_correct(data):
 #     room_name = f'test_{test_id}'
 #     emit('url',{"data":'something'}, room=room)
 #     pass
+
+
+
+
+
+
+
+
+
+@socketio.on('save_user_answer')
+def handle_save_user_answer(data):
+    test_id = data.get('test_id')
+    username = data.get('username')
+    question_id = data.get('question_id')
+    answer = data.get('answer')
+    correct_answer = data.get('correct_answer')
+    question_text = data.get('question_text')
+
+    cell = active_tests.setdefault(test_id, {'participants': set(), 'results': {}, 'answers': {}})
+    user_answers = cell['answers'].setdefault(username, [])
+    user_answers.append({
+        'question_id': question_id,
+        'question_text': question_text,
+        'answer': answer,
+        'correct_answer': correct_answer,
+        'is_correct': answer == correct_answer
+    })
+    # Можно добавить сохранение в базу данных здесь
+
+    emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
+

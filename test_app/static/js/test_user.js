@@ -119,3 +119,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
+
+
+
+$.ajax({
+    url: window.location.pathname,
+    type: 'POST',
+    data: { answer: selectedValue },
+    success: function (response) {
+
+        // Сохраняем ответ пользователя через сокет
+        if (window.TEST_ID && window.USERNAME && selectedValue) {
+            socket.emit('save_user_answer', {
+                test_id: window.TEST_ID,
+                username: window.USERNAME,
+                question_text: response.question_text,
+                question_id: window.location.pathname.split('/').pop(),
+                answer: selectedValue,
+                correct_answer: response.correct_answer
+            });
+        }
+
+    },
+
+});
