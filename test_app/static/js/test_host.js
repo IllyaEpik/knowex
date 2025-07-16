@@ -1,4 +1,5 @@
 const socket = io();
+let user_answers = {}
 
 socket.emit('join_test', {
     test_id: testId,
@@ -12,7 +13,6 @@ questionText.id = "cocain";
 let currentQuestion = 1;
 let countQuestions = Number(document.getElementById('countQuestion').value);
 let testStarted = false;
-
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
         testStarted = true;
@@ -32,8 +32,9 @@ startBtn.addEventListener('click', () => {
             socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
         } else {
             questionText.textContent = `Тест завершено`;
+            console.log(user_answers)
             startBtn.disabled = true;
-            socket.emit('end_test', { test_id: testId });
+            socket.emit('end_test', { test_id: testId, user_answers:user_answers });
         }
     }
 });
@@ -48,13 +49,22 @@ socket.on('host_ack', data => {
 socket.on('participants_update', participants => {
     const ul = document.getElementById('participants_list');
     ul.innerHTML = '';
+    console.log(participants)
+    user_answers = {}
+    
     participants.forEach(p => {
+        user_answers[p] = []
         const li = document.createElement('li');
         li.textContent = p;
         ul.appendChild(li);
     });
 });
-
+// [].push
+socket.on('send_answer', answer => {
+    
+    console.log(user_answers,answer)
+    user_answers[answer.user].push( answer.answer)
+})
 socket.on('update_results', results => {
     const ul = document.getElementById('results_list');
     ul.innerHTML = '';
@@ -70,19 +80,19 @@ socket.on('test_closed', () => {
     location.reload();
 });
 
-socket.on('participant_answered', data => {
-    const container = document.getElementById('answers_log');
-    const entry = document.createElement('div');
+// socket.on('participant_answered', data => {
+//     const container = document.getElementById('answers_log');
+//     const entry = document.createElement('div');
 
-    entry.innerHTML = `
-        <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
-        Правильна відповідь: <strong style="color:green">${data.correct}</strong><br>
-        ${data.question_text ? `Питання: ${data.question_text}<br>` : ''}
-        <hr>
-    `;
+//     entry.innerHTML = `
+//         <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
+//         Правильна відповідь: <strong style="color:green">${data.correct}</strong><br>
+//         ${data.question_text ? `Питання: ${data.question_text}<br>` : ''}
+//         <hr>
+//     `;
 
-    container.prepend(entry); // новые сверху
-});
+//     container.prepend(entry); // новые сверху
+// });
 
 // socket.on('show_correct_answer', data => {
 //     const log = document.getElementById('answers_log');

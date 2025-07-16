@@ -19,12 +19,14 @@ def render_test(test_id: int):
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     date = time.localtime(test.date)
-    date = time.strftime('%y,%m,%d,%H:%M', date)
+    time_of_creation = time.strftime('%H:%M', date)
+    date = time.strftime('%d.%m.20%y', date)
     return {
         "test": test,
         "name": user,
         "total_questions": total_questions,
-        "date": date
+        "date": date,
+        "time_of_creation": time_of_creation
     }
 
 @config_page("test_host.html")
@@ -208,7 +210,6 @@ def test_result(test_id):
     test_answers = flask.session.get("test_answers", [])
     correct = 0
     questions = []
-
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
@@ -241,8 +242,7 @@ def test_result(test_id):
                 test.count += 1
         DATABASE.session.commit()
     flask.session.pop("test_answers", None)
-    
-    return {
+    print({
         "test": test,
         "total_questions": total_questions,
         "time_date": time_date,
@@ -250,9 +250,78 @@ def test_result(test_id):
         "answers": test_answers,
         "correct": correct,
         "questions": questions
+    })
+    return {
+        "test": test,
+        "total_questions": total_questions,
+        "time_date": time_date,
+        'time_text':time_text,
+        # "answers": test_answers,
+        "correct": correct,
+        "questions": questions
+    }
+# end_test
+# {'test': pixel, 
+#  'total_questions': 1, 
+#  'time_date': '09.07.2025', 
+#  'time_text': '19:50', 
+
+# 'correct': 0, 
+
+# }
+@socketio.on('end_test')
+def end_test(data:dict):
+    test_id = data.get('test_id')
+    test = Test.query.get(int(test_id))
+    # time_complete = time.localtime(test.date)
+    # time_date = time.strftime('%d.%m.20%y', time_complete)
+    # time_text = time.strftime('%H:%M', time_complete)
+    user_answers = data.get('user_answers')
+    questions = test.questions.split(' ')
+    count = len(questions)
+    print(user_answers)
+    
+    print(active_tests)
+    data = {
+        "test": test.name,
+        # "time_date": time_date,
+        # 'time_text':time_text,
+        "total_questions": count,
+        "users": {}
+        # "answers": test_answers,
+        # "correct": correct,
     }
 
+    # 'questions': [{'text': '3321', 
+#                 'correct_answer': '312213213', 
+#                 'user_answer': '231213', 
+#                 'is_correct': False 
+# }]
 
+    for user_answer in user_answers:
+        data["users"][user_answer] = {}
+        for ans in user_answers[user_answer]:
+            print(ans,user_answers[user_answer],1111111111111111)
+            question_in = []
+            corrects = 0
+            for question_id in questions:
+                if question_id:
+                    question = Questions.query.get(int(question_id))
+                    correct = ans==question.correct_answer
+                    question_in.append({
+                        'text':question.text,
+                        'correct_answer':question.correct_answer,
+                        'user_answer':ans,
+                        'is_correct':correct
+                    })
+                    corrects += correct
+                    #  'answers': [{'answer': '231213', 
+            #               'is_correct': False, 
+            #               'question_id': 34
+            #               }], 
+            data["users"][user_answer]['questions'] = question_in
+            data["users"][user_answer]['correct'] = corrects
+    print (data)
 @socketio.on('start_test_command')
 def handle_start_cmd(data):
     test_id = data['test_id']
@@ -367,7 +436,7 @@ def handle_answer_with_correct(data):
 
 
 
-
+# end_test
 
 @socketio.on('save_user_answer')
 def handle_save_user_answer(data):
@@ -390,4 +459,9 @@ def handle_save_user_answer(data):
     # Можно добавить сохранение в базу данных здесь
 
     emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
-
+@socketio.on('send_answer')
+def save_user_answer(data):
+    test_id = data.get('test_id')
+    room_name = f'test_{test_id}'
+    emit('send_answer', data, room=room_name)
+# send_answer

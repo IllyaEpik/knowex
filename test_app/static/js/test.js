@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
+            console.log(selected.value)
             console.log(window.location.pathname,responseName)
             $.ajax({
                 url: responseName,
