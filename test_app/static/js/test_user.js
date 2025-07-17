@@ -4,17 +4,65 @@ document.addEventListener('DOMContentLoaded', function () {
     const testWait = document.getElementById("testWait");
     const answers = document.querySelector(".answers");
     const count_questions = document.querySelector("#count_questions");
-    // count_questions
-    // test
+    const resultContainer = document.querySelector('.result-container')
+    const testName = document.querySelector('#testName')
+    const testDate = document.querySelector('#testDate')
+    const testTime = document.querySelector('#testTime')
+    const correct = document.querySelector('#correct')
+    const link = document.querySelector('link')
+    const linkToResult = document.querySelector('#linkToResult')
+    const questionElem = document.createElement('div')
+    questionElem.className = "questions-result-list"
+    questionElem.style.marginTop = '32px'
+    questionElem.innerHTML = `
+    <h3>Всі питання та правильні відповіді:</h3>
+    <ol></ol>
+    `
     const testId = window.TEST_ID || null;
     let username = window.USERNAME || null;
     let firstQid = window.FIRST_QID || null;
-    /* 
-        <label class="answer-option">
-        <input type="radio" name="answer" value="ans" required>
-        ans 
-        </label> 
-    */
+    socket.on('testEnd', (data) => {
+        link.href = linkToResult.value
+        console.log(data)
+        resultContainer.classList.remove('hidden')
+        questionContainer.classList.add('hidden')
+        testName.textContent = data.test
+        testDate.textContent = data.time_date
+        testTime.textContent = data.time_text
+        let currentUser = data.users[username]
+        console.log(username,currentUser,data)
+        correct.textContent = `${currentUser.correct} з ${data.total_questions}` 
+        // {
+        //     "text": "3321",
+        //     "correct_answer": "312213213",
+        //     "user_answer": "312213213",
+        //     "is_correct": true
+        // }
+        let count = 1
+        for (let question of currentUser.questions){
+            console.log(question)
+            
+            questionElem.querySelector('ol').innerHTML += `
+                
+                
+                        <li style="margin-bottom:18px;">
+                            <div><b>Питання:</b> ${question.text}</div>
+                            <div><b>Правильна відповідь:</b> ${question.correct_answer}</div>
+                                <div>
+                                    <b>Ваша відповідь:</b>
+                                        <span style="color:#ef4444;">${question.user_answer}</span>
+                                </div>
+                        </li>
+                
+                `
+            if (question.is_correct){
+                questionElem.querySelector('span').style.color = '#22c55e'
+            }
+            document.body.querySelector('.content').append(questionElem)
+            count++
+        }
+        // color:#22c55e;
+    });
     socket.on('nextQuestion', data => {
         console.log('data:', data);
         document.querySelector('#questionText').textContent = data['question_text']
@@ -63,7 +111,41 @@ document.addEventListener('DOMContentLoaded', function () {
         alert("Тест було закрито хостом");
         window.location.href = "/";
     });
+    
+    // result-container
+// {% block content %}
+// <div class="result-container">
+//     <h2>Результати тесту: {{ test.name }}</h2>
+//     <p>Дата завершення: {{ time_date }}</p>
+//     <p>Час завершення: {{ time_text }}</p>
+//     <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p> 
+//     <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
+// </div>
 
+// {% if questions is defined %}
+//     <div class="questions-result-list" style="margin-top:32px;">
+//         <h3>Всі питання та правильні відповіді:</h3>
+//         <ol>
+//             {% for q in questions %}
+//                 <li style="margin-bottom:18px;">
+//                     <div><b>Питання:</b> {{ q.text }}</div>
+//                     <div><b>Правильна відповідь:</b> {{ q.correct_answer }}</div>
+//                     {% if q.user_answer is defined %}
+//                         <div>
+//                             <b>Ваша відповідь:</b>
+//                             {% if q.user_answer == q.correct_answer %}
+//                                 <span style="color:#22c55e;">{{ q.user_answer }}</span>
+//                             {% else %}
+//                                 <span style="color:#ef4444;">{{ q.user_answer }}</span>
+//                             {% endif %}
+//                         </div>
+//                     {% endif %}
+//                 </li>
+//             {% endfor %}
+//         </ol>
+//     </div>
+// {% endif %}
+// {% endblock %}
     // document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('submit', function (e) {
             e.preventDefault();

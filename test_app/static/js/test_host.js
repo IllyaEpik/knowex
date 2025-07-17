@@ -53,6 +53,7 @@ socket.on('participants_update', participants => {
     user_answers = {}
     
     participants.forEach(p => {
+        console.log(user_answers)
         user_answers[p] = []
         const li = document.createElement('li');
         li.textContent = p;

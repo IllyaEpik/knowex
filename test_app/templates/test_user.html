@@ -11,6 +11,14 @@
 {% endblock %}
 
 {% block content %}
+<input type="hidden" id="linkToResult" value="{{ url_for('test.static', filename='css/test_result.css') }}">
+<div class="result-container hidden">
+    <h2>Результати тесту: <span id="testName"></span></h2>
+    <p>Дата завершення: <span id="testDate"></span></p>
+    <p>Час завершення: <span id="testTime"></span></p>
+    <p>Вірних відповідей: <span id="correct"></span></p> 
+    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
+</div>
 <div class="question-container hidden" id="questionContainer">
     <form method="post">
         <div class="question-text">

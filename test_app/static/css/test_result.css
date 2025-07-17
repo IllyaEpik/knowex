@@ -18,6 +18,9 @@ body.dark {
 #content{
     overflow-y: scroll;
 }
+.hidden{
+    display: none;
+}
 .result-container {
     max-width: 600px;
     margin: 40px auto 24px auto;

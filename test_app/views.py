@@ -201,7 +201,7 @@ def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
-    time_complete = time.localtime(test.date)
+    time_complete = time.localtime(time.time())
     time_date = time.strftime('%d.%m.20%y', time_complete)
     time_text = time.strftime('%H:%M', time_complete)
     # time_complete = time.strftime('%y,%m,d,%H:%M', time_complete)
@@ -272,20 +272,24 @@ def test_result(test_id):
 @socketio.on('end_test')
 def end_test(data:dict):
     test_id = data.get('test_id')
+    room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
     # time_complete = time.localtime(test.date)
     # time_date = time.strftime('%d.%m.20%y', time_complete)
     # time_text = time.strftime('%H:%M', time_complete)
     user_answers = data.get('user_answers')
     questions = test.questions.split(' ')
-    count = len(questions)
+    count = len(questions)-1
     print(user_answers)
     
     print(active_tests)
+    time_complete = time.localtime(time.time())
+    time_date = time.strftime('%d.%m.20%y', time_complete)
+    time_text = time.strftime('%H:%M', time_complete)
     data = {
         "test": test.name,
-        # "time_date": time_date,
-        # 'time_text':time_text,
+        "time_date": time_date,
+        'time_text':time_text,
         "total_questions": count,
         "users": {}
         # "answers": test_answers,
@@ -322,6 +326,20 @@ def end_test(data:dict):
             data["users"][user_answer]['questions'] = question_in
             data["users"][user_answer]['correct'] = corrects
     print (data)
+    emit('testEnd', data, room=room)
+# {
+    #    'test': 'pixel', 
+    #    'total_questions': 2, 
+    #    'users': {
+        #       '123': {
+            # 'questions': [
+                # {
+                    # 'text': '3321', 
+                    # 'correct_answer': '312213213', 
+                    # 'user_answer': '312213213', 
+                    # 'is_correct': True}], 
+                    # 'correct': 1
+                    # }}}
 @socketio.on('start_test_command')
 def handle_start_cmd(data):
     test_id = data['test_id']
