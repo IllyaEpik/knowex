@@ -304,27 +304,30 @@ def end_test(data:dict):
 
     for user_answer in user_answers:
         data["users"][user_answer] = {}
-        for ans in user_answers[user_answer]:
-            print(ans,user_answers[user_answer],1111111111111111)
-            question_in = []
-            corrects = 0
-            for question_id in questions:
-                if question_id:
-                    question = Questions.query.get(int(question_id))
-                    correct = ans==question.correct_answer
-                    question_in.append({
-                        'text':question.text,
-                        'correct_answer':question.correct_answer,
-                        'user_answer':ans,
-                        'is_correct':correct
-                    })
-                    corrects += correct
+        question_in = []
+        corrects = 0
+        count = 0
+        for question_id in questions:
+            if question_id:
+                # for ans in user_answers[user_answer]:
+                ans = user_answers[user_answer][count]
+                print('45678908poikjghgf',ans,user_answers[user_answer],1111111111111111)
+                question = Questions.query.get(int(question_id))
+                correct = str(ans)==str(question.correct_answer)
+                question_in.append({
+                    'text':question.text,
+                    'correct_answer':question.correct_answer,
+                    'user_answer':ans,
+                    'is_correct':correct
+                })
+                corrects += correct
+                count+=1
                     #  'answers': [{'answer': '231213', 
             #               'is_correct': False, 
             #               'question_id': 34
             #               }], 
-            data["users"][user_answer]['questions'] = question_in
-            data["users"][user_answer]['correct'] = corrects
+        data["users"][user_answer]['questions'] = question_in
+        data["users"][user_answer]['correct'] = corrects
     print (data)
     emit('testEnd', data, room=room)
 # {

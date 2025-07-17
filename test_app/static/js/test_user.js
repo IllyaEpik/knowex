@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <h3>Всі питання та правильні відповіді:</h3>
     <ol></ol>
     `
+
+    const allQuestions = questionElem.querySelector('ol')
     const testId = window.TEST_ID || null;
     let username = window.USERNAME || null;
     let firstQid = window.FIRST_QID || null;
@@ -39,10 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
         //     "is_correct": true
         // }
         let count = 1
+
         for (let question of currentUser.questions){
             console.log(question)
             
-            questionElem.querySelector('ol').innerHTML += `
+            allQuestions.innerHTML += `
                 
                 
                         <li style="margin-bottom:18px;">
@@ -56,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 `
             if (question.is_correct){
-                questionElem.querySelector('span').style.color = '#22c55e'
+                let spans = allQuestions.querySelectorAll('span')
+                spans[spans.length-1].style.color = '#22c55e'
             }
             document.body.querySelector('.content').append(questionElem)
             count++

@@ -49,6 +49,9 @@ def render_user():
 
 @config_page('profile.html')
 def render_profile_page():
+
+    if not flask_login.current_user.is_authenticated:
+        return flask.redirect('/user')
     user = User.query.filter_by(nickname=flask_login.current_user.nickname).first()
     list_created_tests = user.create_tests.split(' ') if user.create_tests else []
     list_completed_tests = user.complete_tests.split(' ') if user.complete_tests else []

@@ -26,9 +26,19 @@ startBtn.addEventListener('click', () => {
         socket.emit('start_test_command', { test_id: testId });
         socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
     } else {
+        console.log(user_answers, currentQuestion)
+        for (let answer in user_answers){
+                console.log(user_answers[answer].length, currentQuestion)
+                if (user_answers[answer].length < currentQuestion){
+
+                    user_answers[answer].push(null)
+                }
+            }
         if (currentQuestion < countQuestions) {
             currentQuestion++;
             questionText.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
+            
+            // currentQuestion
             socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
         } else {
             questionText.textContent = `Тест завершено`;
@@ -40,7 +50,7 @@ startBtn.addEventListener('click', () => {
 });
 // nextQuestion
 socket.on('nextQuestion', data => {
-    console.log('data:', data);
+    // console.log('data:', data);
 });
 socket.on('host_ack', data => {
     console.log('Хост підключений:', data);
@@ -53,8 +63,11 @@ socket.on('participants_update', participants => {
     user_answers = {}
     
     participants.forEach(p => {
-        console.log(user_answers)
-        user_answers[p] = []
+        console.log(user_answers,user_answers[p])
+        if (!user_answers[p]){
+
+            user_answers[p] = []
+        }
         const li = document.createElement('li');
         li.textContent = p;
         ul.appendChild(li);
@@ -63,8 +76,8 @@ socket.on('participants_update', participants => {
 // [].push
 socket.on('send_answer', answer => {
     
-    console.log(user_answers,answer)
-    user_answers[answer.user].push( answer.answer)
+    console.log(user_answers,answer,user_answers[answer.user])
+    user_answers[answer.user].push(answer.answer)
 })
 socket.on('update_results', results => {
     const ul = document.getElementById('results_list');
