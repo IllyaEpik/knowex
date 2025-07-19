@@ -1,216 +1,294 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
-    const questionContainer = document.getElementById("questionContainer");
-    const testWait = document.getElementById("testWait");
-    const answers = document.querySelector(".answers");
-    const count_questions = document.querySelector("#count_questions");
-    const resultContainer = document.querySelector('.result-container')
-    const testName = document.querySelector('#testName')
-    const testDate = document.querySelector('#testDate')
-    const testTime = document.querySelector('#testTime')
-    const correct = document.querySelector('#correct')
-    const link = document.querySelector('link')
-    const linkToResult = document.querySelector('#linkToResult')
-    const questionElem = document.createElement('div')
-    questionElem.className = "questions-result-list"
-    questionElem.style.marginTop = '32px'
-    questionElem.innerHTML = `
-    <h3>Всі питання та правильні відповіді:</h3>
-    <ol></ol>
-    `
 
-    const allQuestions = questionElem.querySelector('ol')
-    const testId = window.TEST_ID || null;
-    let username = window.USERNAME || null;
-    let firstQid = window.FIRST_QID || null;
-    socket.on('testEnd', (data) => {
-        link.href = linkToResult.value
-        console.log(data)
-        resultContainer.classList.remove('hidden')
-        questionContainer.classList.add('hidden')
-        testName.textContent = data.test
-        testDate.textContent = data.time_date
-        testTime.textContent = data.time_text
-        let currentUser = data.users[username]
-        console.log(username,currentUser,data)
-        correct.textContent = `${currentUser.correct} з ${data.total_questions}` 
-        // {
-        //     "text": "3321",
-        //     "correct_answer": "312213213",
-        //     "user_answer": "312213213",
-        //     "is_correct": true
-        // }
-        let count = 1
+    // Проверка DOM-элементов с отложенной инициализацией
+    function initializeElements(attempt = 1, maxAttempts = 10) {
+        const questionContainer = document.getElementById('questionContainer');
+        const testWait = document.getElementById('testWait');
+        const answers = document.querySelector('.answers');
+        const count_questions = document.querySelector('#count_questions');
+        const resultContainer = document.querySelector('.result-container');
+        const testName = document.querySelector('#testName');
+        const testDate = document.querySelector('#testDate');
+        const testTime = document.querySelector('#testTime');
+        const correct = document.querySelector('#correct');
+        const linkToResult = document.querySelector('#linkToResult');
+        const questionText = document.querySelector('#questionText');
+        const answerForm = document.getElementById('answer_form');
 
-        for (let question of currentUser.questions){
-            console.log(question)
-            
-            allQuestions.innerHTML += `
-                
-                
-                        <li style="margin-bottom:18px;">
-                            <div><b>Питання:</b> ${question.text}</div>
-                            <div><b>Правильна відповідь:</b> ${question.correct_answer}</div>
-                                <div>
-                                    <b>Ваша відповідь:</b>
-                                        <span style="color:#ef4444;">${question.user_answer}</span>
-                                </div>
-                        </li>
-                
-                `
-            if (question.is_correct){
-                let spans = allQuestions.querySelectorAll('span')
-                spans[spans.length-1].style.color = '#22c55e'
+        if (!questionContainer || !testWait || !answers || !count_questions || !resultContainer ||
+            !testName || !testDate || !testTime || !correct || !linkToResult || !questionText || !answerForm) {
+            console.error(`Attempt ${attempt}: Required DOM elements are missing`, {
+                questionContainer: !!questionContainer,
+                testWait: !!testWait,
+                answers: !!answers,
+                count_questions: !!count_questions,
+                resultContainer: !!resultContainer,
+                testName: !!testName,
+                testDate: !!testDate,
+                testTime: !!testTime,
+                correct: !!correct,
+                linkToResult: !!linkToResult,
+                questionText: !!questionText,
+                answerForm: !!answerForm
+            });
+            if (attempt < maxAttempts) {
+                setTimeout(() => initializeElements(attempt + 1, maxAttempts), 100);
+                return null;
+            } else {
+                alert('Помилка: необхідні елементи сторінки (зокрема форма) не знайдено. Зверніться до адміністратора.');
+                return null;
             }
-            document.body.querySelector('.content').append(questionElem)
-            count++
         }
-        // color:#22c55e;
-    });
-    socket.on('nextQuestion', data => {
-        console.log('data:', data);
-        document.querySelector('#questionText').textContent = data['question_text']
-        count_questions.textContent = data['question_number']
-        // question_number
-        answers.innerHTML = ''
-        for (let ans of data['answers']){
-            let label = document.createElement('label')
-            label.className = 'answer-option'
-            label.innerHTML = `<input type="radio" name="answer" value="${ans}" required>${ans} `
-
-            answers.append(label)
-        }
-    });
-    if (!testId || !username) {
-        console.error("TEST_ID або USERNAME не визначені");
-        alert("Помилка: неможливо підключитися до тесту.");
-    } else {
-        if (username === " ") {
-            username = document.getElementById("username")?.value || "Гість";
-        }
-
-        socket.emit('join_test', {
-            test_id: testId,
-            username: username,
-            role: 'participant'
-        });
+        return { questionContainer, testWait, answers, count_questions, resultContainer, testName, testDate, testTime, correct, linkToResult, questionText, answerForm };
     }
 
-    socket.on('participant_ack', (d) => {
-        console.log(d.msg);
-        // alert(d.msg); // Опціонально: додати сповіщення
+    const elements = initializeElements();
+    if (!elements) return;
+
+    const { questionContainer, testWait, answers, count_questions, resultContainer, testName, testDate, testTime, correct, linkToResult, questionText, answerForm } = elements;
+
+    // Создание элемента для результатов
+    const questionElem = document.createElement('div');
+    questionElem.className = 'questions-result-list';
+    questionElem.style.marginTop = '32px';
+    questionElem.innerHTML = `
+        <h3>Всі питання та правильні відповіді:</h3>
+        <ol></ol>
+    `;
+    const allQuestions = questionElem.querySelector('ol');
+
+    // Проверка глобальных переменных
+    const testId = window.TEST_ID || null;
+    let username = window.USERNAME || document.getElementById('username_input')?.value || 'Гість';
+    if (!username.trim()) username = 'Гість';
+    const firstQid = window.FIRST_QID || null;
+    const totalQuestions = parseInt(window.TOTAL_QUESTIONS) || 1;
+
+    if (!testId) {
+        console.error('TEST_ID не визначено');
+        alert('Помилка: неможливо підключитися до тесту.');
+        return;
+    }
+
+    console.log('Initial setup:', { testId, username, firstQid, totalQuestions });
+
+    // Присоединение к тесту
+    socket.emit('join_test', {
+        test_id: testId,
+        username: username,
+        role: 'participant'
+    }, (response) => {
+        if (response && response.error) {
+            console.error('Join test error:', response.error);
+            alert(`Помилка приєднання до тесту: ${response.error}`);
+        } else {
+            console.log('Joined test successfully:', response);
+        }
+    });
+
+    socket.on('participant_ack', (data) => {
+        console.log('Participant acknowledged:', data.msg);
     });
 
     socket.on('test_started', (data) => {
-        if (data.test_id && data.first_question_id) {
-            // window.location.href = `/test/${data.test_id}/user/${data.first_question_id}`;
-            questionContainer.classList.remove('hidden')
-            testWait.classList.add('hidden')
-        } else {
-            console.error("test_id або first_question_id не визначені", data.test_id, data.first_question_id);
+        console.log('Test started:', data);
+        if (!data.test_id || !data.first_question_id) {
+            console.error('Invalid test start data:', data);
+            alert('Помилка: тест не може бути розпочато через некоректні дані.');
+            return;
         }
-    });
-
-    socket.on('test_closed', () => {
-        alert("Тест було закрито хостом");
-        window.location.href = "/";
-    });
-    
-    // result-container
-// {% block content %}
-// <div class="result-container">
-//     <h2>Результати тесту: {{ test.name }}</h2>
-//     <p>Дата завершення: {{ time_date }}</p>
-//     <p>Час завершення: {{ time_text }}</p>
-//     <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p> 
-//     <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
-// </div>
-
-// {% if questions is defined %}
-//     <div class="questions-result-list" style="margin-top:32px;">
-//         <h3>Всі питання та правильні відповіді:</h3>
-//         <ol>
-//             {% for q in questions %}
-//                 <li style="margin-bottom:18px;">
-//                     <div><b>Питання:</b> {{ q.text }}</div>
-//                     <div><b>Правильна відповідь:</b> {{ q.correct_answer }}</div>
-//                     {% if q.user_answer is defined %}
-//                         <div>
-//                             <b>Ваша відповідь:</b>
-//                             {% if q.user_answer == q.correct_answer %}
-//                                 <span style="color:#22c55e;">{{ q.user_answer }}</span>
-//                             {% else %}
-//                                 <span style="color:#ef4444;">{{ q.user_answer }}</span>
-//                             {% endif %}
-//                         </div>
-//                     {% endif %}
-//                 </li>
-//             {% endfor %}
-//         </ol>
-//     </div>
-// {% endif %}
-// {% endblock %}
-    // document.addEventListener('DOMContentLoaded', function () {
-        document.addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (e.target.tagName === 'FORM') {
-                console.log(e.target)
-                const selected = e.target.querySelector('input[name="answer"]:checked');
-                if (!selected) {
-                    alert('Будь ласка, оберіть відповідь.');
-                    return;
-                }
-                const selectedValue = selected.value;
-                console.log(selectedValue)
-                socket.emit("send_answer", {'answer':selectedValue,'user':username,'test_id':testId})
-                // $.ajax({
-                //     url: window.location.pathname,
-                //     type: 'POST',
-                //     data: { answer: selectedValue },
-                //     success: function (response) {
-                //         if (response.error) {
-                //             alert('Помилка: ' + response.error);
-                //             return;
-                //         }
-                //         if (response.correct_answer && response.question_text && window.TEST_ID && window.USERNAME) {
-                //             socket.emit('participant_answered_with_correct', {
-                //                 test_id: window.TEST_ID,
-                //                 user: window.USERNAME,
-                //                 selected: selectedValue,
-                //                 correct: response.correct_answer,
-                //                 question_text: response.question_text
-                //             });
-                //         }
-                //         if (response.next_url) {
-                //             $.ajax({
-                //                 url: response.next_url,
-                //                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                //                 success: function (data) {
-                //                     const container = document.querySelector('.question-container');
-                //                     if (container) {
-                //                         container.innerHTML = data;
-                //                         history.pushState({}, '', response.next_url);
-                //                     } else {
-                //                         console.error("Елемент .question-container не знайдено");
-                //                     }
-                //                 },
-                //                 error: function () {
-                //                     alert('Не вдалося завантажити наступне питання.');
-                //                 }
-                //             });
-                //         } else if (response.result_url) {
-                //             window.location.href = response.result_url;
-                //         }
-                //     },
-                //     error: function () {
-                //         alert('Сталася помилка при перевірці відповіді.');
-                //     }
-                // });
-            }
+        questionContainer.classList.remove('hidden');
+        questionContainer.style.display = 'block';
+        testWait.classList.add('hidden');
+        testWait.style.display = 'none';
+        console.log('Showing question container, hiding test wait', {
+            questionContainerDisplay: questionContainer.style.display,
+            questionContainerClass: questionContainer.className,
+            testWaitDisplay: testWait.style.display,
+            testWaitClass: testWait.className
         });
     });
 
+    socket.on('nextQuestion', (data) => {
+        console.log('Отримано дані питання:', data);
+        const options = data.options || data.answers || [];
+        console.log('Options:', options);
+        if (!data.question_text || !Array.isArray(options) || !data.question_number) {
+            console.error('Invalid question data:', data);
+            alert('Помилка: отримані некоректні дані питання.');
+            return;
+        }
+        questionText.textContent = data.question_text || 'Питання відсутнє';
+        count_questions.textContent = `${data.question_number} з ${totalQuestions}`;
+        answers.innerHTML = '';
+        let validOptions = 0;
+        options.forEach((ans, index) => {
+            if (!ans || typeof ans !== 'string' || ans.trim() === '') {
+                console.warn(`Option ${index} is invalid:`, ans);
+                return;
+            }
+            const label = document.createElement('label');
+            label.className = 'answer-option';
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'answer';
+            input.value = ans;
+            input.required = true;
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(ans));
+            answers.appendChild(label);
 
+            answers.appendChild(label);
+            validOptions++;
+        });
+        if (validOptions === 0) {
+            console.error('No valid options to display');
+            answers.innerHTML = '<p style="color: red;">Варіанти відповідей відсутні. Зв\'яжіться з організатором тесту.</p>';
+            const submitBtn = answerForm.querySelector('#submitBtn');
+            if (submitBtn) submitBtn.disabled = true;
+        } else {
+            const firstRadio = answers.querySelector('input[name="answer"]');
+            if (firstRadio) firstRadio.checked = true;
+            const submitBtn = answerForm.querySelector('#submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.backgroundColor = '';
+                submitBtn.style.color = '';
+                submitBtn.textContent = 'Відправити';
+                submitBtn.classList.remove('loading');
+            }
+        }
+        console.log('Updated question text, count, and answers:', {
+            questionText: questionText.textContent,
+            count_questions: count_questions.textContent,
+            answersChildren: answers.children.length,
+            validOptions,
+            options
+        });
+        if (questionContainer.classList.contains('hidden') || questionContainer.style.display === 'none') {
+            console.warn('questionContainer is hidden, forcing visibility');
+            questionContainer.classList.remove('hidden');
+            questionContainer.style.display = 'block';
+        }
+        console.log('questionContainer state:', {
+            display: questionContainer.style.display,
+            className: questionContainer.className,
+            computedDisplay: window.getComputedStyle(questionContainer).display
+        });
+    });
 
+    socket.on('user_answer_saved', (data) => {
+        console.log('Answer saved:', data);
+        const submitBtn = answerForm.querySelector('#submitBtn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Очікування наступного питання...';
+            submitBtn.classList.add('loading');
+            console.log('Answer submitted successfully, waiting for next question');
+        }
+    });
 
+    socket.on('testEnd', (data) => {
+        console.log('Test ended:', data);
+        if (!data.test || !data.time_date || !data.time_text || !data.total_questions) {
+            console.error('Invalid test end data:', data);
+            alert('Помилка: отримані некоректні дані результатів.');
+            return;
+        }
+        if (!data.users[username]) {
+            console.warn(`No results for user ${username}, initializing empty results`);
+            data.users[username] = { questions: [], correct: 0 };
+        }
+        resultContainer.classList.remove('hidden');
+        resultContainer.style.display = 'block';
+        questionContainer.classList.add('hidden');
+        questionContainer.style.display = 'none';
+        testName.textContent = data.test;
+        testDate.textContent = data.time_date;
+        testTime.textContent = data.time_text;
+        const currentUser = data.users[username];
+        correct.textContent = `${currentUser.correct} з ${data.total_questions}`;
+        allQuestions.innerHTML = '';
+        currentUser.questions.forEach((question) => {
+            if (!question.text || !question.correct_answer) return;
+            const li = document.createElement('li');
+            li.style.marginBottom = '18px';
+            const textNode = document.createTextNode(question.text);
+            const correctAnswerNode = document.createTextNode(question.correct_answer);
+            const userAnswerNode = document.createTextNode(question.user_answer || 'Немає відповіді');
+            const optionsNode = document.createTextNode(question.options ? question.options.join(', ') : 'Немає варіантів');
+            li.innerHTML = `
+                <div><b>Питання:</b> </div>
+                <div><b>Правильна відповідь:</b> </div>
+                <div><b>Ваша відповідь:</b> <span style="color:${question.is_correct ? '#22c55e' : '#ef4444'}"></span></div>
+                <div><b>Варіанти:</b> </div>
+            `;
+            li.querySelector('div:nth-child(1)').appendChild(textNode);
+            li.querySelector('div:nth-child(2)').appendChild(correctAnswerNode);
+            li.querySelector('span').appendChild(userAnswerNode);
+            li.querySelector('div:nth-child(4)').appendChild(optionsNode);
+            allQuestions.appendChild(li);
+        });
+        const content = document.body.querySelector('.content');
+        if (content && !content.contains(questionElem)) {
+            content.appendChild(questionElem);
+        }
+        console.log('Test results displayed', {
+            testName: testName.textContent,
+            correct: correct.textContent
+        });
+    });
 
+    socket.on('test_closed', () => {
+        console.log('Test closed');
+        alert('Тест було закрито хостом');
+        window.location.href = '/';
+    });
+
+    socket.on('error', (err) => {
+        console.error('Socket.IO error:', err);
+        alert(`Помилка Socket.IO: ${err.message || 'Невідома помилка'}`);
+    });
+
+    answerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const selected = e.target.querySelector('input[name="answer"]:checked');
+        if (!selected) {
+            console.warn('No answer selected');
+            alert('Будь ласка, оберіть відповідь.');
+            return;
+        }
+        const submitBtn = e.target.querySelector('#submitBtn');
+        if (!submitBtn) {
+            console.error('Submit button not found in form');
+            answers.innerHTML = '<p class="error-message">Помилка: кнопка відправки не знайдена</p>';
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.style.backgroundColor = '#000';
+        submitBtn.style.color = '#fff';
+        submitBtn.textContent = 'Відповідь відправлено...';
+        console.log('Submitting answer:', {
+            answer: selected.value,
+            user: username,
+            test_id: testId
+        });
+        socket.emit('send_answer', {
+            answer: selected.value,
+            user: username,
+            test_id: testId
+        }, (response) => {
+            if (response && response.error) {
+                console.error('Send answer error:', response.error);
+                alert(`Помилка при відправці відповіді: ${response.error}`);
+                submitBtn.disabled = false;
+                submitBtn.style.backgroundColor = '';
+                submitBtn.style.color = '';
+                submitBtn.textContent = 'Відправити';
+            } else {
+                console.log('Answer sent successfully:', response);
+            }
+        });
+    });
+});

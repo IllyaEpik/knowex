@@ -8,6 +8,11 @@
         <script> window.USERNAME = "{{ current_user }}" </script>
     {% endif %}
     <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_question.css') }}" >
+    <script>
+    window.TEST_ID = "{{ test.id }}";
+    window.COUNT_QUESTIONS = "{{ countQuestions }}";
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -20,7 +25,7 @@
     <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
 </div>
 <div class="question-container hidden" id="questionContainer">
-    <form method="post">
+        <form method="post" id="answer_form">
         <div class="question-text">
             <b class="countQuestions">Питання <span id="count_questions"></span> з {{count_questions}}:</b><br>
             <span>Питання: <span id="questionText"></span></span>
@@ -29,9 +34,10 @@
         <div class="answers">
             
         </div>
-        <button class="submit-btn" type="submit">
+        <button id="submitBtn" class="submit-btn" type="submit">
             відправити
         </button>
+
     </form>
   </div>
   <div id="testWait">
