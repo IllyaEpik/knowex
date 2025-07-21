@@ -433,18 +433,29 @@ def handle_answer_with_correct(data):
 
 
 @socketio.on('next_question')
-def handle_answer_with_correct(data):
+def next_question(data):
     test_id = data.get('test_id')
     question_number = data.get('question_number')
     room_name = f'test_{test_id}'
     test = Test.query.filter_by(id=int(test_id)).first()
     question_id = test.questions.split(' ')[int(question_number)-1]
     question =Questions.query.get(question_id)
+    # random.sample(all_ids, min(5, len(all_ids)))
+    answers = json.loads(question.answers) + [question.correct_answer]
+    
     emit('nextQuestion', {
-            'answers': json.loads(question.answers) + [question.correct_answer],
+            'answers': random.sample(answers,len(answers)),
             'question_text': question.text,
             'question_number':question_number
         }, room=room_name)
+    cell = active_tests.get(test_id)
+    if not cell:
+        return
+    host_sid = cell.get('host_sid')
+    if host_sid:
+        emit('correct', {
+            'answer': question.correct_answer
+        }, to=host_sid)
 # @socketio.on('next_question')
 # def cqwwewqeweq(data):
 #     room_name = f'test_{test_id}'

@@ -9,10 +9,15 @@ socket.emit('join_test', {
 const startBtn = document.getElementById('start_test_btn');
 const questionContainer = document.getElementById("currentQuestion");
 const questionText = document.createElement("p");
+const ul = document.getElementById('participants_list');
 questionText.id = "cocain";
+let currentCorrectAnswer = undefined;
+let questionText2  = document.getElementById("questionText")
+
 let currentQuestion = 1;
 let countQuestions = Number(document.getElementById('countQuestion').value);
 let testStarted = false;
+
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
         testStarted = true;
@@ -26,7 +31,6 @@ startBtn.addEventListener('click', () => {
         socket.emit('start_test_command', { test_id: testId });
         socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
     } else {
-        console.log(user_answers, currentQuestion)
         for (let answer in user_answers){
                 console.log(user_answers[answer].length, currentQuestion)
                 if (user_answers[answer].length < currentQuestion){
@@ -48,35 +52,54 @@ startBtn.addEventListener('click', () => {
         }
     }
 });
-// nextQuestion
-socket.on('nextQuestion', data => {
-    // console.log('data:', data);
+socket.on('correct', correct => {
+    currentCorrectAnswer = correct.answer 
+
 });
+// следующий вопрос 
+socket.on('nextQuestion', data => {
+    for(let li of ul.children){
+        li.style.color = '#9ca3af';
+        // span
+        let span = li.querySelector("span")
+        span ? span.remove() : false
+    }
+    questionText2.textContent = data['question_text']
+
+});
+
 socket.on('host_ack', data => {
     console.log('Хост підключений:', data);
 });
 
 socket.on('participants_update', participants => {
-    const ul = document.getElementById('participants_list');
     ul.innerHTML = '';
     console.log(participants)
     user_answers = {}
-    
     participants.forEach(p => {
-        console.log(user_answers,user_answers[p])
         if (!user_answers[p]){
 
             user_answers[p] = []
         }
         const li = document.createElement('li');
+        li.id = `participant-${p}`
         li.textContent = p;
-        ul.appendChild(li);
+        ul.append(li)
+        
     });
 });
-// [].push
+// получаем ответы пользователя
 socket.on('send_answer', answer => {
-    
-    console.log(user_answers,answer,user_answers[answer.user])
+    // currentCorrectAnswer
+    const li = document.getElementById(`participant-${answer.user}`);
+    if (li) {
+        li.style.color = answer.answer==currentCorrectAnswer ? '#22c55e' : '#ef4444';
+        li.innerHTML = `<strong>${answer.user}</strong> <span>(${answer.answer})</span>`;
+        console.log(`Updated participant ${answer.user} color to ${li.style.color}`);
+    } else {
+        console.error(`Participant element not found: participant-${answer.user}`);
+    }
+        // Child(li);
     user_answers[answer.user].push(answer.answer)
 })
 socket.on('update_results', results => {
@@ -93,33 +116,3 @@ socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");
     location.reload();
 });
-
-// socket.on('participant_answered', data => {
-//     const container = document.getElementById('answers_log');
-//     const entry = document.createElement('div');
-
-//     entry.innerHTML = `
-//         <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
-//         Правильна відповідь: <strong style="color:green">${data.correct}</strong><br>
-//         ${data.question_text ? `Питання: ${data.question_text}<br>` : ''}
-//         <hr>
-//     `;
-
-//     container.prepend(entry); // новые сверху
-// });
-
-// socket.on('show_correct_answer', data => {
-//     const log = document.getElementById('answers_log');
-//     const entry = document.createElement('div');
-
-//     entry.innerHTML = `
-//         <strong>${data.user}</strong> відповів: <em>${data.selected}</em><br>
-//         Питання: <strong>${data.question_text}</strong><br>
-//         Правильна відповідь: <span style="color:green">${data.correct}</span><br><hr>
-//     `;
-
-//     log.prepend(entry); // новые сверху
-// });
-
-
-

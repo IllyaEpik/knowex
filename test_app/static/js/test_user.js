@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const link = document.querySelector('link')
     const linkToResult = document.querySelector('#linkToResult')
     const questionElem = document.createElement('div')
+    const sendButton = document.getElementById("sendButton");
+    const loadingButton = document.getElementById("loadingButton");
+
+
+
+    
+
+    
     questionElem.className = "questions-result-list"
     questionElem.style.marginTop = '32px'
     questionElem.innerHTML = `
@@ -69,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     socket.on('nextQuestion', data => {
         console.log('data:', data);
+        sendButton.classList.remove("hidden")
+        loadingButton.classList.add("hidden")
         document.querySelector('#questionText').textContent = data['question_text']
         count_questions.textContent = data['question_number']
         // question_number
@@ -95,6 +105,16 @@ document.addEventListener('DOMContentLoaded', function () {
             role: 'participant'
         });
     }
+    // socket.on('user_answer_saved', (data) => {
+    //     console.log('Answer saved:', data);
+    //     const submitBtn = answerForm.querySelector('#submitBtn');
+    //     if (submitBtn) {
+    //         submitBtn.disabled = true;
+    //         submitBtn.textContent = 'Очікування наступного питання...';
+    //         submitBtn.classList.add('loading');
+    //         console.log('Answer submitted successfully, waiting for next question');
+    //         }
+    // });
 
     socket.on('participant_ack', (d) => {
         console.log(d.msg);
@@ -162,6 +182,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 const selectedValue = selected.value;
                 console.log(selectedValue)
+                // <p id="">innerHtml</p>
+                sendButton.classList.add("hidden")
+                loadingButton.classList.remove("hidden")
                 socket.emit("send_answer", {'answer':selectedValue,'user':username,'test_id':testId})
                 // $.ajax({
                 //     url: window.location.pathname,
