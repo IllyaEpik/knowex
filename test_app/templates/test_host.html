@@ -11,9 +11,8 @@
 <div>
     Код для подключення: <span id="test_code">{{ test_id }}</span>
 </div>
-<div id="currentQuestion">
+<div id="currentQuestion"></div>
 
-</div>
 <div>
     <h3>Учасники:</h3>
     <ul id="participants_list"></ul>
@@ -23,6 +22,12 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
 <div id="answers_log"></div>
+
+<!--  Скрытый блок для итоговой таблицы -->
+<div id="final_results" class="hidden" style="margin-top:20px; display:none;">
+    <h3>Результати тесту:</h3>
+    <ul id="results_list"></ul>
+</div>
 
 <script>
     testId = "{{ test_id }}"

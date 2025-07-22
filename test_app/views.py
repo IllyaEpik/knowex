@@ -270,79 +270,55 @@ def test_result(test_id):
 
 # }
 @socketio.on('end_test')
-def end_test(data:dict):
-    test_id = data.get('test_id')
+def end_test(data: dict):
+    test_id = data.get("test_id")
     room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
-    # time_complete = time.localtime(test.date)
-    # time_date = time.strftime('%d.%m.20%y', time_complete)
-    # time_text = time.strftime('%H:%M', time_complete)
-    user_answers = data.get('user_answers')
-    questions = test.questions.split(' ')
-    count = len(questions)-1
-    print(user_answers)
-    
-    print(active_tests)
+    if not test:
+        print("Ошибка: тест не найден")
+        return
+
+    user_answers = data.get('user_answers', {})
+    questions = [qid for qid in test.questions.split() if qid]
+    total_questions = len(questions)
+
     time_complete = time.localtime(time.time())
     time_date = time.strftime('%d.%m.20%y', time_complete)
     time_text = time.strftime('%H:%M', time_complete)
-    data = {
+
+    data_to_emit = {
         "test": test.name,
         "time_date": time_date,
-        'time_text':time_text,
-        "total_questions": count,
+        "time_text": time_text,
+        "total_questions": total_questions,
         "users": {}
-        # "answers": test_answers,
-        # "correct": correct,
     }
 
-    # 'questions': [{'text': '3321', 
-#                 'correct_answer': '312213213', 
-#                 'user_answer': '231213', 
-#                 'is_correct': False 
-# }]
-
-    for user_answer in user_answers:
-        data["users"][user_answer] = {}
-        question_in = []
+    for username, answers in user_answers.items():
+        question_data = []
         corrects = 0
-        count = 0
-        for question_id in questions:
-            if question_id:
-                # for ans in user_answers[user_answer]:
-                ans = user_answers[user_answer][count]
-                print('45678908poikjghgf',ans,user_answers[user_answer],1111111111111111)
-                question = Questions.query.get(int(question_id))
-                correct = str(ans)==str(question.correct_answer)
-                question_in.append({
-                    'text':question.text,
-                    'correct_answer':question.correct_answer,
-                    'user_answer':ans,
-                    'is_correct':correct
-                })
-                corrects += correct
-                count+=1
-                    #  'answers': [{'answer': '231213', 
-            #               'is_correct': False, 
-            #               'question_id': 34
-            #               }], 
-        data["users"][user_answer]['questions'] = question_in
-        data["users"][user_answer]['correct'] = corrects
-    print (data)
-    emit('testEnd', data, room=room)
-# {
-    #    'test': 'pixel', 
-    #    'total_questions': 2, 
-    #    'users': {
-        #       '123': {
-            # 'questions': [
-                # {
-                    # 'text': '3321', 
-                    # 'correct_answer': '312213213', 
-                    # 'user_answer': '312213213', 
-                    # 'is_correct': True}], 
-                    # 'correct': 1
-                    # }}}
+
+        for i, question_id in enumerate(questions):
+            question = Questions.query.get(int(question_id))
+            user_answer = answers[i] if i < len(answers) else None
+            is_correct = str(user_answer) == str(question.correct_answer)
+            corrects += is_correct
+
+            question_data.append({
+                "text": question.text,
+                "correct_answer": question.correct_answer,
+                "user_answer": user_answer if user_answer else "Не було відповіді",
+                "is_correct": is_correct
+            })
+
+        data_to_emit["users"][username] = {
+            "questions": question_data,
+            "correct": corrects
+        }
+
+    print("Отправляем testEnd:", data_to_emit)
+    emit('testEnd', data_to_emit, room=room)
+
 @socketio.on('start_test_command')
 def handle_start_cmd(data):
     test_id = data['test_id']

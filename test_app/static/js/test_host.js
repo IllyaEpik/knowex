@@ -102,15 +102,27 @@ socket.on('send_answer', answer => {
         // Child(li);
     user_answers[answer.user].push(answer.answer)
 })
-socket.on('update_results', results => {
-    const ul = document.getElementById('results_list');
-    ul.innerHTML = '';
-    for (const [user, score] of Object.entries(results)) {
-        const li = document.createElement('li');
-        li.textContent = `${user}: ${score} балів`;
-        ul.appendChild(li);
-    }
+socket.on('testEnd', (data) => {
+    console.log("Финальные данные:", data);
+
+    const resultsContainer = document.getElementById('final_results');
+    const resultsList = document.getElementById('results_list');
+    resultsList.innerHTML = '';
+
+    resultsContainer.style.display = 'block';
+    resultsContainer.classList.remove('hidden');
+
+    Object.entries(data.users)
+        .sort((a, b) => b[1].correct - a[1].correct)
+        .forEach(([user, info]) => {
+            const li = document.createElement('li');
+            li.textContent = `${user}: ${info.correct} з ${data.total_questions}`;
+            resultsList.appendChild(li);
+        });
+
+    document.getElementById('start_test_btn').disabled = true;
 });
+
 
 socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");

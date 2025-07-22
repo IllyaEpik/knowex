@@ -1,7 +1,19 @@
+
+
+
+
+
+
+
+
+
+
+
 // создаем и сохраняем <p></p> в константу квас
 const kwas = document.createElement("p")
 // присваиваем ид
 kwas.id = 'kwas' 
+// result
 // указываем содержание <p></p>
 kwas.textContent = 'kwas'
 // указиваем классы для <p></p>
@@ -41,3 +53,4 @@ inp.addEventListener('change', function (event){
     // читаем файл читатилем
     reader.readAsDataURL(inp.files[0])
 } )
+

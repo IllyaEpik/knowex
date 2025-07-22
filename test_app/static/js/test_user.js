@@ -16,9 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const loadingButton = document.getElementById("loadingButton");
 
 
-
-    
-
     
     questionElem.className = "questions-result-list"
     questionElem.style.marginTop = '32px'
@@ -50,27 +47,31 @@ document.addEventListener('DOMContentLoaded', function () {
         // }
         let count = 1
 
-        for (let question of currentUser.questions){
-            console.log(question)
-            
-            allQuestions.innerHTML += `
-                
-                
-                        <li style="margin-bottom:18px;">
-                            <div><b>Питання:</b> ${question.text}</div>
-                            <div><b>Правильна відповідь:</b> ${question.correct_answer}</div>
-                                <div>
-                                    <b>Ваша відповідь:</b>
-                                        <span style="color:#ef4444;">${question.user_answer}</span>
-                                </div>
-                        </li>
-                
-                `
-            if (question.is_correct){
-                let spans = allQuestions.querySelectorAll('span')
-                spans[spans.length-1].style.color = '#22c55e'
-            }
-            document.body.querySelector('.content').append(questionElem)
+    for (let question of currentUser.questions) {
+    console.log(question);
+
+        // Если нет ответа, подставляем текст
+        let userAnswer = question.user_answer === null || question.user_answer === undefined
+            ? "не було відповіді на питання"
+            : question.user_answer;
+
+        allQuestions.innerHTML += `
+            <li style="margin-bottom:18px;">
+                <div><b>Питання:</b> ${question.text}</div>
+                <div><b>Правильна відповідь:</b> ${question.correct_answer}</div>
+                <div>
+                    <b>Ваша відповідь:</b>
+                    <span style="color:#ef4444;">${userAnswer}</span>
+                </div>
+            </li>
+        `;
+
+        if (question.is_correct) {
+            let spans = allQuestions.querySelectorAll('span');
+            spans[spans.length - 1].style.color = '#22c55e';
+        }
+
+        document.body.querySelector('.content').append(questionElem);
             count++
         }
         // color:#22c55e;
