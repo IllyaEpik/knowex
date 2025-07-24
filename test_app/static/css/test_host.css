@@ -9,3 +9,37 @@
     width: 25px;
     margin: 0px;
 }
+
+.answers{
+    display: flex;
+    flex-direction: row;
+}
+
+.userName{
+    font-weight: bold;
+    white-space: nowrap;
+    min-width : 100px;
+}
+
+.stretchWrap{
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-start;
+}
+
+.line{
+
+    display: flex;
+    align-items: center;
+    gap : 15px;
+    padding : 5px 0;
+    border-bottom : 1px solid #e5e7eb;
+    width : 100%;
+}
+.statsBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 80px;
+
+}

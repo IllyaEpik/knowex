@@ -98,7 +98,7 @@ socket.on('testEnd', (data) => {
     Object.entries(data.users).forEach(([user, info]) => {
         console.log(`Пользователь ${user} имеет ${info.questions.length} вопросов`);
     });
-    localStorage.setItem(`test_results_${data.test}`, JSON.stringify(data));
+    // localStorage.setItem(`test_results_${data.test}`, JSON.stringify(data));
     renderFinalResults(data);
 });
 
@@ -118,28 +118,17 @@ function renderFinalResults(data) {
 
             // Горизонтальная линия
             const line = document.createElement('div');
-            line.style.display = 'flex';
-            line.style.alignItems = 'center';
-            line.style.gap = '15px';
-            line.style.padding = '5px 0';
-            line.style.borderBottom = '1px solid #e5e7eb';
-            line.style.width = '100%';
 
             // Ник
             const userName = document.createElement('div');
             userName.textContent = user;
-            userName.style.fontWeight = 'bold';
-            userName.style.whiteSpace = 'nowrap';
-            userName.style.minWidth = '100px';
 
             // Обёртка, которая расширяется (растягивает линию)
             const stretchWrap = document.createElement('div');
-            stretchWrap.style.display = 'flex';
-            stretchWrap.style.flexGrow = '1';
-            stretchWrap.style.justifyContent = 'flex-start';
 
             // Блок с квадратиками
             const answersContainer = document.createElement('div');
+            answersContainer.className = "answers"
             answersContainer.classList.add('result');
             info.questions.forEach((q, index) => {
                 const box = document.createElement('div');
@@ -153,8 +142,6 @@ function renderFinalResults(data) {
             });
 
             stretchWrap.appendChild(answersContainer);
-
-            // Баллы и точность
             const statsBlock = document.createElement('div');
             statsBlock.style.display = 'flex';
             statsBlock.style.flexDirection = 'column';
@@ -164,7 +151,7 @@ function renderFinalResults(data) {
                 <div style="font-size:12px;">${accuracy}% Точність</div>
                 <div style="font-size:12px;">${info.correct} Балів</div>
             `;
-
+            
             line.appendChild(userName);
             line.appendChild(stretchWrap);  // Растягиваемое пространство
             line.appendChild(statsBlock);
