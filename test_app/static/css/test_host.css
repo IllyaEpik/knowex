@@ -1,20 +1,19 @@
-/* CSS для інтерфейсу проходження тесту */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
     color: #333;
-    height: 867px; /* Висота для вміщення всіх елементів без прокрутки */
+    height: 867px;
     overflow: visible;
-    width: 1590px; /* Загальна ширина: 1350px (контент) + 240px (учасники) */
+    width: 1590px;
 }
 
 .test-container {
     display: flex;
     flex-direction: column;
-    height: 867px; /* Фіксована висота для контейнера */
-    width: 1590px; /* Фіксована ширина */
+    height: 867px;
+    width: 1590px;
 }
 
 .test-header {
@@ -24,8 +23,8 @@ body {
     background-color: #f5f7fa;
     padding: 10px 20px;
     color: #ffffff;
-    width: 1590px; /* Фіксована ширина */
-    height: 60px; /* Фіксована висота */
+    width: 1590px;
+    height: 60px;
 }
 
 .header-left button,
@@ -37,8 +36,8 @@ body {
     cursor: pointer;
     color: #ffffff;
     font-size: 14px;
-    width: 80px; /* Фіксована ширина для кнопок */
-    height: 30px; /* Фіксована висота */
+    width: 80px;
+    height: 30px;
 }
 
 .header-left button:hover,
@@ -50,70 +49,68 @@ body {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
-    width: 200px; /* Фіксована ширина для заголовка */
-    height: 30px; /* Фіксована висота */
+    width: 200px;
+    height: 30px;
 }
 
 .header-right {
     display: flex;
     align-items: center;
     gap: 15px;
-    width: 300px; /* Фіксована ширина */
-    height: 30px; /* Фіксована висота */
+    width: 300px;
+    height: 30px;
 }
-
 
 .username {
     font-weight: 500;
-    width: 150px; /* Фіксована ширина */
-    height: 20px; /* Фіксована висота */
+    width: 150px;
+    height: 20px;
 }
 
 .question-count {
     color: #bdc3c7;
     font-size: 14px;
-    width: 150px; /* Фіксована ширина */
-    height: 20px; /* Фіксована висота */
+    width: 150px;
+    height: 20px;
 }
 
 .main-layout {
     display: flex;
     flex-grow: 0;
     padding: 20px;
-    height: 787px; /* Фіксована висота: 867px - 60px (заголовок) - 20px (підсумковий відступ) */
-    width: 1590px; /* Фіксована ширина */
+    height: 787px;
+    width: 1590px;
     overflow: visible;
 }
 
 .main-content {
     flex-grow: 0;
     margin-right: 20px;
-    height: 787px; /* Фіксована висота */
+    height: 787px;
     overflow: visible;
-    width: 1350px; /* Фіксована ширина */
+    width: 1350px;
     display: flex;
-    flex-direction: column; /* Вертикальне розташування */
-    gap: 20px; /* Відступ між .question-section і .answer-block */
+    flex-direction: column;
+    gap: 20px;
 }
 
 .question-section {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 200px; /* Фіксована висота, достатня для вмісту */
-    width: 1310px; /* Фіксована ширина з урахуванням padding */
+    height: 200px;
+    width: 1310px;
     display: flex;
-    /* flex-direction: column; */
     gap: 15px;
-    background-color: #ffffff; /* Повертаємо фіксований фон, якщо потрібно */
+    background-color: #ffffff;
 }
 
 .question-code {
     font-size: 16px;
     margin-bottom: 10px;
     color: #7f8c8d;
-    width: 1270px; /* Фіксована ширина з урахуванням padding */
-    height: 30px; /* Фіксована висота */
+    width: 1270px;
+    height: 30px;
 }
 
 .current-question,
@@ -121,23 +118,21 @@ body {
     margin-bottom: 10px;
     font-size: 18px;
     color: #2c3e50;
-    width: 1270px; /* Фіксована ширина з урахуванням padding */
-    height: 40px; /* Фіксована висота */
+    width: 1270px;
+    height: 40px;
 }
 
 .question-progress {
     display: flex;
     gap: 8px;
     margin: 15px 0;
-    width: 1270px; /* Фіксована ширина з урахуванням padding */
-    height: 40px; /* Фіксована висота */
+    width: 1270px;
+    height: 40px;
 }
 
 .question-progress .question-box {
     visibility: hidden;
-
-} 
-
+}
 
 .question-progress .question-box.active {
     background-color: #3498db;
@@ -161,8 +156,8 @@ body {
     font-size: 16px;
     margin-top: 15px;
     align-self: flex-start;
-    width: 150px; /* Фіксована ширина */
-    height: 40px; /* Фіксована висота */
+    width: 150px;
+    height: 40px;
     transition: background-color 0.3s ease;
 }
 
@@ -180,8 +175,8 @@ body {
     background-color: #f8f8f8;
     border-radius: 8px;
     border: 1px solid #ddd;
-    height: 410px; /* Фіксована висота, скорегована для вміщення */
-    width: 1310px; /* Фіксована ширина з урахуванням padding */
+    height: 410px;
+    width: 1310px;
     overflow: visible;
     display: flex;
     flex-direction: column;
@@ -190,11 +185,10 @@ body {
 .answer-options {
     display: flex;
     flex-wrap: revert;
-    /* gap: 15px; */
     margin: 10px 0;
     justify-content: space-between;
-    width: 1280px; /* Фіксована ширина з урахуванням padding */
-    height: 360px; /* Фіксована висота, скорегована для вміщення .answer-option */
+    width: 1280px;
+    height: 360px;
 }
 
 .answer-option {
@@ -203,15 +197,14 @@ body {
     padding: 15px 25px;
     cursor: pointer;
     font-size: 16px;
-    width: 258px; /* Фіксована ширина */
-    height: 340px; /* Фіксована висота, скорегована для вміщення */
+    width: 258px;
+    height: 340px;
     text-align: center;
     color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    /* Колір фону буде заданий через JavaScript */
 }
 
 .answer-option:hover {
@@ -237,15 +230,15 @@ body {
 }
 
 .participants-section {
-    width: 240px; /* Фіксована ширина */
-    height: 800px; /* Фіксована висота */
+    width: 240px;
+    height: 800px;
     background-color: #ffffff;
     border-left: 1px solid #ddd;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Розподіл простору між h3, ul і next-question */
-    overflow: visible; /* Без прокрутки */
+    justify-content: space-between;
+    overflow: visible;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -254,8 +247,8 @@ body {
     margin: 0 0 10px 0;
     color: #2c3e50;
     font-weight: 500;
-    width: 200px; /* Фіксована ширина */
-    height: 20px; /* Фіксована висота */
+    width: 200px;
+    height: 20px;
 }
 
 .participants-list {
@@ -265,9 +258,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 710px; /* Фіксована висота з урахуванням h3 і залишку для next-question */
-    overflow: visible; /* Без прокрутки */
-    width: 200px; /* Фіксована ширина */
+    max-height: 710px;
+    overflow: visible;
+    width: 200px;
 }
 
 .participants-list li {
@@ -277,8 +270,8 @@ body {
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 14px;
-    width: 230px; /* Фіксована ширина */
-    height: 40px; /* Фіксована висота */
+    width: 230px;
+    height: 40px;
     color: #333;
     transition: all 0.3s ease;
 }
@@ -303,46 +296,44 @@ body {
     color: #ffffff;
 }
 
-/* Кнопка "Наступне питання" внизу відсіку учасників */
 .next-question {
-    width: 230px; /* Фіксована ширина */
-    height: 50px; /* Фіксована висота */
-    background-color: #5EDCFF; /* Вказаний колір фону */
+    width: 230px;
+    height: 50px;
+    background-color: #5EDCFF;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
     color: #2c3e50;
-    margin-top: auto; /* Відступ знизу, щоб притиснути до краю */
+    margin-top: auto;
     transition: all 0.3s ease;
 }
 
 .next-question:hover {
-    background-color: #4DC8F7; /* Трохи темніший відтінок при наведенні */
+    background-color: #4DC8F7;
 }
 
 .hidden {
     display: none;
 }
 
-/* CSS для відображення результатів */
 #final_results {
     display: none;
-    width: 1350px; /* Фіксована ширина */
-    height: 787px; /* Фіксована висота */
+    width: 1350px;
+    height: 787px;
     padding: 20px;
     background-color: #f5f5f5;
-    overflow: visible; /* Без прокрутки */
+    overflow: visible;
 }
 
 .results-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 1310px; /* Фіксована ширина з урахуванням padding */
-    height: 747px; /* Фіксована висота з урахуванням h3 і padding */
-    overflow: visible; /* Без прокрутки */
+    width: 1310px;
+    height: 747px;
+    overflow: visible;
 }
 
 .results-list .line {
@@ -351,8 +342,8 @@ body {
     gap: 15px;
     padding: 5px 0;
     border-bottom: 1px solid #ddd;
-    width: 1310px; /* Фіксована ширина */
-    height: 40px; /* Фіксована висота */
+    width: 1310px;
+    height: 40px;
     transition: all 0.3s ease;
 }
 
@@ -364,28 +355,28 @@ body {
     font-weight: 500;
     color: #2c3e50;
     white-space: nowrap;
-    min-width: 100px; /* Фіксована мінімальна ширина */
-    height: 20px; /* Фіксована висота */
+    min-width: 100px;
+    height: 20px;
 }
 
 .results-list .stretchWrap {
     display: flex;
     flex-grow: 0;
     justify-content: flex-start;
-    width: 1000px; /* Фіксована ширина */
-    height: 20px; /* Фіксована висота */
+    width: 1000px;
+    height: 20px;
 }
 
 .results-list .answers {
     display: flex;
     flex-direction: row;
-    width: 200px; /* Фіксована ширина */
-    height: 25px; /* Фіксована висота */
+    width: 200px;
+    height: 25px;
 }
 
 .results-list .answer {
-    height: 25px; /* Фіксована висота */
-    width: 25px; /* Фіксована ширина */
+    height: 25px;
+    width: 25px;
     margin: 0;
     text-align: center;
     line-height: 25px;
@@ -407,12 +398,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    min-width: 80px; /* Фіксована мінімальна ширина */
-    height: 40px; /* Фіксована висота */
+    min-width: 80px;
+    height: 40px;
 }
 
 .results-list .statsBlock div {
     font-size: 12px;
-    width: 80px; /* Фіксована ширина */
-    height: 15px; /* Фіксована висота */
+    width: 80px;
+    height: 15px;
 }

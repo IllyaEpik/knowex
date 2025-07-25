@@ -21,17 +21,15 @@ let currentQuestion = 1;
 let countQuestions = Number(document.getElementById('countQuestion').value);
 let testStarted = false;
 
-const questionCountElement = document.querySelector('.question-count'); // Додано селектор
+const questionCountElement = document.querySelector('.question-count');
 
-// ✅ Генерация случайного ПАСТЕЛЬНОГО цвета
 function getRandomColor() {
-    const r = Math.floor(Math.random() * 156) + 100; // 100-255
+    const r = Math.floor(Math.random() * 156) + 100;
     const g = Math.floor(Math.random() * 156) + 100;
     const b = Math.floor(Math.random() * 156) + 100;
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-// ✅ Инициализация прогресса вопросов
 function initializeQuestionProgress() {
     questionProgress.innerHTML = '';
     for (let i = 1; i <= countQuestions; i++) {
@@ -43,7 +41,6 @@ function initializeQuestionProgress() {
     }
 }
 
-// ✅ Отображение вариантов ответа с рандомным цветом
 function renderAnswerOptions(answers) {
     answerOptions.innerHTML = '';
     currentAnswers = answers || [];
@@ -53,20 +50,19 @@ function renderAnswerOptions(answers) {
         option.textContent = answer;
         option.dataset.index = index;
         const randomColor = getRandomColor();
-        option.dataset.bgColor = randomColor; // сохраняем цвет
+        option.dataset.bgColor = randomColor;
         option.style.backgroundColor = randomColor;
         option.style.border = "2px solid #ddd";
         answerOptions.appendChild(option);
     });
 }
 
-// ✅ Старт теста и переключение вопросов
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
         testStarted = true;
         initializeQuestionProgress();
         questionTextElement.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
-        questionCountElement.textContent = `Питання: ${currentQuestion} / ${countQuestions}`; // Додано оновлення при старті
+        questionCountElement.textContent = `Питання: ${currentQuestion} / ${countQuestions}`;
         startBtn.textContent = "Наступне питання";
         socket.emit('start_test_command', { test_id: testId });
         socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
@@ -79,7 +75,7 @@ startBtn.addEventListener('click', () => {
         if (currentQuestion < countQuestions) {
             currentQuestion++;
             questionTextElement.textContent = `Питання ${currentQuestion} з ${countQuestions}`;
-            questionCountElement.textContent = `Питання: ${currentQuestion} / ${countQuestions}`; // Додано оновлення при переході
+            questionCountElement.textContent = `Питання: ${currentQuestion} / ${countQuestions}`;
             const boxes = questionProgress.getElementsByClassName('question-box');
             for (let box of boxes) {
                 const num = parseInt(box.textContent);
@@ -94,7 +90,7 @@ startBtn.addEventListener('click', () => {
             socket.emit('next_question', { test_id: testId, question_number: currentQuestion });
         } else {
             questionTextElement.textContent = `Тест завершено`;
-            questionCountElement.textContent = `Питання: ${countQuestions} / ${countQuestions}`; // Додано оновлення при завершенні
+            questionCountElement.textContent = `Питання: ${countQuestions} / ${countQuestions}`;
             console.log(user_answers);
             startBtn.disabled = true;
             socket.emit('end_test', { test_id: testId, user_answers: user_answers });
@@ -102,12 +98,10 @@ startBtn.addEventListener('click', () => {
     }
 });
 
-// ✅ Получение правильного ответа
 socket.on('correct', (correct) => {
     currentCorrectAnswer = correct.answer;
 });
 
-// ✅ Получение следующего вопроса
 socket.on('nextQuestion', (data) => {
     if (data.question_text) {
         questionTextElement.textContent = data.question_text;
@@ -117,12 +111,10 @@ socket.on('nextQuestion', (data) => {
     }
 });
 
-// ✅ Подтверждение подключения хоста
 socket.on('host_ack', (data) => {
     console.log('Хост підключений:', data);
 });
 
-// ✅ Обновление списка участников
 socket.on('participants_update', (participants) => {
     participantsSection.innerHTML = `
         <h3>Учасники: ${participants.length}</h3>
@@ -142,7 +134,6 @@ socket.on('participants_update', (participants) => {
     });
 });
 
-// ✅ Обработка ответа участника (НЕ меняем фон, только рамку)
 socket.on('send_answer', (answer) => {
     const li = document.getElementById(`participant-${answer.user}`);
     if (li) {
@@ -151,7 +142,6 @@ socket.on('send_answer', (answer) => {
 
         const option = answerOptions.querySelector(`[data-index="${currentAnswers.indexOf(answer.answer)}"]`);
         if (option) {
-            // оставляем исходный цвет
             option.style.backgroundColor = option.dataset.bgColor;
             option.style.border = answer.answer === currentCorrectAnswer
                 ? "3px solid #2ecc71"
@@ -163,7 +153,6 @@ socket.on('send_answer', (answer) => {
     user_answers[answer.user].push(answer.answer || null);
 });
 
-// ✅ Завершение теста
 socket.on('testEnd', (data) => {
     console.log("Финальні дані:", data);
     renderFinalResults(data);
@@ -171,7 +160,6 @@ socket.on('testEnd', (data) => {
     finalResults.classList.remove('hidden');
 });
 
-// ✅ Финальные результаты
 function renderFinalResults(data) {
     const resultsList = document.getElementById('results_list');
     resultsList.innerHTML = '';
@@ -217,6 +205,7 @@ function renderFinalResults(data) {
             resultsList.appendChild(line);
         });
 }
+
 socket.on('update_question_status', (data) => {
     const { current_question, total_questions } = data;
     const questionCountElement = document.querySelector('.question-count');
@@ -224,13 +213,12 @@ socket.on('update_question_status', (data) => {
         questionCountElement.textContent = `Питання: ${current_question} / ${total_questions}`;
     }
 });
-// ✅ Тест закрыт
+
 socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");
     location.reload();
 });
 
-// ✅ Цвет участника (рандомно)
 function getParticipantColor(username) {
     const colors = ['green', 'red', 'gray', 'yellow'];
     const index = Math.floor(Math.random() * colors.length);
