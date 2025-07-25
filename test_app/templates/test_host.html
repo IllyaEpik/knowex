@@ -12,27 +12,55 @@
 <div>
     Код для подключення: <span id="test_code">{{ test_id }}</span>
 </div>
-<div id="currentQuestion"></div>
+<link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
 
-<div>
-    <h3>Учасники:</h3>
-    <ul id="participants_list"></ul>
+<div class="test-container">
+    <header class="test-header">
+        <div class="header-left">
+            <button class="mode-btn">Питання</button>
+            <button class="roles-btn">Рейтинг</button>
+        </div>
+        <div class="header-center">
+            <h1>Тест</h1>
+        </div>
+        <div class="header-right">
+            <span class="username">{{ host_name }}</span>
+            <span class="question-count">Питання: 1 / {{ countQuestions }}</span>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="main-content">
+            <div class="question-section">
+                <div class="question-code">
+                    Код для підключення: <span id="test_code">{{ test_id }}</span>
+                </div>
+                <div id="currentQuestion" class="current-question"></div>
+                <p id="questionText" class="question-text"></p>
+                <div type="hidden" id="question-progress" class="question-progress"></div>
+                <!-- <button id="start_test_btn" class="start-btn">Розпочати тест</button> -->
+            </div>
+            <div id="answer-block" class="answer-block">
+                <div id="answer-options" class="answer-options"></div>
+            </div>
+        </div>
+        <div class="participants-section" id="participants-section"></div>
+        <button id="start_test_btn" class="start-btn">Розпочати тест</button>
+    </div>
+
+    <div id="final_results" class="hidden">
+        <h3>Результати тесту:</h3>
+        <div id="results_list" class="results-list"></div>
+    </div>
+
+    <input type="hidden" id="closeQuestion" value="{{ url_for('test.static', filename='images/close_question.svg') }}">
+    <input type="hidden" id="countQuestion" value="{{ countQuestions }}">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+        let testId = "{{ test_id }}";
+        let hostName = "{{ host_name }}";
+    </script>
+    <script defer src="{{ url_for('test.static', filename='js/test_host.js') }}"></script>
 </div>
-<p id="questionText"></p>
-<button id="start_test_btn">Розпочати тест</button>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
-<div id="answers_log"></div>
-
-<div id="final_results" class="hidden" style="margin-top:20px; display:none;">
-    <h3>Результати тесту:</h3>
-    <div id="results_list"></div>
-</div>
-
-<script>
-    testId = "{{ test_id }}";
-    hostName = "{{ host_name }}";
-</script>
-
-<script defer src="{{ url_for('test.static', filename='js/test_host.js') }}"></script>
 {% endblock %}
