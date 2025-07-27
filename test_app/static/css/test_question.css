@@ -1,0 +1,67 @@
+:root {
+    --bg-question: #fff;
+    --color-question-text: #222;
+    --bg-submit-btn: #2d6cdf;
+    --bg-submit-btn-hover: #1b4e9b;
+    --color-submit-btn: #fff;
+}
+
+body.dark {
+    --bg-question: #23243a;
+    --color-question-text: #dbeafe;
+    --bg-submit-btn: #4a5bbd;
+    --bg-submit-btn-hover: #2563eb;
+    --color-submit-btn: #fff;
+}
+
+.question-container {
+    width: 420px;
+    min-height: 340px;
+    margin: 60px auto;
+    background: var(--bg-question);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 36px 32px 32px 32px;
+    text-align: center;
+}
+.hidden{
+    display: none;
+}
+#content{
+    overflow-y: scroll;
+}
+.question-text {
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 32px;
+    color: var(--color-question-text);
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.answer-option {
+    font-size: 1.1em;
+    text-align: left;
+    padding-left: 12px;
+}
+
+.submit-btn {
+    background: var(--bg-submit-btn);
+    color: var(--color-submit-btn);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-btn:hover {
+    background: var(--bg-submit-btn-hover);
+}

@@ -116,10 +116,12 @@ socket.on('host_ack', (data) => {
 });
 
 socket.on('participants_update', (participants) => {
-    participantsSection.innerHTML = `
-        <h3>Учасники: ${participants.length}</h3>
-        <ul id="participants_list" class="participants-list"></ul>
-    `;
+    // participantsSection.innerHTML += `
+    //     <h3>Учасники: ${participants.length}</h3>
+    //     <ul id="participants_list" class="participants-list"></ul>
+    // `;
+    const participantsCount = document.getElementById('participantsCount');
+    participantsCount.textContent = participants.length;
     const ul = document.getElementById('participants_list');
     user_answers = {};
     participants.forEach((p) => {
@@ -131,6 +133,8 @@ socket.on('participants_update', (participants) => {
         li.textContent = p;
         li.className = getParticipantColor(p);
         ul.appendChild(li);
+        // ul.appendChild(startBtn);
+
     });
 });
 
