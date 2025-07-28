@@ -3,7 +3,8 @@
 {% block title %} Участь у тесті №{{ test.id }} {% endblock %}
 
 {% block head %}
-    <script> window.TEST_ID = "{{ test.id }}";  window.FIRST_QID = "{{ first_qid }}";</script>
+    <script> 
+    window.TEST_ID = "{{ test.id }}";  window.FIRST_QID = "{{ first_qid }}";</script>
     {% if current_user != " " %}
         <script> window.USERNAME = "{{ current_user }}" </script>
     {% endif %}

@@ -6,9 +6,6 @@ from user_app.models import User
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
 
-
-
-
 @config_page("test.html")
 def render_test(test_id: int):
     test = Test.query.filter_by(id=test_id).first()
@@ -39,8 +36,6 @@ def render_test_host(test_id):
         "host_name": flask_login.current_user.nickname,
         'countQuestions': len(test.questions.split(' '))-1
     }
-
-
 
 @config_page("test_user.html")
 def render_test_user(test_id):
@@ -195,7 +190,6 @@ def test_question(test_id, question_id):
         "correct_answer": question.correct_answer,
     }
 
-
 @config_page("test_result.html")
 def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
@@ -204,7 +198,6 @@ def test_result(test_id):
     time_complete = time.localtime(time.time())
     time_date = time.strftime('%d.%m.20%y', time_complete)
     time_text = time.strftime('%H:%M', time_complete)
-    # time_complete = time.strftime('%y,%m,d,%H:%M', time_complete)
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
@@ -256,19 +249,11 @@ def test_result(test_id):
         "total_questions": total_questions,
         "time_date": time_date,
         'time_text':time_text,
-        # "answers": test_answers,
         "correct": correct,
         "questions": questions
     }
+
 # end_test
-# {'test': pixel, 
-#  'total_questions': 1, 
-#  'time_date': '09.07.2025', 
-#  'time_text': '19:50', 
-
-# 'correct': 0, 
-
-# }
 @socketio.on('end_test')
 def end_test(data: dict):
     test_id = data.get("test_id")
@@ -370,8 +355,6 @@ def handle_answer(data):
     if host_sid:
         emit('update_results', cell['results'], to=host_sid)
 
-
-
 @socketio.on('disconnect')
 def handle_disconnect():
     sid = request.sid
@@ -386,6 +369,7 @@ def handle_disconnect():
             if username and username in cell['participants']:
                 cell['participants'].remove(username)
                 emit('participants_update', list(cell['participants']), room=room_name)
+
 @socketio.on('participant_answered_with_correct')
 def handle_answer_with_correct(data):
     test_id = data.get('test_id')
@@ -407,44 +391,47 @@ def handle_answer_with_correct(data):
             'question_text': question_text
         }, to=host_sid)
 
-
 @socketio.on('next_question')
 def next_question(data):
     test_id = data.get('test_id')
     question_number = data.get('question_number')
     room_name = f'test_{test_id}'
     test = Test.query.filter_by(id=int(test_id)).first()
-    question_id = test.questions.split(' ')[int(question_number)-1]
-    question =Questions.query.get(question_id)
-    # random.sample(all_ids, min(5, len(all_ids)))
-    answers = json.loads(question.answers) + [question.correct_answer]
-    
-    emit('nextQuestion', {
-            'answers': random.sample(answers,len(answers)),
-            'question_text': question.text,
-            'question_number':question_number
-        }, room=room_name)
-    cell = active_tests.get(test_id)
-    if not cell:
+    if not test:
+        emit('error', {'msg': 'Тест не знайдено'}, room=room_name)
         return
-    host_sid = cell.get('host_sid')
-    if host_sid:
-        emit('correct', {
-            'answer': question.correct_answer
-        }, to=host_sid)
+
+    question_ids = [int(qid) for qid in test.questions.split() if qid]
+    if not question_ids or question_number < 1 or question_number > len(question_ids):
+        emit('error', {'msg': 'Недійсний номер питання'}, room=room_name)
+        return
+
+    question_id = question_ids[question_number - 1]  # Индексация начинается с 0
+    question = Questions.query.get(question_id)
+    if not question:
+        emit('error', {'msg': 'Питання не знайдено'}, room=room_name)
+        return
+
+    answers = json.loads(question.answers) + [question.correct_answer] if question.answers else [question.correct_answer]
+    emit('nextQuestion', {
+        'answers': random.sample(answers, len(answers)),
+        'question_text': question.text,
+        'question_number': question_number
+    }, room=room_name)
+    cell = active_tests.get(test_id)
+    if cell and 'host_sid' in cell:
+        emit('correct', {'answer': question.correct_answer}, to=cell['host_sid'])
+        # Додано оновлення поточного питання для хоста
+        emit('update_question_status', {
+            'current_question': question_number,
+            'total_questions': len(question_ids)
+        }, to=cell['host_sid'])
+
 # @socketio.on('next_question')
 # def cqwwewqeweq(data):
 #     room_name = f'test_{test_id}'
 #     emit('url',{"data":'something'}, room=room)
 #     pass
-
-
-
-
-
-
-
-# end_test
 
 @socketio.on('save_user_answer')
 def handle_save_user_answer(data):
@@ -467,9 +454,9 @@ def handle_save_user_answer(data):
     # Можно добавить сохранение в базу данных здесь
 
     emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
+
 @socketio.on('send_answer')
 def save_user_answer(data):
     test_id = data.get('test_id')
     room_name = f'test_{test_id}'
     emit('send_answer', data, room=room_name)
-# send_answer

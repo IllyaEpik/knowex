@@ -90,3 +90,6 @@ body, html {
 .start-btn:hover {
     background: var(--bg-test-btn-hover);
 }
+.hidden{
+    display: none;
+}
