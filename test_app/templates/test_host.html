@@ -13,7 +13,7 @@
 <input type="hidden" name="" id="closeQuestion" value="{{ url_for('test.static', filename='images/close_question.svg') }}">
 <input type="hidden" name="" id="countQuestion" value="{{ countQuestions }}">
 <div>
-    Код для подключення: <span id="test_code">{{ test_id }}</span>
+    <!-- Код для подключення: <span id="test_code">{{ test_id }}</span> -->
 </div>
 <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
 
@@ -51,14 +51,16 @@
             <div class="header-right">
                 <!-- <span class="username">{{ host_name }}</span> -->
                 
-                <button class="question-count">Питання: 1 / {{ countQuestions }}</button>
+                <button class="question-count" disabled>Питання: 1 / {{ countQuestions }}</button>
                 
             </div>
             <div class="participants-section" id="participants-section">
                 
                 <div>
                     <h3>Учасники: <span id="participantsCount"></span></h3>
-                    <ul id="participants_list" class="participants-list"></ul>
+                    <ul id="participants_list" class="participants-list">
+                        
+                    </ul>
                     
                 </div>
                 <button id="start_test_btn" class="start-btn">Розпочати тест</button>

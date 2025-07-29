@@ -131,7 +131,7 @@ socket.on('participants_update', (participants) => {
         const li = document.createElement('li');
         li.id = `participant-${p}`;
         li.textContent = p;
-        li.className = getParticipantColor(p);
+        // li.className = getParticipantColor(p);
         ul.appendChild(li);
         // ul.appendChild(startBtn);
 
@@ -222,8 +222,8 @@ socket.on('test_closed', () => {
     location.reload();
 });
 
-function getParticipantColor(username) {
-    const colors = ['green', 'red', 'gray', 'yellow'];
-    const index = Math.floor(Math.random() * colors.length);
-    return colors[index];
-}
+// function getParticipantColor(username) {
+//     const colors = ['green', 'red', 'gray', 'yellow'];
+//     const index = Math.floor(Math.random() * colors.length);
+//     return colors[index];
+// }
