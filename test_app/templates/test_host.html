@@ -20,16 +20,16 @@
 <div class="test-container">
     <header class="test-header">
         <div class="header-left">
-            <button class="mode-btn">Питання</button>
-            <button class="roles-btn">Рейтинг</button>
+            <button class="mode-btn headerButton" >Питання</button>
+            <button class="roles-btn headerButton">Рейтинг</button>
         </div>
         <div class="header-center">
             <h1>Тест</h1>
         </div>
-        <div class="header-right">
+        <!-- <div class="header-right">
             <span class="username">{{ host_name }}</span>
             <span class="question-count">Питання: 1 / {{ countQuestions }}</span>
-        </div>
+        </div> -->
     </header>
 
     <div class="main-layout">
@@ -47,9 +47,22 @@
                 <div id="answer-options" class="answer-options"></div>
             </div>
         </div>
-        <div class="participants-section" id="participants-section">
-            <div id="participantsInTest"></div>
-            <button id="start_test_btn" class="start-btn">Розпочати тест</button>
+        <div class="f" id="rightPanel">
+            <div class="header-right">
+                <!-- <span class="username">{{ host_name }}</span> -->
+                
+                <button class="question-count">Питання: 1 / {{ countQuestions }}</button>
+                
+            </div>
+            <div class="participants-section" id="participants-section">
+                
+                <div>
+                    <h3>Учасники: <span id="participantsCount"></span></h3>
+                    <ul id="participants_list" class="participants-list"></ul>
+                    
+                </div>
+                <button id="start_test_btn" class="start-btn">Розпочати тест</button>
+            </div>
         </div>
     </div>
 
