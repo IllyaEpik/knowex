@@ -1,67 +1,276 @@
-:root {
-    --bg-question: #fff;
-    --color-question-text: #222;
-    --bg-submit-btn: #2d6cdf;
-    --bg-submit-btn-hover: #1b4e9b;
-    --color-submit-btn: #fff;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    width: 1590px;
+    height: 867px;
+    overflow: visible;
 }
 
-body.dark {
-    --bg-question: #23243a;
-    --color-question-text: #dbeafe;
-    --bg-submit-btn: #4a5bbd;
-    --bg-submit-btn-hover: #2563eb;
-    --color-submit-btn: #fff;
-}
-
-.question-container {
-    width: 420px;
-    min-height: 340px;
-    margin: 60px auto;
-    background: var(--bg-question);
-    border-radius: 14px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-    padding: 36px 32px 32px 32px;
-    text-align: center;
-}
-.hidden{
-    display: none;
-}
-#content{
-    overflow-y: scroll;
-}
-.question-text {
-    font-size: 1.2em;
-    font-weight: 500;
-    margin-bottom: 32px;
-    color: var(--color-question-text);
-}
-
-.answers {
+.test-container {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin-bottom: 32px;
+    height: 867px;
+    width: 1590px;
+}
+
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f7fa;
+    padding: 10px 20px;
+    color: #333;
+    width: 1590px;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+.headerButton {
+    background-color: #34495e;
+    border: 1px solid #2c3e50;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 14px;
+    width: 80px;
+    height: 30px;
+}
+
+.headerButton:hover {
+    background-color: #465c71;
+}
+
+.header-center {
+    flex: 1;
+    text-align: center;
+}
+
+.header-center h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    width: 200px;
+    height: 30px;
+}
+
+.main-layout {
+    display: flex;
+    flex-grow: 0;
+    padding: 20px;
+    height: 787px;
+    width: 1590px;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.main-content {
+    flex-grow: 0;
+    margin-right: 20px;
+    height: 787px;
+    width: 1350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: visible;
+}
+
+.question-section {
+    border: 1px solid #B9B9B9;
+    border-radius: 50px;
+    padding: 11px 25px;
+    background-color: #ffffff;
+    height: 207px;
+    width: 1600px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.question-code {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    width: 1270px;
+    height: 30px;
+}
+
+.current-question,
+.question-text {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    width: 1270px;
+    height: 40px;
+}
+
+.question-progress {
+    display: flex;
+    gap: 8px;
+    margin: 15px 0;
+    width: 1270px;
+    height: 40px;
+}
+
+.question-progress .question-box {
+    visibility: hidden;
+}
+
+.question-progress .question-box.active {
+    background-color: #3498db;
+    color: #ffffff;
+    border-color: #2980b9;
+}
+
+.question-progress .question-box.completed {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border-color: #27ae60;
+}
+
+.answer-block {
+    padding: 25px 15px;
+    background-color: #F4FBFF;
+    border-top: 1px solid #B9B9B9;
+    height: 410px;
+    width: 1669px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.answer-options {
+    display: flex;
+    flex-wrap: revert;
+    margin: 10px 0;
+    justify-content: space-between;
+    width: 1469px;
+    height: 360px;
 }
 
 .answer-option {
-    font-size: 1.1em;
-    text-align: left;
-    padding-left: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 258px;
+    height: 340px;
+    text-align: center;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.answer-option:hover {
+    border-color: #3498db;
+    background-color: #ecf0f1;
+}
+
+.answer-option.selected {
+    border-color: #3498db;
+    background-color: #e6f0fa;
+}
+
+.answer-option.correct {
+    border-color: #2ecc71;
+    background-color: #e8f5e9;
+    color: #27ae60;
+}
+
+.answer-option.incorrect {
+    border-color: #e74c3c;
+    background-color: #fdecea;
+    color: #c0392b;
+}
+
+.header-right {
+    border: 1px solid #B9B9B9;
+    background-color: #fff;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+    justify-content: center;
+    width: 240px;
+    height: 100px;
+}
+
+.question-count {
+    border: none;
+    background-color: #BEE7FF;
+    border-radius: 40px;
+    color: #000000;
+    width: 210px;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .submit-btn {
-    background: var(--bg-submit-btn);
-    color: var(--color-submit-btn);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3498db;
+    color: #ffffff;
     border: none;
-    border-radius: 8px;
-    padding: 12px 32px;
-    font-size: 1.1em;
-    font-weight: 500;
+    border-radius: 6px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: background 0.2s;
+    font-size: 16px;
+    width: 200px;
+    height: 40px;
+    margin-top: 20px;
 }
 
 .submit-btn:hover {
-    background: var(--bg-submit-btn-hover);
+    background-color: #2980b9;
+}
+
+.submit-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.result-container {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 1350px;
+    height: 787px;
+}
+
+.result-container h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+.result-container p {
+    font-size: 16px;
+    color: #34495e;
+}
+
+.result-container a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.result-container a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
 }
