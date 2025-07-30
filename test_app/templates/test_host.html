@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
-
 {% block title %} Сторінка тесту {% endblock %}
-
 {% block head %}
 <script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test.css') }}">
 {% endblock %}
-
 {% block content %}
 <input type="hidden" name="" id="countQuestion" value="{{ countQuestions }}">
 <div>
@@ -17,20 +14,16 @@
 <div class="test-container">
     <header class="test-header">
         <div class="header-left">
-            <button class="mode-btn headerButton" >Питання</button>
-            <button class="roles-btn headerButton">Рейтинг</button>
+            <button class="mode-btn headerButton" id="questionsBtn">Питання</button>
+            <button class="roles-btn headerButton" id="ratingBtn">Рейтинг</button>
         </div>
         <div class="header-center">
             <h1>Тест</h1>
         </div>
-        <!-- <div class="header-right">
-            <span class="username">{{ host_name }}</span>
-            <span class="question-count">Питання: 1 / {{ countQuestions }}</span>
-        </div> -->
     </header>
 
     <div class="main-layout">
-        <div class="main-content">
+        <div class="main-content" id="questions-section">
             <div class="question-section">
                 <div class="question-code">
                     Код для підключення: <span id="test_code">{{ test_id }}</span>
@@ -38,25 +31,23 @@
                 <div id="currentQuestion" class="current-question"></div>
                 <p id="questionText" class="question-text"></p>
                 <div type="hidden" id="question-progress" class="question-progress"></div>
-                <!-- <button id="start_test_btn" class="start-btn">Розпочати тест</button> -->
             </div>
             <div id="answer-block" class="answer-block">
                 <div id="answer-options" class="answer-options"></div>
             </div>
         </div>
+        <div class="main-content hidden" id="rating-section">
+            <h2>Рейтинг учасників</h2>
+            <div id="rating-list"></div>
+        </div>
         <div class="f" id="rightPanel">
             <div class="header-right">
-                <!-- <span class="username">{{ host_name }}</span> -->
-                
                 <button class="question-count">Питання: 1 / {{ countQuestions }}</button>
-                
             </div>
             <div class="participants-section" id="participants-section">
-                
                 <div>
                     <h3>Учасники: <span id="participantsCount"></span></h3>
                     <ul id="participants_list" class="participants-list"></ul>
-                    
                 </div>
                 <button id="start_test_btn" class="start-btn">Розпочати тест</button>
             </div>

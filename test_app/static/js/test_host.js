@@ -22,6 +22,90 @@ let countQuestions = Number(document.getElementById('countQuestion').value);
 let testStarted = false;
 
 const questionCountElement = document.querySelector('.question-count');
+const questionsSection = document.getElementById('questions-section');
+const ratingSection = document.getElementById('rating-section');
+const questionsBtn = document.getElementById('questionsBtn');
+const ratingBtn = document.getElementById('ratingBtn');
+const ratingList = document.getElementById('rating-list');
+
+questionsBtn.addEventListener('click', () => {
+    questionsSection.classList.remove('hidden');
+    ratingSection.classList.add('hidden');
+});
+
+ratingBtn.addEventListener('click', () => {
+    questionsSection.classList.add('hidden');
+    ratingSection.classList.remove('hidden');
+    renderRating();
+});
+
+
+function renderRating() {
+    ratingList.innerHTML = '';
+    const total = countQuestions;
+    Object.entries(user_answers).forEach(([user, answers]) => {
+        let correct = 0, incorrect = 0, nulls = 0;
+        answers.forEach(ans => {
+            if (ans === null) nulls++;
+            else if (ans === currentCorrectAnswer) correct++;
+            else incorrect++;
+        });
+        nulls += total - answers.length;
+
+        const oneWidth = 200 / total;
+        const correctWidth = correct * oneWidth;
+        const incorrectWidth = incorrect * oneWidth;
+        const nullWidth = nulls * oneWidth;
+
+        const block = document.createElement('div');
+        block.className = 'rating-block';
+
+        const name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = user;
+
+        const bar = document.createElement('div');
+        bar.className = 'rating-bar';
+
+        if (correct > 0) {
+            const correctBar = document.createElement('div');
+            correctBar.className = 'rating-bar-segment rating-bar-correct';
+            correctBar.style.width = `${correctWidth}px`;
+            correctBar.innerHTML = `<span>${correct}</span>`;
+            bar.appendChild(correctBar);
+        }
+
+        if (incorrect > 0) {
+            const incorrectBar = document.createElement('div');
+            incorrectBar.className = 'rating-bar-segment rating-bar-incorrect';
+            incorrectBar.style.width = `${incorrectWidth}px`;
+            incorrectBar.innerHTML = `<span>${incorrect}</span>`;
+            bar.appendChild(incorrectBar);
+        }
+
+        if (nulls > 0) {
+            const nullBar = document.createElement('div');
+            nullBar.className = 'rating-bar-segment rating-bar-null';
+            nullBar.style.width = `${nullWidth}px`;
+            nullBar.innerHTML = `<span>${nulls}</span>`;
+            bar.appendChild(nullBar);
+        }
+
+        if (correct === 0 && incorrect === 0 && nulls === total) {
+            bar.innerHTML = '';
+            const nullBar = document.createElement('div');
+            nullBar.className = 'rating-bar-segment rating-bar-null';
+            nullBar.style.width = `200px`;
+            nullBar.innerHTML = `<span>${total}</span>`;
+            bar.appendChild(nullBar);
+        }
+
+        block.appendChild(name);
+        block.appendChild(bar);
+
+        ratingList.appendChild(block);
+    });
+}
 
 function getRandomColor() {
     const r = Math.floor(Math.random() * 156) + 100;
@@ -155,6 +239,7 @@ socket.on('send_answer', (answer) => {
         console.error(`Participant element not found: participant-${answer.user}`);
     }
     user_answers[answer.user].push(answer.answer || null);
+    renderRating();
 });
 
 socket.on('testEnd', (data) => {

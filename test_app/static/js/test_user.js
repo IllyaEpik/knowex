@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sendButton = document.getElementById('sendButton');
     const loadingButton = document.getElementById('loadingButton');
     const answerForm = document.getElementById('answer_form');
+    const overlayWait = document.getElementById('overlay-wait');
 
     questionElem.className = 'questions-result-list';
     questionElem.style.marginTop = '32px';
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('nextQuestion', (data) => {
         console.log('data:', data);
+        overlayWait.classList.add('hidden');
         sendButton.classList.remove('hidden');
         loadingButton.classList.add('hidden');
         document.getElementById('questionText').textContent = data['question_text'];
@@ -169,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function () {
             sendButton.classList.add('hidden');
             loadingButton.classList.remove('hidden');
             socket.emit('send_answer', { 'answer': selectedValue, 'user': username, 'test_id': testId });
+            overlayWait.classList.remove('hidden');
+
             // $.ajax({
             //     url: window.location.pathname,
             //     type: 'POST',
