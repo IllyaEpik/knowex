@@ -79,7 +79,7 @@ body {
 }
 .header-right {
 
-    border: 1px solid #B9B9B9;
+    border: 1px solid #ddd;
     background-color: #fff;
     color: #000000;
     display: flex;
@@ -132,8 +132,8 @@ body {
 }
 
 .question-section {
-    border: 1px solid #B9B9B9;
-
+    border: 1px solid #ddd;
+    justify-content: center;
     padding-right: 25px;
     padding-left: 25px;
     padding-top: 11px;
@@ -144,7 +144,64 @@ body {
     display: flex;
     gap: 10px;
     background-color: #ffffff;
+    align-items: center;
 }
+
+/* начало Рейтинга участников */
+.rating-block {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.rating-block .name {
+    font-weight: 600;
+    width: 120px;
+}
+.rating-bar {
+    display: flex;
+    height: 24px;
+    width: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-left: 12px;
+    margin-right: 12px;
+    background: #bdc3c7;
+    position: relative;
+}
+.rating-bar-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+}
+
+.rating-bar {
+    display: flex;
+    height: 25px;
+}
+.rating-bar-segment {
+    position: relative;
+    height: 100%;
+}
+.rating-bar-segment span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: white;
+    pointer-events: none;
+}
+.rating-bar-correct { background-color: green; }
+.rating-bar-incorrect { background-color: red; }
+.rating-bar-null { background-color: gray; }
+
+/* конец рейтинга весь рейтинг должен быть тута) */
 
 .question-code {
     font-size: 16px;
@@ -156,11 +213,11 @@ body {
 
 .current-question,
 .question-text {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     font-size: 18px;
     color: #2c3e50;
-    width: 1270px;
-    height: 40px;
+    /* width: 1270px; */
+    /* height: 40px; */
 }
 
 /* .question-progress {
@@ -191,6 +248,12 @@ body {
     width: 200px;
     /* height: 40px; */
 }
+.questionText{
+    
+    text-align: center;
+}
+
+
 .start-btn {
     
     background-color: #3498db;
@@ -216,21 +279,28 @@ body {
     cursor: not-allowed;
 }
 
+/* .left_panel { */
+    /* visibility: hidden; */
+    /* display: none; */
+/* } */
 .answer-block {
     padding-right: 15px;
     padding-left: 15px;
     padding-top: 25px;
     padding-bottom: 25px;
-    background-color: #F4FBFF;
+    /* background-color: #F4FBFF; */
     /* border-radius: 8px; */
-    border-top: 1px solid #B9B9B9;
+    border-top: 1px solid #ddd;
     height: 410px;
     width: 1469px;
     overflow: visible;
     display: flex;
     flex-direction: column;
 }
-
+/* .content {
+    width: 100%;
+    height: 100%;
+} */
 .answer-options {
     
     display: flex;
@@ -280,7 +350,7 @@ body {
 }
 
 .participants-section {
-    border: 1px solid #B9B9B9;
+    border: 1px solid #ddd;
 
     width: 240px;
     height: 660px;

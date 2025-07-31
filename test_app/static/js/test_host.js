@@ -16,12 +16,80 @@ const answerOptions = document.getElementById("answer-options");
 const participantsSection = document.getElementById("participants-section");
 const finalResults = document.getElementById("final_results");
 let currentCorrectAnswer = undefined;
+// let correctAnswers = 0
+// let incorrectAnswers = 0 
+// let nullAnwers = 0 
+let correctAnswersHistory = [];
 
 let currentQuestion = 1;
 let countQuestions = Number(document.getElementById('countQuestion').value);
 let testStarted = false;
 
 const questionCountElement = document.querySelector('.question-count');
+const questionsSection = document.getElementById('questions-section');
+const ratingSection = document.getElementById('rating-section');
+const questionsBtn = document.getElementById('questionsBtn');
+const ratingBtn = document.getElementById('ratingBtn');
+const ratingList = document.getElementById('rating-list');
+
+questionsBtn.addEventListener('click', () => {
+    questionsSection.classList.remove('hidden');
+    ratingSection.classList.add('hidden');
+});
+
+ratingBtn.addEventListener('click', () => {
+    questionsSection.classList.add('hidden');
+    ratingSection.classList.remove('hidden');
+    renderRating();
+});
+
+
+function renderRating() {
+    ratingList.innerHTML = '';
+    const total = countQuestions;
+    
+    Object.entries(user_answers).forEach(([user, answers]) => {
+        let correctAnswers = 0, incorrectAnswers = 0, nullAnwers = 0, count = 0;
+        answers.forEach(ans => {
+            if (ans === null) nullAnwers++;
+            else if (ans === correctAnswersHistory[count]) correctAnswers++;
+            else incorrectAnswers++;
+            count++
+        });
+        nullAnwers += total - answers.length;
+
+        const oneWidth = 200 / total;
+
+        const block = document.createElement('div');
+        block.className = 'rating-block';
+
+        const name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = user;
+
+        const bar = document.createElement('div');
+        bar.className = 'rating-bar';
+        function setBar(answers, name){
+            const answersWidth = answers * oneWidth;
+            if (answers > 0) {
+                const correctBar = document.createElement('div');
+                correctBar.className = `rating-bar-segment rating-bar-${name}`;
+                correctBar.style.width = `${answersWidth}px`;
+                correctBar.innerHTML = `<span>${answers}</span>`;
+                bar.appendChild(correctBar);
+            }
+        }
+        setBar(correctAnswers, 'correct')
+        setBar(incorrectAnswers, 'incorrect')  
+        setBar(nullAnwers, 'null')
+        
+
+        block.appendChild(name);
+        block.appendChild(bar);
+
+        ratingList.appendChild(block);
+    });
+}
 
 function getRandomColor() {
     const r = Math.floor(Math.random() * 156) + 100;
@@ -97,9 +165,9 @@ startBtn.addEventListener('click', () => {
         }
     }
 });
-
 socket.on('correct', (correct) => {
     currentCorrectAnswer = correct.answer;
+    correctAnswersHistory.push(currentCorrectAnswer)
 });
 
 socket.on('nextQuestion', (data) => {
@@ -155,6 +223,7 @@ socket.on('send_answer', (answer) => {
         console.error(`Participant element not found: participant-${answer.user}`);
     }
     user_answers[answer.user].push(answer.answer || null);
+    renderRating();
 });
 
 socket.on('testEnd', (data) => {

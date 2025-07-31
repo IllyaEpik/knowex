@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sendButton = document.getElementById('sendButton');
     const loadingButton = document.getElementById('loadingButton');
     const answerForm = document.getElementById('answer_form');
+    const overlayWait = document.getElementById('overlay-wait');
 
     questionElem.className = 'questions-result-list';
     questionElem.style.marginTop = '32px';
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('nextQuestion', (data) => {
         console.log('data:', data);
+        overlayWait.classList.add('hidden');
         sendButton.classList.remove('hidden');
         loadingButton.classList.add('hidden');
         document.getElementById('questionText').textContent = data['question_text'];
@@ -165,6 +167,50 @@ document.addEventListener('DOMContentLoaded', function () {
             sendButton.classList.add('hidden');
             loadingButton.classList.remove('hidden');
             socket.emit('send_answer', { 'answer': selectedValue, 'user': username, 'test_id': testId });
+            overlayWait.classList.remove('hidden');
+            // $.ajax({
+            //     url: window.location.pathname,
+            //     type: 'POST',
+            //     data: { answer: selectedValue },
+            //     success: function (response) {
+            //         if (response.error) {
+            //             alert('Помилка: ' + response.error);
+            //             return;
+            //         }
+            //         if (response.correct_answer && response.question_text && window.TEST_ID && window.USERNAME) {
+            //             socket.emit('participant_answered_with_correct', {
+            //                 test_id: window.TEST_ID,
+            //                 user: window.USERNAME,
+            //                 selected: selectedValue,
+            //                 correct: response.correct_answer,
+            //                 question_text: response.question_text
+            //             });
+            //         }
+            //         if (response.next_url) {
+            //             $.ajax({
+            //                 url: response.next_url,
+            //                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            //                 success: function (data) {
+            //                     const container = document.querySelector('.question-container');
+            //                     if (container) {
+            //                         container.innerHTML = data;
+            //                         history.pushState({}, '', response.next_url);
+            //                     } else {
+            //                         console.error('Елемент .question-container не знайдено');
+            //                     }
+            //                 },
+            //                 error: function () {
+            //                     alert('Не вдалося завантажити наступне питання.');
+            //                 }
+            //             });
+            //         } else if (response.result_url) {
+            //             window.location.href = response.result_url;
+            //         }
+            //     },
+            //     error: function () {
+            //         alert('Сталася помилка при перевірці відповіді.');
+            //     }
+            // });
         }
     });
 });
