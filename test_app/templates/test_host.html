@@ -2,9 +2,12 @@
 {% block title %} Сторінка тесту {% endblock %}
 {% block head %}
 <script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
+<!-- test_host.css -->
 <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test.css') }}">
+<link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
 {% endblock %}
 {% block content %}
+<input type="hidden" name="" id="closeQuestion" value="{{ url_for('test.static', filename='images/close_question.svg') }}">
 <input type="hidden" name="" id="countQuestion" value="{{ countQuestions }}">
 <div>
     <!-- Код для подключення: <span id="test_code">{{ test_id }}</span> -->
@@ -25,10 +28,10 @@
     <div class="main-layout">
         <div class="main-content" id="questions-section">
             <div class="question-section">
-                <div class="question-code">
+                <!-- <div class="question-code">
                     Код для підключення: <span id="test_code">{{ test_id }}</span>
-                </div>
-                <div id="currentQuestion" class="current-question"></div>
+                </div> -->
+                <!-- <div id="currentQuestion" class="current-question"></div> -->
                 <p id="questionText" class="question-text"></p>
                 <div type="hidden" id="question-progress" class="question-progress"></div>
             </div>

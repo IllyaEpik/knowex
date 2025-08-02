@@ -5,6 +5,9 @@
     --bg-result-btn: #2d7ff9;
     --bg-result-btn-hover: #195bb5;
     --color-result-btn: #fff;
+    --progress-correct: #22c55e;
+    --progress-incorrect: #ef4444;
+    --progress-skipped: #facc15;
 }
 
 body.dark {
@@ -14,15 +17,22 @@ body.dark {
     --bg-result-btn: #4a5bbd;
     --bg-result-btn-hover: #2563eb;
     --color-result-btn: #fff;
+    --progress-correct: #4ade80;
+    --progress-incorrect: #f87171;
+    --progress-skipped: #fcd34d;
 }
-#content{
+
+#content {
     overflow-y: scroll;
 }
-.hidden{
+
+.hidden {
     display: none;
 }
+.result-stats{
+    justify-content: space-between;
+}
 .result-container {
-    max-width: 600px;
     margin: 40px auto 24px auto;
     background: var(--bg-result);
     border-radius: 16px;
@@ -31,6 +41,7 @@ body.dark {
     color: var(--color-result-text);
     font-size: 20px;
     text-align: left;
+    width: 870px;
 }
 
 body.dark .result-container {
@@ -81,9 +92,18 @@ body.dark .result-container a:hover {
     background: var(--bg-result-btn-hover);
     color: #fff;
 }
-
+.result-details {
+    margin: 40px auto 24px auto;
+    background: var(--bg-result);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+    padding: 32px 28px 24px 28px;
+    color: var(--color-result-text);
+    font-size: 20px;
+    text-align: left;
+    width: 870px;
+}
 .questions-result-list {
-    max-width: 700px;
     margin: 0 auto 40px auto;
     background: var(--bg-result);
     border-radius: 14px;
@@ -91,6 +111,7 @@ body.dark .result-container a:hover {
     padding: 24px 22px 18px 22px;
     color: var(--color-result-text);
     font-size: 18px;
+    width: 870px;
 }
 
 body.dark .questions-result-list {
@@ -127,6 +148,122 @@ body.dark .questions-result-list li {
     font-weight: 600;
 }
 
-.questions-result-list span {
-    font-weight: 500;
+/* Стилі для списку варіантів відповідей */
+.answer-options-container {
+    margin-top: 10px;
+    width: 100%;
 }
+
+.questions-result-list .answer-options {
+    list-style: none;
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.questions-result-list .answer-options li {
+    margin-bottom: 8px;
+    flex: 1 1 45%; /* Розтягуємо елементи, займаючи до 45% ширини */
+    min-width: 200px;
+}
+
+.questions-result-list input[type="radio"] {
+    margin-right: 10px;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-result-text);
+    border-radius: 50%;
+    outline: none;
+    cursor: default;
+    position: relative;
+    vertical-align: middle;
+}
+
+.questions-result-list input[type="radio"]:checked {
+    border-color: var(--color-result-title);
+}
+
+.questions-result-list input[type="radio"]:checked::after {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: var(--color-result-title);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+body.dark .questions-result-list input[type="radio"] {
+    border-color: var(--color-result-text);
+}
+
+body.dark .questions-result-list input[type="radio"]:checked {
+    border-color: var(--color-result-title);
+}
+
+body.dark .questions-result-list input[type="radio"]:checked::after {
+    background: var(--color-result-title);
+}
+
+.questions-result-list label {
+    font-size: 1rem;
+    color: var(--color-result-text);
+    vertical-align: middle;
+    word-break: break-word; /* Дозволяє переносити довгі слова */
+}
+/* начало Рейтинга участников */
+/* ...existing code... */
+
+/* Новый стиль для одиночной полоски */
+.rating-bar-single {
+    display: flex;
+    height: 32px;
+    width: 300px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #e5e7eb;
+    margin: 24px auto 8px auto;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+}
+
+.rating-bar-segment-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+    transition: width 0.5s;
+}
+
+.rating-bar-correct {
+    background: linear-gradient(90deg, #22c55e 60%, #4ade80 100%);
+}
+.rating-bar-incorrect {
+    background: linear-gradient(90deg, #ef4444 60%, #f87171 100%);
+}
+.rating-bar-null {
+    background: linear-gradient(90deg, #facc15 60%, #fcd34d 100%);
+}
+
+.rating-bar-segment-single span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 15px;
+    color: white;
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* ...existing code... */
+/* конец рейтинга весь рейтинг должен быть тута) *

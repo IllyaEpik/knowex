@@ -16,6 +16,10 @@ const answerOptions = document.getElementById("answer-options");
 const participantsSection = document.getElementById("participants-section");
 const finalResults = document.getElementById("final_results");
 let currentCorrectAnswer = undefined;
+// let correctAnswers = 0
+// let incorrectAnswers = 0 
+// let nullAnwers = 0 
+let correctAnswersHistory = [];
 
 let currentQuestion = 1;
 let countQuestions = Number(document.getElementById('countQuestion').value);
@@ -43,19 +47,18 @@ ratingBtn.addEventListener('click', () => {
 function renderRating() {
     ratingList.innerHTML = '';
     const total = countQuestions;
+    
     Object.entries(user_answers).forEach(([user, answers]) => {
-        let correct = 0, incorrect = 0, nulls = 0;
+        let correctAnswers = 0, incorrectAnswers = 0, nullAnwers = 0, count = 0;
         answers.forEach(ans => {
-            if (ans === null) nulls++;
-            else if (ans === currentCorrectAnswer) correct++;
-            else incorrect++;
+            if (ans === null) nullAnwers++;
+            else if (ans === correctAnswersHistory[count]) correctAnswers++;
+            else incorrectAnswers++;
+            count++
         });
-        nulls += total - answers.length;
+        nullAnwers += total - answers.length;
 
         const oneWidth = 200 / total;
-        const correctWidth = correct * oneWidth;
-        const incorrectWidth = incorrect * oneWidth;
-        const nullWidth = nulls * oneWidth;
 
         const block = document.createElement('div');
         block.className = 'rating-block';
@@ -66,39 +69,20 @@ function renderRating() {
 
         const bar = document.createElement('div');
         bar.className = 'rating-bar';
-
-        if (correct > 0) {
-            const correctBar = document.createElement('div');
-            correctBar.className = 'rating-bar-segment rating-bar-correct';
-            correctBar.style.width = `${correctWidth}px`;
-            correctBar.innerHTML = `<span>${correct}</span>`;
-            bar.appendChild(correctBar);
+        function setBar(answers, name){
+            const answersWidth = answers * oneWidth;
+            if (answers > 0) {
+                const correctBar = document.createElement('div');
+                correctBar.className = `rating-bar-segment rating-bar-${name}`;
+                correctBar.style.width = `${answersWidth}px`;
+                correctBar.innerHTML = `<span>${answers}</span>`;
+                bar.appendChild(correctBar);
+            }
         }
-
-        if (incorrect > 0) {
-            const incorrectBar = document.createElement('div');
-            incorrectBar.className = 'rating-bar-segment rating-bar-incorrect';
-            incorrectBar.style.width = `${incorrectWidth}px`;
-            incorrectBar.innerHTML = `<span>${incorrect}</span>`;
-            bar.appendChild(incorrectBar);
-        }
-
-        if (nulls > 0) {
-            const nullBar = document.createElement('div');
-            nullBar.className = 'rating-bar-segment rating-bar-null';
-            nullBar.style.width = `${nullWidth}px`;
-            nullBar.innerHTML = `<span>${nulls}</span>`;
-            bar.appendChild(nullBar);
-        }
-
-        if (correct === 0 && incorrect === 0 && nulls === total) {
-            bar.innerHTML = '';
-            const nullBar = document.createElement('div');
-            nullBar.className = 'rating-bar-segment rating-bar-null';
-            nullBar.style.width = `200px`;
-            nullBar.innerHTML = `<span>${total}</span>`;
-            bar.appendChild(nullBar);
-        }
+        setBar(correctAnswers, 'correct')
+        setBar(incorrectAnswers, 'incorrect')  
+        setBar(nullAnwers, 'null')
+        
 
         block.appendChild(name);
         block.appendChild(bar);
@@ -181,9 +165,9 @@ startBtn.addEventListener('click', () => {
         }
     }
 });
-
 socket.on('correct', (correct) => {
     currentCorrectAnswer = correct.answer;
+    correctAnswersHistory.push(currentCorrectAnswer)
 });
 
 socket.on('nextQuestion', (data) => {
@@ -215,7 +199,7 @@ socket.on('participants_update', (participants) => {
         const li = document.createElement('li');
         li.id = `participant-${p}`;
         li.textContent = p;
-        li.className = getParticipantColor(p);
+        // li.className = getParticipantColor(p);
         ul.appendChild(li);
         // ul.appendChild(startBtn);
 
@@ -279,14 +263,13 @@ function renderFinalResults(data) {
             });
 
             stretchWrap.appendChild(answersContainer);
-
             const statsBlock = document.createElement('div');
             statsBlock.className = 'statsBlock';
             statsBlock.innerHTML = `
                 <div>${accuracy}% Точність</div>
                 <div>${info.correct} Балів</div>
             `;
-
+            
             line.appendChild(userName);
             line.appendChild(stretchWrap);
             line.appendChild(statsBlock);
@@ -308,8 +291,8 @@ socket.on('test_closed', () => {
     location.reload();
 });
 
-function getParticipantColor(username) {
-    const colors = ['green', 'red', 'gray', 'yellow'];
-    const index = Math.floor(Math.random() * colors.length);
-    return colors[index];
-}
+// function getParticipantColor(username) {
+//     const colors = ['green', 'red', 'gray', 'yellow'];
+//     const index = Math.floor(Math.random() * colors.length);
+//     return colors[index];
+// }

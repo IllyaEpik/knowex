@@ -81,9 +81,13 @@ document.addEventListener('DOMContentLoaded', function () {
         count_questions.textContent = `Питання ${data['question_number']} з ${window.COUNT_QUESTIONS}`;
         answers.innerHTML = '';
         for (let ans of data['answers']) {
-            let label = document.createElement('label');
+            let label = document.createElement('button');
             label.className = 'answer-option';
-            label.innerHTML = `<input type="radio" name="answer" value="${ans}" required>${ans}`;
+            // label.innerHTML = `<input type="radio" name="answer" value="${ans}" required class= "hidden">${ans}`;
+            
+            label.value = `${ans}` 
+            label.name = "answer"
+            label.textContent = `${ans}` 
             label.style.backgroundColor = getRandomColor(); 
             answers.append(label);
         }
@@ -93,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Answer feedback:', data);
         const answerLabels = answers.querySelectorAll('.answer-option');
         answerLabels.forEach(label => {
-            const input = label.querySelector('input');
+            const input = label
+            // const input = label.querySelector('input');
             label.classList.remove('correct', 'incorrect', 'pending', 'unanswered');
             if (input.value === data.selected_answer) {
                 label.classList.add(data.is_correct ? 'correct' : 'incorrect');
@@ -127,17 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // socket.on('user_answer_saved', (data) => {
-    //     console.log('Answer saved:', data);
-    //     const submitBtn = answerForm.querySelector('#submitBtn');
-    //     if (submitBtn) {
-    //         submitBtn.disabled = true;
-    //         submitBtn.textContent = 'Очікування наступного питання...';
-    //         submitBtn.classList.add('loading');
-    //         console.log('Answer submitted successfully, waiting for next question');
-    //     }
-    // });
-
     socket.on('participant_ack', (d) => {
         console.log(d.msg);
         // alert(d.msg); // Опціонально: додати сповіщення
@@ -160,8 +154,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('submit', function (e) {
         e.preventDefault();
         if (e.target.tagName === 'FORM') {
-            console.log(e.target);
-            const selected = e.target.querySelector('input[name="answer"]:checked');
+            // console.log(e.target);
+            // const selected = e.target.querySelector('input[name="answer"]:checked');
+            console.log(e.submitter.value);
+            const selected = e.submitter;
             if (!selected) {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
@@ -172,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingButton.classList.remove('hidden');
             socket.emit('send_answer', { 'answer': selectedValue, 'user': username, 'test_id': testId });
             overlayWait.classList.remove('hidden');
-
             // $.ajax({
             //     url: window.location.pathname,
             //     type: 'POST',

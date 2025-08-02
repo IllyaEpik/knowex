@@ -11,31 +11,48 @@
     <h2>Результати тесту: {{ test.name }}</h2>
     <p>Дата завершення: {{ time_date }}</p>
     <p>Час завершення: {{ time_text }}</p>
-    <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p> 
+
     <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
 </div>
-
-{% if questions is defined %}
-    <div class="questions-result-list" style="margin-top:32px;">
-        <h3>Всі питання та правильні відповіді:</h3>
-        <ol>
-            {% for q in questions %}
-                <li style="margin-bottom:18px;">
-                    <div><b>Питання:</b> {{ q.text }}</div>
-                    <div><b>Правильна відповідь:</b> {{ q.correct_answer }}</div>
-                    {% if q.user_answer is defined %}
-                        <div>
-                            <b>Ваша відповідь:</b>
-                            {% if q.user_answer == q.correct_answer %}
-                                <span style="color:#22c55e;">{{ q.user_answer }}</span>
-                            {% else %}
-                                <span style="color:#ef4444;">{{ q.user_answer }}</span>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ol>
+<div class="result-details">
+    
+    <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p>
+    <p>Усього часу: {{ total_time }}с</p>
+    <p>Ср. час на запитання: {{ average_time }}с</p>
+    <div class="result-stats">
+    <p>правильних: {{ correct }}</p>
+    <p>неправильних: {{ incorrect_count }}</p>
+    <p>Пропущених: {{  null_count }}</p>
     </div>
-{% endif %}
+    <div id="rating-container" class="result-container"
+         data-total="{{ total_questions }}"
+         data-correct="{{ correct }}"
+         data-incorrect="{{ incorrect_count }}"
+         data-null="{{ null_count }}"></div>  <!-- сюда вставим рейтинг -->
+</div>
+<div class="questions-result-list" style="margin-top:32px;">
+    <h3>Ваші відповіді</h3>
+    <ol>
+        {% for q in questions %}
+            <li style="margin-bottom:18px;">
+                <div><b>Питання {{ loop.index }}:</b> {{ q.text }}</div>
+                {% if q.user_answer is defined %}
+                    <div class="answer-options-container">
+                        <ul class="answer-options">
+                            {% for option in q.options if option is defined %}
+                                <li>
+                                    <input type="radio" name="question-{{ loop.index }}" 
+                                           id="option-{{ loop.index }}-{{ loop.index0 }}" 
+                                           {% if option == q.user_answer %}checked{% endif %} disabled>
+                                    <label for="option-{{ loop.index }}-{{ loop.index0 }}">{{ option }}</label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+
 {% endblock %}
