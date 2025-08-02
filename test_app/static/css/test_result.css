@@ -5,9 +5,6 @@
     --bg-result-btn: #2d7ff9;
     --bg-result-btn-hover: #195bb5;
     --color-result-btn: #fff;
-    --progress-correct: #22c55e;
-    --progress-incorrect: #ef4444;
-    --progress-skipped: #facc15;
 }
 
 body.dark {
@@ -17,22 +14,18 @@ body.dark {
     --bg-result-btn: #4a5bbd;
     --bg-result-btn-hover: #2563eb;
     --color-result-btn: #fff;
-    --progress-correct: #4ade80;
-    --progress-incorrect: #f87171;
-    --progress-skipped: #fcd34d;
+}
+
+.ans {
+    display: inline;
 }
 
 #content {
     overflow-y: scroll;
 }
 
-.hidden {
-    display: none;
-}
-.result-stats{
-    justify-content: space-between;
-}
 .result-container {
+    display: flex;
     margin: 40px auto 24px auto;
     background: var(--bg-result);
     border-radius: 16px;
@@ -42,6 +35,24 @@ body.dark {
     font-size: 20px;
     text-align: left;
     width: 870px;
+    flex-direction: column;
+}
+
+.result-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+.result-summary {
+    display: flex;
+    flex-direction:sppace-between;
+    align-items: center;
+
+}
+.time {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
 }
 
 body.dark .result-container {
@@ -92,6 +103,7 @@ body.dark .result-container a:hover {
     background: var(--bg-result-btn-hover);
     color: #fff;
 }
+
 .result-details {
     margin: 40px auto 24px auto;
     background: var(--bg-result);
@@ -103,6 +115,7 @@ body.dark .result-container a:hover {
     text-align: left;
     width: 870px;
 }
+
 .questions-result-list {
     margin: 0 auto 40px auto;
     background: var(--bg-result);
@@ -148,7 +161,6 @@ body.dark .questions-result-list li {
     font-weight: 600;
 }
 
-/* Стилі для списку варіантів відповідей */
 .answer-options-container {
     margin-top: 10px;
     width: 100%;
@@ -165,7 +177,7 @@ body.dark .questions-result-list li {
 
 .questions-result-list .answer-options li {
     margin-bottom: 8px;
-    flex: 1 1 45%; /* Розтягуємо елементи, займаючи до 45% ширини */
+    flex: 1 1 45%;
     min-width: 200px;
 }
 
@@ -215,12 +227,9 @@ body.dark .questions-result-list input[type="radio"]:checked::after {
     font-size: 1rem;
     color: var(--color-result-text);
     vertical-align: middle;
-    word-break: break-word; /* Дозволяє переносити довгі слова */
+    word-break: break-word;
 }
-/* начало Рейтинга участников */
-/* ...existing code... */
 
-/* Новый стиль для одиночной полоски */
 .rating-bar-single {
     display: flex;
     height: 32px;
@@ -247,9 +256,11 @@ body.dark .questions-result-list input[type="radio"]:checked::after {
 .rating-bar-correct {
     background: linear-gradient(90deg, #22c55e 60%, #4ade80 100%);
 }
+
 .rating-bar-incorrect {
     background: linear-gradient(90deg, #ef4444 60%, #f87171 100%);
 }
+
 .rating-bar-null {
     background: linear-gradient(90deg, #facc15 60%, #fcd34d 100%);
 }
@@ -265,5 +276,23 @@ body.dark .questions-result-list input[type="radio"]:checked::after {
     text-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
-/* ...existing code... */
-/* конец рейтинга весь рейтинг должен быть тута) *
+.answer-correct label {
+    background: #22c55e22;
+    color: #22c55e;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+.answer-user-wrong label {
+    background: #ef444422;
+    color: #ef4444;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+.answer-user-correct label {
+    background: #22c55e44;
+    color: #22c55e;
+    border-radius: 6px;
+    padding: 2px 8px;
+}

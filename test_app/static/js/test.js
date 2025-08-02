@@ -49,12 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     const ratingList = document.getElementById('rating-container');
-    if (!ratingList || !ratingList.classList.contains('result-container')) return;
+    if (!ratingList || !ratingList.classList.contains('result-container')) {
+        console.log('rating-container не найден или не имеет класс result-container');
+        return;
+    }
 
     const total = Number(ratingList.dataset.total);
     const correctAnswers = Number(ratingList.dataset.correct);
     const incorrectAnswers = Number(ratingList.dataset.incorrect);
     const nullAnswers = Number(ratingList.dataset.null);
+
+    if (isNaN(total) || total <= 0) {
+        return;
+    }
 
     ratingList.innerHTML = '';
 
@@ -67,8 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (answersCount > 0) {
             const widthPx = answersCount * oneWidth;
             const segment = document.createElement('div');
-            segment.className = `rating-bar-segment-single rating-bar-${className}`;
-            segment.style.width = `${widthPx}px`;
+            segment.className = `rating-bar-segment-single rating-bar-${className}`;            segment.style.width = `${widthPx}px`;
             segment.innerHTML = `<span>${answersCount}</span>`;
             bar.appendChild(segment);
         }

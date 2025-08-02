@@ -11,48 +11,69 @@
     <h2>Результати тесту: {{ test.name }}</h2>
     <p>Дата завершення: {{ time_date }}</p>
     <p>Час завершення: {{ time_text }}</p>
-
-    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
+    <div class="ans"><p>Питання: {{ total_questions }}</p></div>
+    <!-- <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a> -->
 </div>
 <div class="result-details">
     
-    <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p>
+    <!-- <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p>
     <p>Усього часу: {{ total_time }}с</p>
-    <p>Ср. час на запитання: {{ average_time }}с</p>
+    <p>Ср. час на запитання: {{ average_time }}с</p> -->
+    <div сlass="result-summary">
+        <p>Бали: {{ correct }} з {{ total_questions }}</p>
+        <p>оцінка: {{ correct }} з 12</p>
+      
+    </div>
+    <p>Результат: {{ rating }}</p>
+    <div id="rating-container" class="result-container"
+    
+        data-total="{{ total_questions }}"
+        data-correct="{{ correct }}"
+        data-incorrect="{{ incorrect_count }}"
+        data-null="{{ null_count }}">
+    </div>
     <div class="result-stats">
     <p>правильних: {{ correct }}</p>
     <p>неправильних: {{ incorrect_count }}</p>
     <p>Пропущених: {{  null_count }}</p>
     </div>
+    <div class="time">
+    <p>Усього часу: {{ total_time }}с</p>
+    <p>Ср. час на запитання: {{ average_time }}с</p>
+    </div>
+    <!-- <p>Рейтинг: {{ rating }}</p>
     <div id="rating-container" class="result-container"
-         data-total="{{ total_questions }}"
-         data-correct="{{ correct }}"
-         data-incorrect="{{ incorrect_count }}"
-         data-null="{{ null_count }}"></div>  <!-- сюда вставим рейтинг -->
+    
+        data-total="{{ total_questions }}"
+        data-correct="{{ correct }}"
+        data-incorrect="{{ incorrect_count }}"
+        data-null="{{ null_count }}">
+    </div> -->
 </div>
 <div class="questions-result-list" style="margin-top:32px;">
     <h3>Ваші відповіді</h3>
-    <ol>
-        {% for q in questions %}
-            <li style="margin-bottom:18px;">
-                <div><b>Питання {{ loop.index }}:</b> {{ q.text }}</div>
-                {% if q.user_answer is defined %}
-                    <div class="answer-options-container">
-                        <ul class="answer-options">
-                            {% for option in q.options if option is defined %}
-                                <li>
-                                    <input type="radio" name="question-{{ loop.index }}" 
-                                           id="option-{{ loop.index }}-{{ loop.index0 }}" 
-                                           {% if option == q.user_answer %}checked{% endif %} disabled>
-                                    <label for="option-{{ loop.index }}-{{ loop.index0 }}">{{ option }}</label>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ol>
+    {% for q in questions %}
+    <div class="question-block">
+        <b>Питання: {{ q.text }}</b>
+        <ul class="answer-options">
+            {% for option in q.options if option is defined %}
+                {% set is_user = option == q.user_answer %}
+                {% set is_correct = option == q.correct_answer %}
+                <li
+                    class="
+                        {% if is_correct %}answer-correct{% endif %}
+                        {% if is_user and not is_correct %}answer-user-wrong{% endif %}
+                        {% if is_user and is_correct %}answer-user-correct{% endif %}
+                    ">
+                    <input type="radio" name="question-{{ loop.index }}"
+                           id="option-{{ loop.index }}-{{ loop.index0 }}"
+                           {% if is_user %}checked{% endif %} disabled>
+                    <label for="option-{{ loop.index }}-{{ loop.index0 }}">{{ option }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock %}
