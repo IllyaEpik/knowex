@@ -14,6 +14,7 @@ def render_user():
     error = ''    
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
+            # Авторизация
             if not User.query.filter_by(nickname=flask.request.form['nickname']).all():
                 if 'Неправильний логін' not in flask.session['messages']:
                     flask.session['messages'].append('Неправильний логін')
@@ -26,26 +27,42 @@ def render_user():
                     if user.password != flask.request.form['password']:
                         if 'Неправильний пароль' not in flask.session['messages']:
                             flask.session['messages'].append('Неправильний пароль')
-
         else:
+            # Регистрация: сохраняем данные во временное хранилище и отправляем код
             try:
-                if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
-                    nickname = flask.request.form.get('nickname')
-                    user = User(
-                        email = flask.request.form.get('email'),
-                        password = flask.request.form.get('password'),
-                        nickname = nickname,
-                        complete_tests = 0,
-                        create_tests  = 0,
-                        is_mentor = False
-                    )
-                    DATABASE.session.add(user)
-                    DATABASE.session.commit()
-                    flask.session['messages'].append('Користувач успішно доданий!')
-    
+                email = flask.request.form.get('email', '').strip().lower()
+                # Проверяем email и nickname в базе с нормализацией
+                user_exists = User.query.filter_by(email=email).first()
+                nickname = flask.request.form.get('nickname', '').strip()
+                nickname_exists = User.query.filter_by(nickname=nickname).first()
+                if user_exists:
+                    flask.session['messages'].append('Користувач з такою поштою вже існує!')
+                    flask.session.modified = True
+                    return flask.render_template("user.html")
+                elif nickname_exists:
+                    flask.session['messages'].append('Користувач з таким імʼям вже існує!')
+                    flask.session.modified = True
+                    return flask.render_template("user.html")
+                elif flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+                    flask.session['pending_reg'] = {
+                        'email': email,
+                        'password': flask.request.form.get('password'),
+                        'nickname': nickname,
+                        'confirm_password': flask.request.form.get('confirm_password')
+                    }
+                    # Отправить код на email только если email и nickname не существуют
+                    send_code(email)
+                    flask.session['show_modal'] = True
+                    flask.session.modified = True
+                    return flask.render_template("user.html")
+                else:
+                    flask.session['messages'].append('Пароли не совпадают!')
             except Exception as error:
                 print(error)
-    return flask.render_template("user.html", error = error)
+                flask.session['messages'].append('Ошибка регистрации!')
+    # GET или после авторизации
+    flask.session.pop('show_modal', None)
+    return flask.render_template("user.html")
 
 @config_page('profile.html')
 def render_profile_page():
@@ -88,12 +105,25 @@ def send_email_code():
     
 def render_code():
     confirm_code = flask.request.form.get('confirm_code')
+    email = flask.request.form.get('email', '').strip().lower()
+    password = flask.request.form.get('password')
+    nickname = flask.request.form.get('nickname')
+    confirm_password = flask.request.form.get('confirm_password')
+    if confirm_code == "__check__":
+        if User.query.filter_by(nickname=nickname).first() or User.query.filter_by(email=email).first():
+            return "Не вдалося зареєструвати користувача!"
+        return 'OK'
+    # Обычная регистрация
     if confirm_code == flask.session.get('confirm_code') or confirm_code == 'admin':
-        if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+        if User.query.filter_by(nickname=nickname).first():
+            return 'Користувач з таким імʼям вже існує!', 400
+        if User.query.filter_by(email=email).first():
+            return 'Користувач з такою поштою вже існує!', 400
+        if password == confirm_password:
             user = User(
-                email=flask.request.form.get('email'),
-                password=flask.request.form.get('password'),
-                nickname=flask.request.form.get('nickname'),
+                email=email,
+                password=password,
+                nickname=nickname,
                 complete_tests=0,
                 create_tests=0,
                 is_mentor=False
@@ -102,8 +132,12 @@ def render_code():
             DATABASE.session.commit()
             flask_login.login_user(user)
             flask.session['messages'].append('Користувач успішно доданий!')
+        else:
+            flask.session['messages'].append('Пароли не совпадают!')
         return flask.redirect('/')
     else:
         if 'Неправильний код підтвердження' not in flask.session['messages']:
             flask.session['messages'].append('Неправильний код підтвердження')
-        return flask.redirect('/user')
+        flask.session['show_modal'] = True
+        flask.session.modified = True
+        return "Неправильний код підтвердження", 400

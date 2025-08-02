@@ -8,39 +8,54 @@
 
 {% block content %}
 <h1 class="name_knowex">Knowex</h1>
-<div class="auth_switch_wrapper" style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+
+<input type="checkbox" id="auth-flip-toggle" class="auth-flip-toggle" hidden>
+<div class="auth_flip_switch_wrapper" style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
     <span id="authLabel" style="font-size:18px; margin-right:12px;">Авторизація</span>
-    <label class="theme_change">
-        <input type="checkbox" id="authToggle">
-        <span class="slider"></span>
+    <label class="auth-flip-switch" for="auth-flip-toggle">
+        <span class="auth-flip-slider"></span>
     </label>
     <span id="regLabel" style="font-size:18px; margin-left:12px;">Реєстрація</span>
 </div>
-
-<div class="user_page" style="margin: 40px auto 0 auto; position: static; display: flex; flex-direction: column; align-items: center;">
-    <div id="authFormBlock">
-        <div class="title" style="font-size:28px; font-weight:700; text-align:center; margin-bottom:20px;">Авторизація</div>
-        <form action="/user" method="post" class="form" id="auth" style="background: none; box-shadow: none; padding: 0;">
-            <div class="container" style="position: static; width: 100%; height: auto; pointer-events: all;">
-                <input class="input log_nickname" type="text" name="nickname" placeholder="Введіть ім'я...">
-                <input class="input log_password" type="password" name="password" placeholder="Введіть пароль...">
-                <button name="auth" value="1" class="log_save" style="width: 100%;">Зберегти</button>
-            </div>
+<div class="auth-flip-card-wrapper">
+  <div class="auth-flip-card">
+    <div class="auth-flip-card__inner">
+      <div class="auth-flip-card__front user_page">
+        <div class="title">Авторизація</div>
+        <form action="/user" method="post" class="form" id="auth">
+          <div class="container">
+            <input class="input log_nickname" type="text" name="nickname" placeholder="Введіть ім'я...">
+            <input class="input log_password" type="password" name="password" placeholder="Введіть пароль...">
+            <button name="auth" value="1" class="log_save" style="width: 100%;">Зберегти</button>
+          </div>
         </form>
-    </div>
-    <div id="regFormBlock" style="display:none;">
-        <div class="title" style="font-size:28px; font-weight:700; text-align:center; margin-bottom:20px;">Реєстрація</div>
-        <form action="/user" method="post" class="form" id="reg" style="background: none; box-shadow: none; padding: 0;">
-            <div class="container" style="position: static; width: 100%; height: auto; pointer-events: all;">
-                <input class="input reg_nickname" type="text" name="nickname" id="nickname" placeholder="Ім’я користувача">
-                <input class="input reg_email" type="email" name="email" id="email" placeholder="Ел. пошта">
-                <input class="input reg_password" type="password" name="password" id="password" placeholder="Пароль">
-                <input class="input reg_confirm_password" type="password" name="confirm_password" id="confirm_password" placeholder="Повторіть пароль">
-                <button class="reg_save" type="submit" style="width: 100%;">Зберегти</button>
-            </div>
+      </div>
+      <div class="auth-flip-card__back user_page">
+        <div class="title">Реєстрація</div>
+        <form action="/user" method="post" class="form" id="reg">
+          <div class="container">
+            <input class="input reg_nickname" type="text" name="nickname" id="nickname" placeholder="Ім’я користувача">
+            <input class="input reg_email" type="email" name="email" id="email" placeholder="Ел. пошта">
+            <input class="input reg_password" type="password" name="password" id="password" placeholder="Пароль">
+            <input class="input reg_confirm_password" type="password" name="confirm_password" id="confirm_password" placeholder="Повторіть пароль">
+            <button class="reg_save" id="reg-save-btn" type="button" style="width: 100%;">Зберегти</button>
+          </div>
         </form>
+      </div>
     </div>
+  </div>
 </div>
+
+<form action="/render_code" method="post" id="modal-form" style="display:none;">
+    <div id="modal-bg" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+        <div id="modal-window" style="background:#fff; padding:30px; border-radius:10px; width:300px; margin:100px auto; position:relative;">
+            <span id="modal-close" style="position:absolute; right:10px; top:10px; cursor:pointer;">&times;</span>
+            <h3>Введіть код підтвердження:</h3>
+            <input type="text" id="modal-input" style="width:100%; margin-bottom:15px;" name="confirm_code" placeholder="введіть код">
+            <button id="modal-ok" type="submit">Підтвердити</button>
+        </div>
+    </div>
+</form>
 
 <div class="messages" id="messages">
     {% for message in session.get('messages', []) %}
@@ -51,29 +66,6 @@
     {% endfor %}
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('authToggle');
-    const authForm = document.getElementById('authFormBlock');
-    const regForm = document.getElementById('regFormBlock');
-    const authLabel = document.getElementById('authLabel');
-    const regLabel = document.getElementById('regLabel');
 
-    toggle.addEventListener('change', function() {
-        if (toggle.checked) {
-            authForm.style.display = 'none';
-            regForm.style.display = 'block';
-            authLabel.style.fontWeight = 'normal';
-            regLabel.style.fontWeight = 'bold';
-        } else {
-            authForm.style.display = 'block';
-            regForm.style.display = 'none';
-            authLabel.style.fontWeight = 'bold';
-            regLabel.style.fontWeight = 'normal';
-        }
-    });
-    // По умолчанию выделяем "Авторизация"
-    authLabel.style.fontWeight = 'bold';
-});
-</script>
+<script src="{{ url_for('user.static', filename='js/script.js') }}"></script>
 {% endblock %}
