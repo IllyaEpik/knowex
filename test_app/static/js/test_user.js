@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('testEnd', (data) => {
         const link = document.createElement('link');
+        overlayWait.classList.add('hidden');
         link.rel = 'stylesheet';
         link.href = linkToResult.value;
         document.head.appendChild(link);
