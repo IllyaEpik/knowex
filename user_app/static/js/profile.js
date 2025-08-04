@@ -1,62 +1,80 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const hideButtons = document.querySelectorAll("#hide");
-
-    hideButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            const parent = button.closest(".user_info");
-            const textElement = parent.querySelector("span");
-
-            if (textElement) {
-                if (textElement.dataset.originalText === undefined) {
-                    textElement.dataset.originalText = textElement.textContent;
-                }
-
-                if (textElement.textContent.includes("•")) {
-                    textElement.textContent = textElement.dataset.originalText;
-                    button.id = 'hide'
-                } else {
-                    textElement.textContent = "•".repeat(textElement.dataset.originalText.length);
-                    button.id = 'close'
-                }
-            }
-        });
-    });
-});
-
-window.scrollCarousel = function(btn, dir) {
-    const wrapper = btn.closest('.carousel_wrapper');
-    if (!wrapper) return;
-    const carouselContainer = wrapper.querySelector('.carousel_container');
-    if (!carouselContainer) return;
-    const tests = carouselContainer.querySelector('.container_tests');
-    if (!tests) return;
-    const testCard = tests.querySelector('.container_test');
-    if (!testCard) return;
-    const cardWidth = testCard.offsetWidth + 24;
-    carouselContainer.scrollBy({ left: dir * cardWidth * 2, behavior: 'smooth' });
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    const passwordSpan = document.getElementById('password-text');
-    const toggleBtn = document.getElementById('togglePassword');
-    const originalText = passwordSpan.dataset.password?.trim();
+    const createdTestsContainer = document.querySelector('.created-tests');
+    const completedTestsContainer = document.querySelector('.completed-tests');
+    const leftArrow = document.querySelector('.arrow-block img[src*="arrow_left"]');
+    const rightArrow = document.querySelector('.arrow-block img[src*="arrow_right"]');
+    const radioButtons = document.querySelectorAll('input[name="btn"]');
 
-    if (!originalText) {
-      passwordSpan.textContent = '[немає пароля]';
-      toggleBtn.disabled = true;
-      return;
+    let currentPage = 0;
+    const testsPerPage = 2;
+
+    function showPage(container, page) {
+        const tests = Array.from(container.querySelectorAll('.test'));
+        tests.forEach(test => test.classList.remove('visible'));
+
+        const start = page * testsPerPage;
+        const end = start + testsPerPage;
+
+        tests.slice(start, end).forEach(test => {
+            test.classList.add('visible');
+        });
+
+        leftArrow.style.opacity = page > 0 ? '1' : '0.3';
+        rightArrow.style.opacity = end < tests.length ? '1' : '0.3';
     }
 
-    passwordSpan.textContent = '•'.repeat(originalText.length);
+    function getActiveContainer() {
+        return document.querySelector('input[name="btn"]:checked').value === 'option1'
+            ? createdTestsContainer
+            : completedTestsContainer;
+    }
+
+    function updateView() {
+        const isCreated = document.querySelector('input[name="btn"]:checked').value === 'option1';
+
+        // Показываем/скрываем контейнеры
+        createdTestsContainer.style.display = isCreated ? 'block' : 'none';
+        completedTestsContainer.style.display = !isCreated ? 'block' : 'none';
+
+        currentPage = 0;
+        showPage(getActiveContainer(), currentPage);
+    }
+
+    // Событие на переключение вкладок
+    radioButtons.forEach(btn => btn.addEventListener('change', updateView));
+
+    // Клики по стрелкам
+    leftArrow.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage--;
+            showPage(getActiveContainer(), currentPage);
+        }
+    });
+
+    rightArrow.addEventListener('click', () => {
+        const container = getActiveContainer();
+        const totalTests = container.querySelectorAll('.test').length;
+        if ((currentPage + 1) * testsPerPage < totalTests) {
+            currentPage++;
+            showPage(container, currentPage);
+        }
+    });
+
+        const toggleBtn = document.querySelector('.toggle-password');
+    const passwordInput = document.getElementById('user-password');
+    const icon = toggleBtn.querySelector('img');
 
     toggleBtn.addEventListener('click', () => {
-      const isHidden = passwordSpan.textContent.includes('•');
-      if (isHidden) {
-        passwordSpan.textContent = originalText;
-        toggleBtn.textContent = '🙈';
-      } else {
-        passwordSpan.textContent = '•'.repeat(originalText.length);
-        toggleBtn.textContent = '👁️';
-      }
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.src = '/static/user/images/hide_open.svg';
+        } else {
+            passwordInput.type = 'password';
+            icon.src = '/static/user/images/hide_close.svg';
+        }
     });
-  });
+
+
+    // Инициализация при загрузке
+    updateView();
+});
