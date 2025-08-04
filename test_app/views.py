@@ -195,14 +195,17 @@ def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
-    time_complete = time.localtime(time.time())
-    time_date = time.strftime('%d.%m.20%y', time_complete)
-    time_text = time.strftime('%H:%M', time_complete)
+    
+    time_complete = time.localtime(time.time())  # Поточний час: 01:33 AM EEST, 02.08.2025
+    time_date = time.strftime('%d.%m.20%y', time_complete)  # "02.08.2025"
+    time_text = time.strftime('%H:%M', time_complete)       # "01:33"
+    
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     test_answers = flask.session.get("test_answers", [])
     correct = 0
     questions = []
+    
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
@@ -215,15 +218,29 @@ def test_result(test_id):
         if is_correct:
             correct += 1
 
+        # Додаємо варіанти відповідей (припустимо, вони в question.answers як JSON)
+        options = []
+        if question.answers:
+            try:
+                options = json.loads(question.answers)
+            except Exception:
+                options = [question.answers]
+        options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
+        options = list(set(options))  # Уникаємо дублікатів
+
         questions.append({
             "text": question.text,
             "correct_answer": question.correct_answer,
             "user_answer": user_answer,
-            "is_correct": is_correct 
+            "is_correct": is_correct,
+            "options": options  # Додано
         })
+    
+    total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд
+    average_time = total_time / total_questions if total_questions > 0 else 0
+
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
-        print(f"User {user.id} completed test {user.complete_tests}")
         if not (str(test.id) in user.complete_tests):
             if user.complete_tests:
                 ids = user.complete_tests.split()
@@ -234,23 +251,27 @@ def test_result(test_id):
                 user.complete_tests = str(test.id)
                 test.count += 1
         DATABASE.session.commit()
+    
     flask.session.pop("test_answers", None)
-    print({
-        "test": test,
-        "total_questions": total_questions,
-        "time_date": time_date,
-        'time_text':time_text,
-        "answers": test_answers,
-        "correct": correct,
-        "questions": questions
-    })
+
+    average_time = total_time / total_questions if total_questions > 0 else 0
+
+    null_count = sum(1 for q in questions if q["user_answer"] is None)
+    incorrect_count = total_questions - correct - null_count
+
+    # ... оновлений return
     return {
         "test": test,
         "total_questions": total_questions,
         "time_date": time_date,
-        'time_text':time_text,
+        "time_text": time_text,
         "correct": correct,
-        "questions": questions
+        "correct_count": correct,
+        "incorrect_count": incorrect_count,
+        "null_count": null_count,
+        "questions": questions,
+        "total_time": total_time,
+        "average_time": int(average_time)
     }
 
 # end_test

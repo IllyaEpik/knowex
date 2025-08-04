@@ -53,6 +53,7 @@ ratingBtn.addEventListener('click', () => {
 function renderRating() {
     ratingList.innerHTML = '';
     const total = countQuestions;
+    
     Object.entries(user_answers).forEach(([user, answers]) => {
         let correctAnswers = 0, incorrectAnswers = 0, nullAnwers = 0, count = 0;
         answers.forEach(ans => {
