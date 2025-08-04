@@ -8,85 +8,51 @@
 {% endblock %}
 
 {% block content %} 
-<div class="profile_user_block">
-    <a href="/logout" class="field_label">вийти</a>
-    <div class="profile_fields">
-        <div class="user_info">
-            <div class="field_label">Nickname:</div>
-            <div class="field_value">{{ user.nickname }}</div>
-        </div>
-        <div class="user_info">
-            <div class="field_label">E-mail:</div>
-            <div class="field_value">{{ user.email }}</div>
-        </div>
-        <div class="user_info">
-            <div class="field_label">Password:</div>
-                <div class="field_value">
-                    <span id="password-text" data-password="{{ user.password }}"></span> <button id="togglePassword" type="button" class="toggle-password">👁️</button>
-                </div> 
-        </div>
-        <div class="user_info">
-            <div class="field_label">Is mentor:</div>
-            <div class="field_value">{{ user.is_mentor }}</div>
-        </div>
-        {% if list_created_tests %}
-        <div class="tests_section">
-            <h2>Створені тести: {{ count_created_tests }}</h2>
-            <div class="carousel_wrapper">
-                <button class="carousel_btn left" onclick="scrollCarousel(this, -1)">&lt;</button>
-                <div class="carousel_container">
-                    <div class="container_tests">
-                        {% for tid in list_created_tests %}
-                            {% set test = Test.query.get(tid) %}
-                            {% if test %}
-                            <div class="container_test">
-                                <div class="test_name">
-                                    <h3>{{ test.name }}</h3>
-                                </div>
-                                <div class="test_description">
-                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
-                                </div>
-                                <div class="test_link">
-                                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
-                                </div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+
+<div class="container">
+    <div class="user-block">
+        {% if image_name %}
+            <img src="{{ url_for('profile.static', filename='images/' + image_name) }}">
+        {% else %}
+            <div class="circle"></div>
+        {% endif %}
+        <textarea name="description" class="add_description" placeholder="Введіть опис..."></textarea>
+
+    </div>
+
+    <div class="tests-block">
+        <div class="wrapper">
+            <div class="option">
+                <input class="input" type="radio" name="btn" value="option1" checked="">
+                <div class="btn">
+                    <span class="span">Option</span>
                 </div>
-                <button class="carousel_btn right" onclick="scrollCarousel(this, 1)">&gt;</button>
+            </div>
+            <div class="option">
+                <input class="input" type="radio" name="btn" value="option2">
+                <div class="btn">
+                    <span class="span">Option</span>
+                </div>
             </div>
         </div>
-        {% endif %}
-        {% if list_completed_tests %}
-        <div class="tests_section">
-            <h2>Пройдені тести: {{ count_completed_tests }}</h2>
-            <div class="carousel_wrapper">
-                <button class="carousel_btn left" onclick="scrollCarousel(this, -1)">&lt;</button>
-                <div class="carousel_container">
-                    <div class="container_tests">
-                        {% for tid in list_completed_tests %}
-                            {% set test = Test.query.get(tid) %}
-                            {% if test %}
-                            <div class="container_test">
-                                <div class="test_name">
-                                    <h3>{{ test.name }}</h3>
-                                </div>
-                                <div class="test_description">
-                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
-                                </div>
-                                <div class="test_link">
-                                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
-                                </div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <button class="carousel_btn right" onclick="scrollCarousel(this, 1)">&gt;</button>
+
+        <div class="test">
+            <div class="name-block">
+                <span class="name">Тест 1</span>
+                <button id="edit-name"><img src="{{ url_for('user.static', filename='images/edit.svg') }}"></button>
             </div>
+            <div class="test-photo">
+                <div class="photo">
+                    
+                </div>
+            </div>
+            <button class="custom-btn btn-1">Read More</button>
         </div>
-        {% endif %}
+    </div>
+
+    <div class="settings">
+
     </div>
 </div>
+
 {% endblock %}
