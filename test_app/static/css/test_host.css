@@ -20,7 +20,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background: #BEE7FF; */
+    background: #ffffff;
     padding: 10px 20px;
     color: #ffffff;
     width: 1590px;
@@ -264,15 +264,21 @@ background:#f4fbff;
 .main-content {
     flex-grow: 0;
     margin-right: 20px;
-    height: 705px;
+    height: 650px;
     overflow: visible;
     width: 700px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    /* background:#FFFFFF; */
-    /* border: #B9B9B9 1px solid; */
+    padding: 15px;
+    margin-bottom: 100px;
+    background:#FFFFFF ;
     border-radius: 12px;
+}
+
+
+#rating-section {
+    border: #B9B9B9 1px solid;
 }
 
 .question-section {
@@ -456,7 +462,7 @@ background:#f4fbff;
     display: flex;
     gap: 5px;
     /* padding: 5px 7px; */
-    background-color: white;
+    background-color: #ffffff;
     justify-content: center;
     border: #B9B9B9 2px solid;
     align-items: center;
