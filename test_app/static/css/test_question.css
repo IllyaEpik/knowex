@@ -99,13 +99,13 @@ body {
 }
 
 .current-question,
-.question-text {
+/* .question-text {
     font-size: 18px;
     color: #2c3e50;
     margin-bottom: 10px;
     width: 1270px;
     height: 40px;
-}
+} */
 
 .question-progress {
     display: flex;
@@ -131,7 +131,7 @@ body {
     border-color: #27ae60;
 }
 
-.answer-block {
+/* .answer-block {
     padding: 25px 15px;
     background-color: #F4FBFF;
     border-top: 1px solid #B9B9B9;
@@ -191,9 +191,9 @@ body {
     border-color: #e74c3c;
     background-color: #fdecea;
     color: #c0392b;
-}
+} */
 
-.header-right {
+/* .header-right {
     border: 1px solid #B9B9B9;
     background-color: #fff;
     color: #000000;
@@ -215,7 +215,7 @@ body {
     align-items: center;
     display: flex;
     justify-content: center;
-}
+} */
 
 .submit-btn {
     display: flex;
@@ -303,4 +303,78 @@ body {
     padding: 20px;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 12px;
+}
+.answers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.answer-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 305px;       
+    height: 400px;      
+    background-color: #cce5f6;
+    border: 2px solid #cce5f6;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-align: center;
+    font-size: 20px;   
+}
+
+.answer-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.answer-card .answer-text {
+    font-weight: bold;
+    color: #333;
+    padding: 10px;
+    pointer-events: none; 
+}
+
+.answer-card:hover {
+    background-color: #b3d8f0;
+}
+
+.answer-card input[type="radio"]:checked + .answer-text {
+    color: #007bff;
+    font-weight: bold;
+    border-bottom: 2px solid #007bff;
+}
+.question-box {
+    width: 1540px;
+    height: 310px;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.question-label {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.question-content {
+    font-size: 32px;
+    font-weight: 600;
+    color: #007bff;
+    word-wrap: break-word;
 }
