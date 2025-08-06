@@ -64,7 +64,7 @@ function renderRating() {
         });
         nullAnwers += total - answers.length;
 
-        const oneWidth = 200 / total;
+        const oneWidth = 605 / total;
 
         const block = document.createElement('div');
         block.className = 'rating-block';
