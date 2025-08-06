@@ -121,7 +121,18 @@ def render_test_user_question(test_id, question_id):
         "selected": selected,
         "correct_answer": question.correct_answer,
     }
-
+@socketio.on('end_current_question')
+def handle_end_current_question(data):
+    test_id = data.get('test_id')
+    room = f'test_{test_id}'
+    test = Test.query.get(int(test_id))
+    if not test:
+        print(f"Ошибка: тест {test_id} не найден")
+        emit('error', {'msg': f'Тест {test_id} не знайдено'}, to=request.sid)
+        return
+    emit('show_waiting_screen', room=room, skip_sid=request.sid)
+    print(f"Событие show_waiting_screen отправлено участникам теста {test_id}")
+    
 @config_page("test_question.html")
 def test_question(test_id, question_id):
     test = Test.query.filter_by(id=test_id).first()

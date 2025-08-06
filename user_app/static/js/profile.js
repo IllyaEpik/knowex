@@ -67,10 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleBtn.addEventListener('click', () => {
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            icon.src = '/static/user/images/hide_open.svg';
+            // src="/user/images/hide_close.svg"
+            icon.src = '/user/images/hide_open.svg';
         } else {
             passwordInput.type = 'password';
-            icon.src = '/static/user/images/hide_close.svg';
+            icon.src = '/user/images/hide_close.svg';
         }
     });
 

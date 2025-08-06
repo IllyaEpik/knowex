@@ -17,7 +17,7 @@
 <div class="test-container">
     <header class="test-header">
         <div class="header-left">
-            <button class="mode-btn headerButton" id="questionsBtn">Питання</button>
+            <button class="mode-btn headerButton selected" id="questionsBtn">Питання</button>
             <button class="roles-btn headerButton" id="ratingBtn">Рейтинг</button>
         </div>
         <div class="header-center">
@@ -52,7 +52,11 @@
                     <h3>Учасники: <span id="participantsCount"></span></h3>
                     <ul id="participants_list" class="participants-list"></ul>
                 </div>
-                <button id="start_test_btn" class="start-btn">Розпочати тест</button>
+                <div>
+
+                    <button id="end_test_btn" class="end-btn">Закінчити питання </button>
+                    <button id="start_test_btn" class="start-btn">Розпочати тест</button>
+                </div>
             </div>
         </div>
     </div>

@@ -48,7 +48,10 @@ ratingBtn.addEventListener('click', () => {
     ratingBtn.classList.add("selected")
     renderRating();
 });
-
+const endTestBtn = document.getElementById('end_test_btn');
+endTestBtn.addEventListener('click', () => {
+    socket.emit('end_current_question', { test_id: testId });
+});
 
 function renderRating() {
     ratingList.innerHTML = '';
@@ -64,7 +67,7 @@ function renderRating() {
         });
         nullAnwers += total - answers.length;
 
-        const oneWidth = 200 / total;
+        const oneWidth = 605 / total;
 
         const block = document.createElement('div');
         block.className = 'rating-block';

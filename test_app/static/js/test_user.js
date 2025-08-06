@@ -34,7 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const b = Math.floor(Math.random() * 156) + 100;
         return `rgb(${r}, ${g}, ${b})`;
     }
-
+    socket.on('show_waiting_screen', () => {
+        if (overlayWait) {
+            overlayWait.classList.remove('hidden');
+            overlayWait.style.display = 'flex';
+        }
+    });
     socket.on('testEnd', (data) => {
         const link = document.createElement('link');
         overlayWait.classList.add('hidden');
