@@ -20,7 +20,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f5f7fa;
+    background: #BEE7FF;
     padding: 10px 20px;
     color: #ffffff;
     width: 1590px;
@@ -59,6 +59,7 @@ body {
     position: fixed;
     bottom: 0;
     right: 0;
+    background: #BEE7FF;
 }
 #rightPanel {
     
@@ -262,12 +263,15 @@ body {
 .main-content {
     flex-grow: 0;
     margin-right: 20px;
-    height: 787px;
+    height: 705px;
     overflow: visible;
-    width: 1350px;
+    width: 700px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background:#FFFFFF ;
+    border: #B9B9B9 1px solid;
+    border-radius: 12px;
 }
 
 .question-section {
@@ -291,17 +295,25 @@ body {
     font-size: 16px;
     display: flex;
     align-items: center;
+
     margin-bottom: 12px;
+    margin-left: 50px;
+
+    height: 50px;
+    width: 605px;
+    border-radius: 12px;
+
+    background-color: #F2FEFF;
 }
 .rating-block .name {
-    font-weight: 600;
-    width: 120px;
+    font-weight: 60;
+    width: 12px;
 }
 .rating-bar {
     display: flex;
     height: 24px;
-    width: 200px;
-    border-radius: 8px;
+    width: 605px;
+    border-radius: 12px;
     overflow: hidden;
     margin-left: 12px;
     margin-right: 12px;
@@ -336,9 +348,9 @@ body {
     color: white;
     pointer-events: none;
 }
-.rating-bar-correct { background-color: green; }
-.rating-bar-incorrect { background-color: red; }
-.rating-bar-null { background-color: gray; }
+.rating-bar-correct { background-color: #00FF88; }
+.rating-bar-incorrect { background-color: #FE5454; }
+.rating-bar-null { background-color: #E8FF66; }
 
 /* конец рейтинга весь рейтинг должен быть тута) */
 
@@ -443,8 +455,7 @@ body {
     display: flex;
     gap: 5px;
     /* padding: 5px 7px; */
-    background-color: white;
-    border: #B9B9B9 2px solid;
+    background-color: #BEE7FF;
     justify-content: center;
     align-items: center;
 }
