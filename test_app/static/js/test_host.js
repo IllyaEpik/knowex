@@ -35,11 +35,17 @@ const ratingList = document.getElementById('rating-list');
 questionsBtn.addEventListener('click', () => {
     questionsSection.classList.remove('hidden');
     ratingSection.classList.add('hidden');
+
+    ratingBtn.classList.remove("selected")
+    questionsBtn.classList.add('selected')
 });
 
 ratingBtn.addEventListener('click', () => {
     questionsSection.classList.add('hidden');
     ratingSection.classList.remove('hidden');
+
+    questionsBtn.classList.remove("selected")
+    ratingBtn.classList.add("selected")
     renderRating();
 });
 
@@ -90,12 +96,25 @@ function renderRating() {
         ratingList.appendChild(block);
     });
 }
-
+let colors = [
+    "#24B9B2",
+    "#469597",
+    "#5BA199",
+    "#217074",
+    "#37745B",
+    "#2F70AF",
+    "#81BECE",
+    "#BACBDB"
+]
 function getRandomColor() {
-    const r = Math.floor(Math.random() * 156) + 100;
-    const g = Math.floor(Math.random() * 156) + 100;
-    const b = Math.floor(Math.random() * 156) + 100;
-    return `rgb(${r}, ${g}, ${b})`;
+    let len = colors.length
+    let rand = Math.floor(Math.random()*colors.length) // const r = Math.floor(Math.random() * 156) + 100;
+    // const g = Math.floor(Math.random() * 156) + 100;
+    // const b = Math.floor(Math.random() * 156) + 100;
+    // return `rgb(${r}, ${g}, ${b})`;
+    // Math.random
+    console.log(rand,colors[rand],colors)
+    return colors[Number(rand)]
 }
 
 function initializeQuestionProgress() {

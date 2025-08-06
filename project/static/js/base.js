@@ -1,9 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
     let count = 0
     const themeToggleButton = document.getElementById("theme_change");
     const input = document.querySelector(".input");
     const body = document.body;
-    console.log(themeToggleButton)
+    console.log(themeToggleButton,localStorage.getItem("theme"),input)
 
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.checked = 'true'
     }
 
-    themeToggleButton.addEventListener("click", () => {
+    themeToggleButton.addEventListener("click", function(event) {
         console.log(body.classList.contains("dark"))
         if (count){
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             count = true
         }
     });
-});
+// });
 
 document.addEventListener("DOMContentLoaded", 
 function () {

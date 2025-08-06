@@ -98,7 +98,7 @@ body.dark {
 
 #create {
     background-color: var(--bg-create);
-    border-radius: var(--border-radius-create);
+    border-radius: 10px;
 }
 
 body {
