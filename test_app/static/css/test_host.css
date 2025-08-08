@@ -357,7 +357,7 @@ background:#f4fbff;
 }
 .rating-bar-correct { background-color: #00FF88; }
 .rating-bar-incorrect { background-color: #FE5454; }
-.rating-bar-null { background-color: #333; }
+.rating-bar-null { background-color: #787878; }
 
 /* конец рейтинга весь рейтинг должен быть тута) */
 
@@ -402,7 +402,9 @@ background:#f4fbff;
     border-color: #27ae60;
 }
 #start_test_btn{
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 200px;
     /* height: 40px; */
 }
@@ -755,4 +757,78 @@ background:#f4fbff;
     align-items: flex-end;
     min-width: 80px;
 
+}
+
+
+
+
+.rating-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #BEE7FF;
+    height: 60px;
+    width: 220px;
+    font-size: 21px;
+    border-radius: 30px;
+}
+
+
+.participants-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #BEE7FF;
+    height: 40px;
+    width: 230px;
+    font-size: 18px;
+    border-radius: 30px;
+}
+
+.correct-square {
+    width: 25px;
+    height: 25px;
+    background-color: #00FF88;
+    border: 1px solid #787878;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.incorrect-square {
+    width: 25px;
+    height: 25px;
+    background-color: #FE5454;
+    border: 1px solid #787878;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.waiting-square {
+    width: 25px;
+    height: 25px;
+    background-color: #9a9a9a;
+    border: 1px solid #787878;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+
+
+#end_test_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    display: flex;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 15px;
+    align-self: flex-start;
+    width: 200px;
+    height: 40px;
 }
