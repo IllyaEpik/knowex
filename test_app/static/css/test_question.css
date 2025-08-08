@@ -351,13 +351,13 @@ body {
     border-bottom: 2px solid #007bff;
 }
 .question-box {
-    width: 1540px;
-    height: 310px;
+    width: 80.8398950128vw;
+    height: 16.2729658792vw;
     background-color: #f8f9fa;
     border: 2px solid #dee2e6;
-    border-radius: 20px;
-    padding: 30px;
-    margin: 30px auto;
+    border-radius: 1.0498687664vw;
+    padding: 1.5748031496vw;
+    margin: 1.5748031496vw auto;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -366,14 +366,14 @@ body {
 }
 
 .question-label {
-    font-size: 28px;
+    font-size: 1.46981627296vw;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 0.7874015748vw;
     color: #333;
 }
 
 .question-content {
-    font-size: 32px;
+    font-size: 1.67979002624vw;
     font-weight: 600;
     color: #007bff;
     word-wrap: break-word;
