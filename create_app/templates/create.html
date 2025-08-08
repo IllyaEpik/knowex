@@ -3,90 +3,127 @@
 {% block title %}Створити тест{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('create.static', filename='css/create.css') }}">
+    <link rel="stylesheet" href="{{ url_for('create.static', filename='css/newCreate.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="create_container">
-    <div class="header_flex">
-        <h1 class="page_title">Створити тест</h1>
-        <button id="open_settings">Налаштування тесту</button>
+<aside class="sidebar">
+    <h2 class="QuestionName">Питання</h2>
+    <hr>
+    <button id="settingButton" class="button">Налаштування тесту</button>
+    <hr>
+    <div class="actions">
+        <button class="action" id="addQuestion">
+            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="add-question-icon">
+        </button>
+
+        <button class="action">
+            <img src="{{ url_for('create.static', filename='images/one_choose.svg') }}" alt="" class="one-choose-icon">
+        </button>
+
+        <button class="action">
+            <img src="{{ url_for('create.static', filename='images/multi_choose.svg') }}" alt="" class="multi-choose-icon">
+        </button>
+
+        <button class="action">
+            <img src="{{ url_for('create.static', filename='images/write_answer.svg') }}" alt="" class="one-choose-icon">
+        </button>
+
     </div>
-    <div class="create_content">
-        <div class="list_container">
-            <div class="list_header">
-                <h2>Список питань</h2>
-                <button id="add_question">Додати питання</button>
-                <button id="delete_question">Видалити питання</button>
-            </div>
-            <div class="list_questions"></div>
+    <hr>
+    <div class="bottomPart">
+        
+        <div class="questionContainer">
+            <button class="button questionButton">Питання 1 <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
         </div>
-        <div class="container_create_form">
-            <form class="question_form" id="questionForm">
-                <h3>Питання:</h3>
-                <input type="text" id="question" placeholder="Напишіть питання" name="text"><br><br>
-                <label>Правильна відповідь:</label><br>
-                <input type="text" id="correctAnswer" placeholder="Напишіть правильну відповідь" name="correct_answer"><br><br>
-                <label>Варіанти відповідей:</label><br>
-                <div id="options"></div>
-                <button id="add" type="button">Додати варіант</button><br><br>
-            </form>
-            <form class="save-test" id="save-form">
-                <button type="submit" id="save">Зберегти тест</button>
-            </form>
-            <div id="settings_modal" class="modal">
-                <form id="settings_form">
-                    <h3>Налаштування тесту</h3>
-                    <label>Назва тесту:</label>
-                    <input type="text" id="test_name" name="name" placeholder="Введіть назву тесту">
-                    <div class="file-row">
-                        <label for="image">Фото тесту:</label>
-                        <input type="file" id="image" name="image" accept="image/*">
-                    </div>
-                    <label for="description">Опис тесту:</label>
-                    <textarea id="description" name="description" placeholder="Введіть опис тесту"></textarea>
-                    <div class="filter">
-                        <label for="subject">Предмет:</label>
-                        <select name="subject" id="subject">
-                            <option value="other" selected>Інше</option>
-                            <option value="math">Математика</option>
-                            <option value="geometry">Геометрія</option>
-                            <option value="algebra">Алгебра</option>
-                            <option value="physics">Фізика</option>
-                            <option value="chemistry">Хімія</option>
-                            <option value="biology">Біологія</option>
-                            <option value="history">Історія</option>
-                            <option value="geography">Географія</option>
-                            <option value="english">Англійська</option>
-                        </select>
-                    </div>
-                    <div class="filter">
-                        <label for="class">Клас:</label>
-                        <select name="class" id="class">
-                            <!-- <option value="all">Всі</option> -->
-                            <option value="none" selected>Без класу</option>
-                            <option value="1">1 клас</option>
-                            <option value="2">2 клас</option>
-                            <option value="3">3 клас</option>
-                            <option value="4">4 клас</option>
-                            <option value="5">5 клас</option>
-                            <option value="6">6 клас</option>
-                            <option value="7">7 клас</option>
-                            <option value="8">8 клас</option>
-                            <option value="9">9 клас</option>
-                            <option value="10">10 клас</option>
-                            <option value="11">11 клас</option>
-                        </select>
-                    </div>
-                    <!-- <div class="button-row">
-                        <button type="submit">Зберегти</button>
-                        <button type="button" id="close_settings">← Назад до питань</button>
-                    </div> -->
-                </form>
-            </div>
+        <button class="button saveTest">Зберегти текст</button>
+        
+    </div>
+</aside>
+<div id="TestSettings" class="hidden">
+    <div class="settings">
+        <div class="settings-block">
+            <h3 class="settingText">Назва тесту:</h3>
+            <input type="text" class="enterData" placeholder="Введіть назву...">
         </div>
+        <div class="settings-block">
+            <h3 class="settingText">Вибір предмету:</h3>
+            <input type="text" class="enterData" placeholder="Оберіть предмет...">
+        </div>
+        <div class="settings-block">
+            <h3 class="settingText">Вибір класу:</h3>
+            <input type="text" class="enterData" placeholder="Оберіть клас...">
+        </div>
+
+        <div class="settings-block switch-block">
+            <span class="settingText">Перемішати запитання:</span>
+            <input type="checkbox" class="switch-checkbox" id="randInput">
+            <label for="randInput" class="switch-label"></label>
+        </div>
+        <div class="settings-block switch-block">
+            <span class="settingText">Перемішати відпові:</span>
+            <input type="checkbox" class="switch-checkbox" id="randInputAns">
+            <label for="randInputAns" class="switch-label"></label>
+        </div>
+        <div class="settings-block switch-block">
+            <span class="settingText">Відображати питання:</span>
+            <input type="checkbox" class="switch-checkbox" id="showInput">
+            <label for="showInput" class="switch-label"></label>
+        </div>
+        <div class="settings-block switch-block">
+            <span class="settingText">Увімкнути таймер:</span>
+            <input type="checkbox" class="switch-checkbox" id="timerInput">
+            <label for="timerInput" class="switch-label"></label>
+        </div>
+    </div>
+
+    <div class="testView">
+        <div class="main-setting-block" id="addImgContainer">
+            <input type="file" id="loadImgInput" hidden>
+            <label class="button" id="addImgButton" for="loadImgInput">Додати зображення</label>
+        </div>
+        <!-- <div class="main-setting-block">
+        </div> -->
+        <textarea name="" id="" class="main-setting-block" placeholder="Введіть опис..."></textarea>
     </div>
 </div>
-<script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
-<script defer src="{{ url_for('create.static', filename='js/create.js') }}"></script>
+
+<div id="TestQuestion">
+    <div class="question-menu">
+        <input type="text" id="questionNameInput" value="Введіть питання...">
+    </div>
+    <div class="line"></div>
+    <div id="QuestionsList">
+            <div class="questionForTest">
+                <div class="settings-question-block">
+                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect">
+                </div>
+                <textarea class="answerInput">Введіть варіант відповіді...  </textarea>
+            </div>
+            <div class="questionForTest">
+                <div class="settings-question-block">
+                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect">
+                </div>
+                <textarea class="answerInput">Введіть варіант відповіді...  </textarea>
+            </div>
+            <div class="questionForTest">
+                <div class="settings-question-block">
+                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect">
+                </div>
+                <textarea class="answerInput">Введіть варіант відповіді...</textarea>
+            </div>
+            <div class="questionForTest">
+                <div class="settings-question-block">
+                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect">
+                </div>
+                <textarea class="answerInput">Введіть варіант відповіді...</textarea>
+            </div>
+
+    </div>
+</div>
+    <script type="module" src="{{ url_for('create.static', filename='js/main.js') }}"></script>
 {% endblock %}
