@@ -20,16 +20,18 @@ def create_test():
         return jsonify({'error': 1})
     all_questions = ''
     for question in json.loads( request.form.get('data')):
-        
+        question = json.loads( question)
+        # print(question[0])
         question_object = Questions(
             text = question['question'],
             correct_answer = question['correct'],
-            answers = json.dumps(question['options'])
+            answers = json.dumps(question['answers'])
         )
         DATABASE.session.add(question_object)
         DATABASE.session.commit()
         all_questions += f"{question_object.id} "
     description = request.form.get('description')
+    print(request.form)
     test = Test(
         subject = request.form.get('subject'),
         class_name = request.form.get('class_name'),

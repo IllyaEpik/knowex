@@ -10,14 +10,14 @@
 <aside class="sidebar">
     <h2 class="QuestionName">Питання</h2>
     <hr>
-    <button id="settingButton" class="button">Налаштування тесту</button>
+    <button id="settingButton" class="button select">Налаштування тесту</button>
     <hr>
     <div class="actions">
         <button class="action" id="addQuestion">
             <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="add-question-icon">
         </button>
 
-        <button class="action">
+        <button class="action" id="addOneAnswerQuestion">
             <img src="{{ url_for('create.static', filename='images/one_choose.svg') }}" alt="" class="one-choose-icon">
         </button>
 
@@ -32,27 +32,55 @@
     </div>
     <hr>
     <div class="bottomPart">
-        
+        <input type="hidden" value="{{ url_for('create.static', filename='images/bin.svg') }}" id="binInputSrc">
         <div class="questionContainer">
-            <button class="button questionButton">Питання 1 <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
+            <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
         </div>
-        <button class="button saveTest">Зберегти текст</button>
+        <button class="button saveTest">Зберегти тест</button>
         
     </div>
 </aside>
-<div id="TestSettings" class="hidden">
+<div id="TestSettings">
     <div class="settings">
         <div class="settings-block">
             <h3 class="settingText">Назва тесту:</h3>
-            <input type="text" class="enterData" placeholder="Введіть назву...">
+            <input type="text" id="testNameInput" class="enterData" placeholder="Введіть назву...">
         </div>
         <div class="settings-block">
             <h3 class="settingText">Вибір предмету:</h3>
-            <input type="text" class="enterData" placeholder="Оберіть предмет...">
+            <!-- <input type="text" class="enterData" placeholder="Оберіть предмет..."> -->
+             <select name="subject" id="subject" class="enterData">
+                <option value="none" selected>Оберіть предмет...</option>
+                <option value="other">Інше</option>
+                <option value="math">Математика</option>
+                <option value="geometry">Геометрія</option>
+                <option value="algebra">Алгебра</option>
+                <option value="physics">Фізика</option>
+                <option value="chemistry">Хімія</option>
+                <option value="biology">Біологія</option>
+                <option value="history">Історія</option>
+                <option value="geography">Географія</option>
+                <option value="english">Англійська</option>
+            </select>
         </div>
         <div class="settings-block">
             <h3 class="settingText">Вибір класу:</h3>
-            <input type="text" class="enterData" placeholder="Оберіть клас...">
+            <!-- <input type="text" class="enterData" placeholder="Оберіть клас..."> -->
+            <select name="class" id="class" class="enterData">
+                <option value="none" selected>Оберіть клас..</option>
+                <option value="1">1 клас</option>
+                <option value="2">2 клас</option>
+                <option value="3">3 клас</option>
+                <option value="4">4 клас</option>
+                <option value="5">5 клас</option>
+                <option value="6">6 клас</option>
+                <option value="7">7 клас</option>
+                <option value="8">8 клас</option>
+                <option value="9">9 клас</option>
+                <option value="10">10 клас</option>
+                <option value="11">11 клас</option>
+                <option value="all">Всі</option>
+            </select>
         </div>
 
         <div class="settings-block switch-block">
@@ -84,46 +112,33 @@
         </div>
         <!-- <div class="main-setting-block">
         </div> -->
-        <textarea name="" id="" class="main-setting-block" placeholder="Введіть опис..."></textarea>
+        <textarea name="" id="description" class="main-setting-block" placeholder="Введіть опис..."></textarea>
     </div>
 </div>
 
-<div id="TestQuestion">
+<div id="TestQuestion" class="hidden">
     <div class="question-menu">
         <input type="text" id="questionNameInput" value="Введіть питання...">
     </div>
     <div class="line"></div>
+    <input type="hidden" id="trashSvg" value="{{ url_for('create.static', filename='images/trash.svg') }}">
     <div id="QuestionsList">
-            <div class="questionForTest">
-                <div class="settings-question-block">
-                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
-                    <input type="radio" name="correct" class="isAnswerCorrect">
-                </div>
-                <textarea class="answerInput">Введіть варіант відповіді...  </textarea>
+        <div class="questionForTest">
+            <div class="settings-question-block">
+                <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                <input type="radio" name="correct" class="isAnswerCorrect">
             </div>
-            <div class="questionForTest">
-                <div class="settings-question-block">
-                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
-                    <input type="radio" name="correct" class="isAnswerCorrect">
-                </div>
-                <textarea class="answerInput">Введіть варіант відповіді...  </textarea>
+            <textarea class="answerInput">Введіть варіант відповіді...</textarea>
+        </div>
+        <div class="questionForTest">
+            <div class="settings-question-block">
+                <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
+                <input type="radio" name="correct" class="isAnswerCorrect">
             </div>
-            <div class="questionForTest">
-                <div class="settings-question-block">
-                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
-                    <input type="radio" name="correct" class="isAnswerCorrect">
-                </div>
-                <textarea class="answerInput">Введіть варіант відповіді...</textarea>
-            </div>
-            <div class="questionForTest">
-                <div class="settings-question-block">
-                    <img src="{{ url_for('create.static', filename='images/trash.svg') }}" alt="" class="trashQuestionMark">
-                    <input type="radio" name="correct" class="isAnswerCorrect">
-                </div>
-                <textarea class="answerInput">Введіть варіант відповіді...</textarea>
-            </div>
+            <textarea class="answerInput">Введіть варіант відповіді...</textarea>
+        </div>
 
     </div>
 </div>
-    <script type="module" src="{{ url_for('create.static', filename='js/main.js') }}"></script>
+<script type="module" src="{{ url_for('create.static', filename='js/mainCreate.js') }}"></script>
 {% endblock %}
