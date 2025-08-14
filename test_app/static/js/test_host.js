@@ -147,6 +147,22 @@ function renderAnswerOptions(answers) {
     });
 }
 
+function updateParticipantSquare(username, status) {
+    const safeId = encodeURIComponent(username);
+    const square = document.getElementById(`participant-square-${safeId}`);
+    if (!square) return;
+    if (status === 'null') {
+        square.style.backgroundColor = '#bdbdbd'; // gray
+        square.style.border = '1px solid #999';
+    } else if (status === 'correct') {
+        square.style.backgroundColor = '#2ecc71'; // green
+        square.style.border = '1px solid #1ea85a';
+    } else if (status === 'incorrect') {
+        square.style.backgroundColor = '#e74c3c'; // red
+        square.style.border = '1px solid #c53a2b';
+    }
+}
+
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
         testStarted = true;
@@ -196,6 +212,11 @@ socket.on('nextQuestion', (data) => {
     if (data.question_text) {
         questionTextElement.textContent = data.question_text;
         renderAnswerOptions(data.answers);
+
+        Object.keys(user_answers).forEach(username => {
+            updateParticipantSquare(username, 'null');
+        });
+
     } else {
         console.error('No question text received:', data);
     }
@@ -220,7 +241,25 @@ socket.on('participants_update', (participants) => {
         }
         const li = document.createElement('li');
         li.id = `participant-${p}`;
-        li.textContent = p;
+        
+        const square = document.createElement('div');
+        const safeId = encodeURIComponent(p);
+        square.id = `participant-square-${safeId}`;
+        square.className = 'participant-square';
+        square.style.width = '20px';
+        square.style.height = '20px';
+        square.style.display = 'inline-block';
+        square.style.verticalAlign = 'middle';
+        square.style.marginRight = '8px';
+        square.style.borderRadius = '3px';
+        square.style.backgroundColor = '#bdbdbd';
+        square.style.border = '1px solid #999';
+        li.appendChild(square);
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = p;
+        li.appendChild(nameSpan);
+
         // li.className = getParticipantColor(p);
         ul.appendChild(li);
         // ul.appendChild(startBtn);
@@ -244,6 +283,15 @@ socket.on('send_answer', (answer) => {
     } else {
         console.error(`Participant element not found: participant-${answer.user}`);
     }
+
+    if (answer.answer == null || answer.answer === '') {
+        updateParticipantSquare(answer.user, 'null');
+    } else if (answer.answer === currentCorrectAnswer) {
+        updateParticipantSquare(answer.user, 'correct');
+    } else {
+        updateParticipantSquare(answer.user, 'incorrect');
+    }
+
     user_answers[answer.user].push(answer.answer || null);
     renderRating();
 });
