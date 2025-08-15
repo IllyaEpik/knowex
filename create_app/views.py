@@ -16,10 +16,15 @@ def render_create():
                             
 
 def create_test():
+
+    print('eqweqweweqw')
     if not flask_login.current_user.is_authenticated:
         return jsonify({'error': 1})
     all_questions = ''
+
+    print(request.form.get('data'),type(request.form.get('data')))
     for question in json.loads( request.form.get('data')):
+        print(question,type(question))
         question = json.loads( question)
         # print(question[0])
         question_object = Questions(

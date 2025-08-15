@@ -5,25 +5,33 @@ function load() {
         let current = select.querySelector(".questionNumber").textContent
         let data = JSON.parse(localStorage.getItem(current))
         console.log(data,"load")
-        if (data){
-
-            let QuestionsList = document.querySelector("#QuestionsList")
-            let trashSvg = document.querySelector('#trashSvg').value
-            document.querySelector("#questionNameInput").value = data.question
-            QuestionsList.innerHTML = ''
-            for (let answer of data.answers){
-                let div = document.createElement("div")
-                div.className = 'questionForTest'
-                
-                div.innerHTML = `
-                    <div class="settings-question-block">
-                        <img src="${trashSvg}" alt="" class="trashQuestionMark">
-                        <input type="radio" name="correct" class="isAnswerCorrect"${answer==data.correct ? " checked" : ""}>
-                    </div>
-                    <textarea class="answerInput">${answer}</textarea>
-                `
-                QuestionsList.append(div)
+        if (!data){
+            data = {
+                question:"Введіть питання...",
+                "answers":[
+                    "Введіть варіант відповіді...",
+                    "Введіть варіант відповіді..."],
+                "correct":null
             }
+            localStorage.setItem(current,data)
+        }
+        // {"question":"Введіть питання...","answers":["Введіть варіант відповіді...","Введіть варіант відповіді..."],"correct":null}
+        let QuestionsList = document.querySelector("#QuestionsList")
+        let trashSvg = document.querySelector('#trashSvg').value
+        document.querySelector("#questionNameInput").value = data.question
+        QuestionsList.innerHTML = ''
+        for (let answer of data.answers){
+            let div = document.createElement("div")
+            div.className = 'questionForTest'
+            
+            div.innerHTML = `
+                <div class="settings-question-block">
+                    <img src="${trashSvg}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect"${answer==data.correct ? " checked" : ""}>
+                </div>
+                <textarea class="answerInput">${answer}</textarea>
+            `
+            QuestionsList.append(div)
         }
     }else{
         

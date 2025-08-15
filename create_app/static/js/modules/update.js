@@ -21,8 +21,8 @@ function update(){
             settingButton.classList.remove('select')
             questionButton.classList.add("select")  
             load()
-    })}
-    
+        }
+    )}
     settingButton.addEventListener('click', () => {
         save()
         removeSelect(questionButtons)
@@ -42,7 +42,21 @@ function update(){
         question.textContent=number
     }
     for (let bin2 of bins2){
-        bin2.addEventListener('click', () => {bin2.parentElement.remove()})
+        bin2.addEventListener('click', () => {
+            console.log(bin2.parentElement.classList.contains("select"),4255)
+            if (bin2.parentElement.classList.contains("select")){
+                TestSettings.classList.remove('hidden')
+                TestQuestion.classList.add('hidden')
+                settingButton.classList.add('select')
+                console.log(settingButton.classList)
+                
+                load()
+            }
+            localStorage.removeItem(bin2.parentElement.querySelector('.questionNumber').textContent)
+            
+            bin2.parentElement.remove()
+        
+        })
     }
 }
 function removeSelect(questionButtons){

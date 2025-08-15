@@ -12,16 +12,8 @@ function database() {
             if (count < localStorage.length && key!="settingsOfTest" && key!= "theme"){
                 console.log(key)
                 let questionData = localStorage.getItem(key)
+                console.log(questionData,key)
                 listAllQuestions.push(questionData)
-
-                // {"question":"2+2","answers":["2","4","1","3"],"correct":"2"}
-                // const allInputs = Array.from(questionForm.querySelector('#options').querySelectorAll('input')).map(input => input.value);
-
-                // const questionData = {
-                //     question: questionForm.querySelector('#question').value,
-                //     correct: questionForm.querySelector('#correctAnswer').value,
-                //     options: allInputs
-                // };
             }
             count++
         }
@@ -35,7 +27,8 @@ function database() {
         try {
             Formdata.append('image', document.querySelector('#loadImgInput').files[0]);
         } catch (error) {}
-
+        console.log(listAllQuestions)
+        console.log(Formdata.get("data"))
         $.ajax(
             '/create_test', {
             type: "POST",
