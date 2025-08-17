@@ -8,6 +8,14 @@
 {% endblock %}
 
 {% block content %} 
+
+<div class = "search-tests">
+    <input class="input-search-tests" name="input-search-tests" placeholder="Введіть назву тесту..." type="search"> 
+    <button class="button-search-tests">
+        <img class="search-tests-icon" src="{{ url_for('report.static', filename='images/search_icon.svg') }}" alt="Пошук">
+    </button>
+</div>
+
 <div class="txt_container">
     <div class="txt_container_info">
         <p class="txt">Проходження тестів допомагає перевірити та закріпити знання, 

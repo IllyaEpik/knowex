@@ -165,6 +165,7 @@ body::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     margin-top: 20px;
     background-color: transparent;
+    margin-left: 40px;
 }
 
 .container_test {
@@ -239,8 +240,9 @@ select option {
     border-radius: 26px;
     padding-left: 40px;
     padding-right: 40px;
-    margin-top: 55px;
+    margin-top: 20px;
     gap: 130px;
+    padding: 20px;
 }
 
 .txt_container_info {
@@ -321,4 +323,63 @@ select option {
   -webkit-transition: all 0.25s;
   box-shadow: none;
   transform: scale(0.98);
+}
+
+
+
+.search-tests {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 1100px;
+    height: 100px;
+    background: #FFFFFF;
+    border-radius: 30px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 30px;
+    border: 1px solid #A1B4AE;
+    gap: 10px;
+}
+
+.input-search-tests {
+    width: 1050px;
+    height: 20px;
+    background-color: #D0EFFF;
+    color: #242424;
+    padding: .15rem .5rem;
+    min-height: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    line-height: 1.15;
+    box-shadow: 0px 5px 18px -18px;
+    font-size: 20px;
+
+}
+
+.input-search-tests:focus {
+  border-radius: 25px;
+}
+
+.input-search-tests:hover {
+  outline: 1px solid lightgrey;
+}
+
+
+.search-tests-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.button-search-tests {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
