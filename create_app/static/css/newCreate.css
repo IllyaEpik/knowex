@@ -46,12 +46,17 @@
     display: none;
 }
 .switch-label{
-    background-color: #9FCCFA;
     width: 60px;
     border-radius: 50px;
     height: 34px;
     position: relative;
+    background-color: #BECEDF;
     cursor: pointer;
+    /* BECEDF */
+    transition: all 0.5s;
+}
+.switch-checkbox:checked + .switch-label {
+    background-color: #9FCCFA;
 }
 .testView{
     display: flex;

@@ -3,9 +3,9 @@ import update from "./update.js"
 function start(){
     let questionContainer = document.querySelector(".questionContainer")
     let binInputSrc = document.querySelector('#binInputSrc')
-    questionContainer.innerHTML = ""
+    // questionContainer.innerHTML = ""
     for (let key in localStorage){
-        if (count < localStorage.length && !isNaN(Number(key))){
+        if (count < localStorage.length && !isNaN(Number(key)) && Number(key)!=1){
             // console.log(key)
             // let questionData = localStorage.getItem(key)
             // listAllQuestions.push(questionData)

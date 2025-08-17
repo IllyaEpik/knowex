@@ -29,4 +29,5 @@ function save() {
         localStorage.setItem('settingsOfTest',JSON.stringify(data))
     }
 }
+window.addEventListener('beforeunload', save)
 export default save

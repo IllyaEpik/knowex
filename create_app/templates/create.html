@@ -37,7 +37,6 @@
             <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
         </div>
         <button class="button saveTest">Зберегти тест</button>
-        
     </div>
 </aside>
 <div id="TestSettings">
@@ -48,8 +47,7 @@
         </div>
         <div class="settings-block">
             <h3 class="settingText">Вибір предмету:</h3>
-            <!-- <input type="text" class="enterData" placeholder="Оберіть предмет..."> -->
-             <select name="subject" id="subject" class="enterData">
+            <select name="subject" id="subject" class="enterData">
                 <option value="none" selected>Оберіть предмет...</option>
                 <option value="other">Інше</option>
                 <option value="math">Математика</option>

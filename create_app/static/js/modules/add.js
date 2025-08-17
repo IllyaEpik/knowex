@@ -36,17 +36,21 @@ function add() {
     });
 
     addQuestion.addEventListener("click", () => {
-        let div = document.createElement("div");
-        div.className = 'questionForTest';
-        div.innerHTML = `
-            <div class="settings-question-block">
-                <img src="${trashSvg}" alt="" class="trashQuestionMark">
-                <input type="radio" name="correct" class="isAnswerCorrect">
-            </div>
-            <textarea class="answerInput">Введіть варіант відповіді...</textarea>
-        `;
-        QuestionsList.append(div);
-        update();
+        if (QuestionsList.querySelectorAll(".settings-question-block").length<5){
+
+            let div = document.createElement("div");
+            div.className = 'questionForTest';
+            div.innerHTML = `
+                <div class="settings-question-block">
+                    <img src="${trashSvg}" alt="" class="trashQuestionMark">
+                    <input type="radio" name="correct" class="isAnswerCorrect">
+                </div>
+                <textarea class="answerInput">Введіть варіант відповіді...</textarea>
+            `;
+            console.log()
+            QuestionsList.append(div);
+            update();
+        }
     });
 }
 
