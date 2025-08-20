@@ -1,0 +1,37 @@
+
+.kwasik {
+    /* задает цветтекста */
+    color: red;
+}
+/* обращяемся по классу к объекту */
+.result{
+    
+    /* фоновый цвет */
+    /* background-color: grey; */
+    
+    /* высота */
+    height: 25px;
+
+    /* ширина */
+    width: 250px;
+    /* упрорядочевает объекты */
+    display: flex;
+
+    /* растояние между обектами */
+    gap: 0px;
+    
+    /* внутренний отступ */
+    padding: 0px;
+}
+.answer{
+    height: 25px;
+    width: 25px;
+    /* внешний отступ */
+    margin: 0px;
+    /* граница от других объектов */
+    /* border: black solid 0px; */
+    /* граница от других объектов справа */
+    /* border-right: lightgray solid 0.01px; */
+    /* граница от других объектов слева */
+    /* border-left: lightgray solid 0.01px; */
+}

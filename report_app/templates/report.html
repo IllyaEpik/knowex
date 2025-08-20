@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Сторінка звітів{% endblock %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{{ url_for('report.static', filename='css/report.css') }}">
+    <script defer src="{{ url_for('report.static', filename = '/js/report.js') }}"></script>
+{% endblock %}
+
+{% block content %} 
+
+<div class = "search-tests">
+    <input class="input-search-tests" name="input-search-tests" placeholder="Введіть назву тесту..." type="search"> 
+    <button class="button-search-tests">
+        <img class="search-tests-icon" src="{{ url_for('report.static', filename='images/search_icon.svg') }}" alt="Пошук">
+    </button>
+</div>
+
+<div class="txt_container">
+    <div class="txt_container_info">
+        <p class="txt">Проходження тестів допомагає перевірити та закріпити знання, 
+            а також виявити прогалини у розумінні матеріалу. 
+            Це ефективнийспосіб підготовки до іспитів та самооцінки прогресу.</p>
+    </div>
+    <div class="codee">
+        <input class="input-code" name="input-code" placeholder="Введіть код від вчителя..." type="search">
+
+
+        <button class="button_code">
+                Почати
+        </button>
+    </div>
+</div>
+<button id="filter">Фільтр</button>
+<div class="filters">
+    <div class="filter_container">
+        <!-- Фильтр по количеству вопросов -->
+        <div class="filter">
+            <label for="questions">Кількість питань:</label>
+            <select name="questions" id="questions">
+                <option value="all">Всі</option>
+                <option value="1-5">1-5</option>
+                <option value="6-10">6-10</option>
+                <option value="10-15">10-15</option>
+                <option value="15-19">15-19</option>
+                <option value="20+">20+</option>
+            </select>
+        </div>
+
+        <!-- Фильтр по класу -->
+        <div class="filter">
+            <label for="class">Клас:</label>
+            <select name="class" id="class">
+                <option value="all">Всі</option>
+                <option value="none">Без класу</option>
+                <option value="1">1 клас</option>
+                <option value="2">2 клас</option>
+                <option value="3">3 клас</option>
+                <option value="4">4 клас</option>
+                <option value="5">5 клас</option>
+                <option value="6">6 клас</option>
+                <option value="7">7 клас</option>
+                <option value="8">8 клас</option>
+                <option value="9">9 клас</option>
+                <option value="10">10 клас</option>
+                <option value="11">11 клас</option>
+            </select>
+        </div>
+
+        <!-- Фильтр по предмету -->
+        <div class="filter">
+            <label for="subject">Предмет:</label>
+            <select name="subject" id="subject">
+                <option value="all">Всі</option>
+                <option value="other">Інше</option>
+                <option value="math">Математика</option>
+                <option value="geometry">Геометрія</option>
+                <option value="algebra">Алгебра</option>
+                <option value="physics">Фізика</option>
+                <option value="chemistry">Хімія</option>
+                <option value="biology">Біологія</option>
+                <option value="history">Історія</option>
+                <option value="geography">Географія</option>
+                <option value="english">Англійська</option>
+            </select>
+        </div>
+
+        <!-- Фильтр по дате выхода -->
+        <div class="filter">
+            <label for="date">Дата виходу:</label>
+            <select name="date" id="date">
+                <option value="new">Нові</option>
+                <option value="old">Старі</option>
+            </select>
+        </div>
+
+        <!-- Фильтр по популярности -->
+        <div class="filter">
+            <label for="popularity">Популярність:</label>
+            <select name="popularity" id="popularity">
+                <option value="asc">Від менш популярних</option>
+                <option value="desc">Від більш популярних</option>
+            </select>
+        </div>
+        <div class="button_container">
+            <button class="button_filter">Застосувати фільтри</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container_tests">
+    {% for test in tests %}
+        {% if not filters or test.id in filters %}
+            <div class="container_test"
+                data-class="{{ test.class_name }}"
+                data-subject="{{ test.subject }}"
+                data-question-count="{{ test.questions|length }}"
+                data-date="{{ test.date }}">
+                <div class="test_name">
+                    <h2>{{ test.name }}</h2>
+                </div>
+                <div class="test_description">
+                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                </div>
+                <div class="test_info" hidden>
+                    <input class="test_class" value="{{ test.class }}" readonly hidden>
+                    <input class="test_subject" value="{{ test.subject }}" readonly hidden>
+                    <input class="test_question_count" value="{{ test.questions | length }}" readonly hidden>
+                    <input class="test_date" value="{{ test.date }}" readonly hidden>
+                    <input class="test_count" value="{{ test.count }}" readonly hidden>
+                </div>
+                <div class="test_link">
+                    <a href="{{ url_for('test.render_test', test_id=test.id) }}">Перейти до тесту</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}
