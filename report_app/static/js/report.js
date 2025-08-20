@@ -65,3 +65,20 @@ if (button) {
         });
     });
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.querySelector(".input-search-tests");
+    const testCards = document.querySelectorAll(".test-card"); // класс карточки теста
+
+    searchInput.addEventListener("input", function () {
+        const query = searchInput.value.toLowerCase();
+
+        testCards.forEach(card => {
+            const title = card.querySelector(".test-title").textContent.toLowerCase();
+            if (title.includes(query)) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+});
