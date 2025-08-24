@@ -324,3 +324,127 @@
     border: none;
     cursor: pointer;
 }
+
+
+#editTestTitle {
+    width: 520px;
+    height: 35px;
+    background-color: #D0EFFF;
+    color: #242424;
+    padding: .15rem .5rem;
+    min-height: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    line-height: 1.15;
+    box-shadow: 0px 5px 18px -18px;
+    font-size: 15px;
+}
+
+#editTestTitle:focus {
+  border-radius: 25px;
+}
+
+#editTestTitle:hover {
+  outline: 1px solid lightgrey;
+}
+
+
+
+#editTestDesc {
+    width: 520px;
+    height: 80px;
+    background-color: #D0EFFF;
+    color: #242424;
+    padding: .15rem .5rem;
+    min-height: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    line-height: 1.15;
+    box-shadow: 0px 5px 18px -18px;
+    font-size: 15px;
+}
+
+#editTestDesc:focus {
+    border-radius: 25px;
+}
+
+#editTestDesc:hover {
+    outline: 1px solid lightgrey;
+}
+
+
+
+
+.TitleEdit, .DescEdit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+
+#cancelEditBtn {
+    margin-top: 20px;
+    padding: 10px 10px;
+    border: 0;
+    border-radius: 100px;
+    background-color: #2ba8fb;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+
+
+#cancelEditBtn:hover {
+  background-color: #6fc5ff;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+#cancelEditBtn:active {
+  background-color: #3d94cf;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+
+
+
+
+
+#saveEditBtn {
+    margin-top: 20px;
+    padding: 10px 10px;
+    border: 0;
+    border-radius: 100px;
+    background-color: #2ba8fb;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+
+
+#saveEditBtn:hover {
+  background-color: #6fc5ff;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+#saveEditBtn:active {
+  background-color: #3d94cf;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+
+/* .edit-modal-window {
+
+} */

@@ -593,6 +593,18 @@ body.dark .to-test button{
 
 
 
+.edit-name, .edit-email, .edit-password {
+    background: none;
+    border: none;
+}
+
+
+/* .edit-modal-window {
+
+} */
+
+
+
 
 
 

@@ -76,15 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="edit-modal-backdrop" style="position:absolute; inset:0; background:rgba(0,0,0,0.4);"></div>
                 <div class="edit-modal-window" role="dialog" aria-modal="true"
                      style="position:relative; max-width:520px; width:90%; background:#fff; padding:18px; border-radius:8px; box-shadow:0 8px 30px rgba(0,0,0,0.2);">
-                    <h3 style="margin-top:0;">Редагувати тест</h3>
+                    <h3 style="margin-top:0;">Редагування тесту</h3>
                     <form id="editTestForm">
                         <div style="margin-bottom:10px;">
-                            <label for="editTestTitle">Назва</label><br>
-                            <input id="editTestTitle" name="title" type="text" style="width:100%; padding:8px;" required />
+                            <label class="TitleEdit" for="editTestTitle">Назва</label><br>
+                            <input id="editTestTitle" name="title" placeholder="Введіть нову назву тесту..." type="text" style="width:100%; padding:8px;" required />
                         </div>
                         <div style="margin-bottom:10px;">
-                            <label for="editTestDesc">Опис (опціонально)</label><br>
-                            <textarea id="editTestDesc" name="description" style="width:100%; padding:8px;" rows="4"></textarea>
+                            <label class="DescEdit" for="editTestDesc">Опис (опціонально)</label><br>
+                            <textarea id="editTestDesc" name="description" placeholder="Введіть новий опис тесту..." style="width:100%; padding:8px;" rows="4"></textarea>
                         </div>
                         <div style="display:flex; gap:8px; justify-content:flex-end;">
                             <button type="button" id="cancelEditBtn">Відміна</button>
