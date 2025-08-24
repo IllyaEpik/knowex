@@ -2,6 +2,7 @@
 import load from "./load.js";
 import save from "./save.js";
 function update(){
+
     let questionContainer = document.querySelector('.questionContainer')
     let questionButtons = document.querySelectorAll('.questionButton')
     let settingButton = document.getElementById('settingButton')
@@ -10,6 +11,7 @@ function update(){
     let bins = document.querySelectorAll('.trashQuestionMark')
     let bins2 = document.querySelectorAll('.removeButton')
     let number = 0
+
     
     
     for (let questionButton of questionButtons){
@@ -34,6 +36,7 @@ function update(){
     
     for (let bin of bins){
         bin.addEventListener('click', () => {
+            bin.parentElement.parentElement.parentElement.querySelector("#addAnswer").classList.remove("hidden")
             bin.parentElement.parentElement.parentElement.querySelectorAll(".questionForTest").length>2 ? bin.parentElement.parentElement.remove() : 1;
         })
     }
@@ -58,6 +61,7 @@ function update(){
         
         })
     }
+
 }
 function removeSelect(questionButtons){
     for (let questionButton of questionButtons){

@@ -22,21 +22,24 @@ def create_test():
         return jsonify({'error': 1})
     all_questions = ''
 
-    print(request.form.get('data'),type(request.form.get('data')))
     for question in json.loads( request.form.get('data')):
-        print(question,type(question))
         question = json.loads( question)
-        # print(question[0])
+        correct = question['correct']
+        print(correct)
+        typeQuestion = "standart"
+        if type(correct) != type("31132"): 
+            correct = json.dumps(correct)
+            typeQuestion = "multiple"
         question_object = Questions(
             text = question['question'],
-            correct_answer = question['correct'],
-            answers = json.dumps(question['answers'])
+            correct_answer = correct,
+            answers = json.dumps(question['answers']),
+            type = typeQuestion
         )
         DATABASE.session.add(question_object)
         DATABASE.session.commit()
         all_questions += f"{question_object.id} "
     description = request.form.get('description')
-    print(request.form)
     test = Test(
         subject = request.form.get('subject'),
         class_name = request.form.get('class_name'),

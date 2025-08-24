@@ -57,15 +57,20 @@
         <b>Питання: {{ q.text }}</b>
         <ul class="answer-options">
             {% for option in q.options if option is defined %}
-                {% set is_user = option == q.user_answer %}
-                {% set is_correct = option == q.correct_answer %}
+                {% if q.type == "standart" %}
+                    {% set is_user = option == q.user_answer %}
+                    {% set is_correct = option == q.correct_answer %}
+                {% elif q.type == "multiple" %}
+                    {% set is_correct = option in q.correct_answer %}
+                    {% set is_user = option in q.user_answer %}
+                {% endif %}
                 <li
                     class="
                         {% if is_correct %}answer-correct{% endif %}
                         {% if is_user and not is_correct %}answer-user-wrong{% endif %}
                         {% if is_user and is_correct %}answer-user-correct{% endif %}
                     ">
-                    <input type="radio" name="question-{{ loop.index }}"
+                    <input type="checkbox" name="question-{{ loop.index }}"
                            id="option-{{ loop.index }}-{{ loop.index0 }}"
                            {% if is_user %}checked{% endif %} disabled>
                     <label for="option-{{ loop.index }}-{{ loop.index0 }}">{{ option }}</label>

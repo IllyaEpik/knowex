@@ -147,6 +147,11 @@ def test_question(test_id, question_id):
 
     current_index = question_ids.index(question_id)
     question = Questions.query.filter_by(id=question_id).first()
+    typeOfQuestion = "standart"
+    correct = question.correct_answer
+    if type(correct) == type("ewq"):
+        correct = json.loads(correct)
+        typeOfQuestion = "multiple"
     if not question:
         return flask.abort(404)
 
@@ -156,14 +161,22 @@ def test_question(test_id, question_id):
             answers = json.loads(question.answers)
         except Exception:
             answers = [question.answers]
-    answers.append(question.correct_answer)
+    # answers.append(question.correct_answer)
     answers_list = random.sample(answers, len(answers))
     selected = None
 
     if flask.request.method == "POST":
-        selected = flask.request.form.get("answer")
-        is_correct = selected == question.correct_answer
-
+        print(typeOfQuestion)
+        if typeOfQuestion == 'standart':
+            selected = flask.request.form.get("answer")
+            is_correct = selected == correct
+            
+        elif typeOfQuestion == 'multiple':
+            selected = json.loads(flask.request.form.get("answer"))
+            print(selected,999999999, type(selected), type(correct))
+            is_correct = len(selected) == len(correct) and set(selected).issuperset(set(correct))
+            print(len(selected), len(correct), set(selected).issuperset(set(correct)))
+            print(selected,correct, 99999999999999999999999999999999999)
         test_answers = flask.session.get("test_answers", [])
         test_answers = [item for item in test_answers if item["question_id"] != question_id]
         test_answers.append({
@@ -190,10 +203,19 @@ def test_question(test_id, question_id):
                 return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
             else:
                 return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
-
+    print(
+    # test,
+    # question,
+    answers_list,
+    current_index + 1,
+    total_questions,
+    selected,
+    question.correct_answer
+    )
     return {
         "test": test,
         "question": question,
+        "typeOfQuestion":typeOfQuestion,
         "answers": answers_list,
         "question_id": current_index + 1,
         "total_questions": total_questions,
@@ -221,30 +243,57 @@ def test_result(test_id):
         question = Questions.query.filter_by(id=qid).first()
         if not question:
             continue
+        # typeOfQuestion = "standart"
+        # correct = question.correct_answer
+        # if type(correct) == type("ewq"):
+        #     correct = json.loads(correct)
+        #     typeOfQuestion = "multiple"
 
         user_answer_info = next((item for item in test_answers if item["question_id"] == qid), None)
         user_answer = user_answer_info["answer"] if user_answer_info else None
-        is_correct = user_answer_info["is_correct"] if user_answer_info else False
 
+        # if typeOfQuestion == 'standart':
+        #     selected = flask.request.form.get("answer")
+        # elif typeOfQuestion == 'multiple':
+        #     selected = flask.request.form.getlist("answer")
+        #     is_correct = len(selected) == len(correct) and set(selected).issuperset(set(correct))
+        is_correct = user_answer_info["is_correct"] if user_answer_info else False
+        
+        # is_correct = len(user_answer) == len(correct) and set(user_answer).issuperset(set(correct))
+        print(user_answer_info["is_correct"])
         if is_correct:
             correct += 1
 
         # Додаємо варіанти відповідей (припустимо, вони в question.answers як JSON)
         options = []
+        # correct_options = []
         if question.answers:
             try:
                 options = json.loads(question.answers)
             except Exception:
                 options = [question.answers]
-        options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
+        # list_to_remove = []
+        # for option in options:
+        #     if 
+        # options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
         options = list(set(options))  # Уникаємо дублікатів
-
+        # {% if type == "standart" %}
+        #         {% set is_correct = option == q.correct_answer %}
+        #         {% elif type == "multiple" %}
+        #         {% set is_correct = option == q.correct_answer %}
+        #         {% endif %}
+        corrects = question.correct_answer
+        if question.type == "multiple":
+            corrects = json.loads(corrects)
+        print(user_answer,type(user_answer))
         questions.append({
             "text": question.text,
-            "correct_answer": question.correct_answer,
+            "type": question.type,
+            "correct_answer": corrects,
             "user_answer": user_answer,
             "is_correct": is_correct,
-            "options": options  # Додано
+
+            "options": options
         })
     
     total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд

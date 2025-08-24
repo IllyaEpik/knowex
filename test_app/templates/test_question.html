@@ -20,7 +20,11 @@
         <div class="answers-grid">
             {% for ans in answers %}
                 <label class="answer-card">
-                <input type="radio" name="answer" value="{{ ans }}" required>
+                {% if typeOfQuestion == "standart" %}
+                    <input type="radio" name="answer" value="{{ ans }}" required>
+                {% elif typeOfQuestion == 'multiple' %}
+                    <input type="checkbox" name="answer" value="{{ ans }}">
+                {% endif %}
                 <span class="answer-text">{{ ans }}</span>
                 </label>
             {% endfor %}
@@ -31,4 +35,3 @@
     </form>
 </div>
 {% endblock %}
-

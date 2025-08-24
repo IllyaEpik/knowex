@@ -11,7 +11,7 @@ function database() {
             let Formdata = new FormData();
             let count = 0;
             for (let key in localStorage){
-                if (count < localStorage.length && key!="settingsOfTest" && key!= "theme"){
+                if (count < localStorage.length && !isNaN(Number(key))){
                     let questionData = localStorage.getItem(key)
                     listAllQuestions.push(questionData)
                 }
@@ -45,7 +45,6 @@ function database() {
                         localStorage.setItem('theme', theme);
                     }
                     alert('Тест збережено!')
-                    // rightPrint('Тест збережено!');
                 },
                 error: function (xhr) {
                     console.log('error',xhr)

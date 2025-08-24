@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<input type="hidden" value="{{ url_for('create.static', filename='images/add-question.svg') }}" id="addQuestionImg">
 <aside class="sidebar">
     <h2 class="QuestionName">Питання</h2>
     <hr>
@@ -17,15 +18,15 @@
             <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="add-question-icon">
         </button>
 
-        <button class="action" id="addOneAnswerQuestion">
+        <button class="action" id="OneAnswerQuestion">
             <img src="{{ url_for('create.static', filename='images/one_choose.svg') }}" alt="" class="one-choose-icon">
         </button>
 
-        <button class="action">
+        <button class="action" id="multipleQuestion">
             <img src="{{ url_for('create.static', filename='images/multi_choose.svg') }}" alt="" class="multi-choose-icon">
         </button>
 
-        <button class="action">
+        <button class="action" id="textQuestion">
             <img src="{{ url_for('create.static', filename='images/write_answer.svg') }}" alt="" class="one-choose-icon">
         </button>
 
@@ -135,7 +136,9 @@
             </div>
             <textarea class="answerInput">Введіть варіант відповіді...</textarea>
         </div>
-
+        <button class="center" id="addAnswer">
+            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="add-question-icon">
+        </button>
     </div>
 </div>
 <script type="module" src="{{ url_for('create.static', filename='js/mainCreate.js') }}"></script>

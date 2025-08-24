@@ -1,13 +1,13 @@
 import update from "./update.js";
 
 function add() {
-    let addOneAnswerQuestion = document.querySelector('#addOneAnswerQuestion');
     let addQuestion = document.querySelector('#addQuestion');
+    let addAnswer = document.querySelector('#addAnswer');
     let binInputSrc = document.querySelector('#binInputSrc');
     let QuestionsList = document.querySelector('#QuestionsList');
     let trashSvg = document.querySelector('#trashSvg').value;
     let questionContainer = document.querySelector('.questionContainer');
-
+    
     questionContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains('removeButton')) {
             let questionButton = e.target.closest('.questionButton');
@@ -25,7 +25,7 @@ function add() {
         }
     });
 
-    addOneAnswerQuestion.addEventListener("click", () => {
+    addQuestion.addEventListener("click", () => {
         let questionNumber = document.querySelectorAll('.questionButton').length + 1;
         questionContainer.innerHTML += `
             <button class="button questionButton">
@@ -35,20 +35,32 @@ function add() {
         update();
     });
 
-    addQuestion.addEventListener("click", () => {
+    addAnswer.addEventListener("click", () => {
         if (QuestionsList.querySelectorAll(".settings-question-block").length<5){
 
             let div = document.createElement("div");
             div.className = 'questionForTest';
+            let questionNumber = document.querySelector(".select").querySelector(".questionNumber").textContent
+            let data = localStorage.getItem(questionNumber)
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
-                    <input type="radio" name="correct" class="isAnswerCorrect">
+                    <input type="${data.type == 'OneAnswerQuestion' ? "radio" : "checkbox"}" name="correct" class="isAnswerCorrect">
                 </div>
                 <textarea class="answerInput">Введіть варіант відповіді...</textarea>
             `;
-            console.log()
-            QuestionsList.append(div);
+            // QuestionsList.querySelector("#addAnswer").remove()
+            // QuestionsList.append(div);
+            // QuestionsList.innerHTML += `
+            // <button class="center action" id="addAnswer">
+            //     <img src="${addQuestionImg.value}" alt="" class="add-question-icon">
+            // </button>
+            // `
+
+            QuestionsList.insertBefore(div, QuestionsList.querySelector("#addAnswer"));
+            if (QuestionsList.querySelectorAll(".settings-question-block").length>=5){
+                QuestionsList.querySelector("#addAnswer").classList.add("hidden")
+            }
             update();
         }
     });

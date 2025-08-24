@@ -4,16 +4,28 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
 
         if (e.target.tagName === 'FORM') {
-            const selected = e.target.querySelector('input[name="answer"]:checked');
+            let selected = document.querySelectorAll('input[name="answer"]:checked');
             if (!selected) {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
-
+            console.log(selected)
+            let selectList = []
+            for (let select of selected){
+                selectList.push(select.value)
+            }
+            console.log(selected)
+            if (selected.length == 1){
+                selected = selected[0].value
+            }else{
+                selected = JSON.stringify(selectList)
+            }
+            console.log(selected)
+            // return;
             $.ajax({
                 url: responseName,
                 type: 'POST',
-                data: { answer: selected.value },
+                data: { answer: selected },
                 success: function (response) {
                     if (response.error) {
                         alert('Помилка: ' + response.error);
@@ -74,7 +86,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (answersCount > 0) {
             const widthPx = answersCount * oneWidth;
             const segment = document.createElement('div');
-            segment.className = `rating-bar-segment-single rating-bar-${className}`;            segment.style.width = `${widthPx}px`;
+            segment.className = `rating-bar-segment-single rating-bar-${className}`;            
+            segment.style.width = `${widthPx}px`;
             segment.innerHTML = `<span>${answersCount}</span>`;
             bar.appendChild(segment);
         }

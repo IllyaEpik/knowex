@@ -8,6 +8,8 @@ class Questions(DATABASE.Model):
     image = DATABASE.Column(DATABASE.String(255))
     answers = DATABASE.Column(DATABASE.String(255))
     correct_answer = DATABASE.Column(DATABASE.String(255))
+    type = DATABASE.Column(DATABASE.String(255))
+    # multiple = DATABASE.Column
     def __repr__(self):
         return self.id
 

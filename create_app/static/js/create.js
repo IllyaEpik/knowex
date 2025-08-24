@@ -291,7 +291,6 @@ function makeDraggable(element) {
         }
     });
 }
-// document.querySelector('p').textContent
 function getCoor(){
     let list = []
     let questions = Array.from(listQuestions.children);
@@ -435,5 +434,3 @@ function selectQuestion(index) {
         event.preventDefault();
         saveSettings();
     });
-
-

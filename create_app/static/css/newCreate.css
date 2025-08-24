@@ -55,6 +55,9 @@
     /* BECEDF */
     transition: all 0.5s;
 }
+.center{
+    align-self: center;
+}
 .switch-checkbox:checked + .switch-label {
     background-color: #9FCCFA;
 }
@@ -139,6 +142,10 @@
     background-color: #7DD0FF;
     
     
+}
+img.selectImg{
+    filter: invert(32%) sepia(85%) saturate(5000%) hue-rotate(200deg);
+    /* background-color: black; */
 }
 #settingButton.select{
     background-color: #56BDFD;
@@ -259,6 +266,9 @@
     margin-right: 15px;
     border: #323232 solid 1px;
 }
+/* .multibleCorrect{
+    border-radius: 0;
+} */
 /* .isAnswerCorrect:checked{
     background-color: #2D8CF0 !important;
     width: 30px;    
