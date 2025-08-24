@@ -4,14 +4,13 @@ import change from "./change.js"
 
 function load() {
     let select = document.querySelector('.select')
-    
+    select = select ? select : document.querySelector("#settingButton")
     if (select.id != "settingButton"){
         change(true)
         // QuestionsList
         let current = select.querySelector(".questionNumber").textContent
         let data = JSON.parse(localStorage.getItem(current))
         let addQuestionImg = document.querySelector("#addQuestionImg")
-        console.log(data,"load")
         if (!data){
             data = {
                 question:"Введіть питання...",
@@ -21,7 +20,7 @@ function load() {
                 "correct":[],
                 "type":"OneAnswerQuestion"
             }
-            localStorage.setItem(current,data)
+            localStorage.setItem(current,JSON.stringify(data))
         }
         if (data["type"]){
             document.querySelector(`#${data["type"]}`).querySelector("img").classList.add("selectImg")
@@ -34,12 +33,12 @@ function load() {
         let trashSvg = document.querySelector('#trashSvg').value
         document.querySelector("#questionNameInput").value = data.question
         QuestionsList.innerHTML = ''
-        let timeCorrect = data.correct
+        console.log(data.correct)
+        let timeCorrect = data.correct ? data.correct : []
         for (let answer of data.answers){
             let div = document.createElement("div")
             div.className = 'questionForTest'
-            // console.log(data.correct.includes(answer))
-            
+            console.log(answer,timeCorrect)
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
@@ -51,6 +50,7 @@ function load() {
             
             QuestionsList.append(div)
         }
+    
         QuestionsList.innerHTML += `
             <button class="center action" id="addAnswer">
                 <img src="${addQuestionImg.value}" alt="" class="add-question-icon">

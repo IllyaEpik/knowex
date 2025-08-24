@@ -6,7 +6,7 @@ import add from "./modules/add.js";
 import start from "./modules/start.js"
 import change from "./modules/change.js"
 change(false)
-add()
+add(true)
 load()
 database()
 start()
