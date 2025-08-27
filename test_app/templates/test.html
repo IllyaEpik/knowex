@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} Сторінка тесту {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="test-bg">
+    <div class="test-info-card">
+            <h1 class="test-title">{{ test.name }}</h1>
+            <ul class="test-details">
+                <li><b>Автор:</b> {{ name }}</li>
+                <li><b>Предмет:</b> {{ test.subject }}</li>
+                <li><b>Клас:</b> {{ test.class_name }}</li>
+                <li><b>Дата створення: {{ date }}</b></li>
+                <li><b>creation time: {{ time_of_creation }}</b></li>
+                <li><b>Кількість питань:</b> {{ total_questions }}</li>
+                <li><b>Опис:</b> {{ test.description }}</li>
+                <!-- time -->
+            </ul>
+
+    <form id="join_form">
+        Введіть код тесту: <input type="text" id="test_code_input" />
+        {% if is_authenticated == False %}
+            Ім'я: <input type="text" id="username_input" />
+            <input type="text" placeholder="Введіть імя" id="username">
+        {% endif %}
+        <!-- <button type="submit">Приєднатись</button> -->
+        <a class="start-btn" href="{{ url_for('test.render_test_user', test_id=test.id) }}">Приєднатись</a>
+    </form>
+        {% set first_qid = test.questions.split()[0] %}
+        <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>
+        <a class="start-btn-host" id="start-btn-host" href="{{ url_for('test.render_test_host', test_id=test.id) }}">Запустити тест</a>
+    </div>
+</div>
+{% endblock %}

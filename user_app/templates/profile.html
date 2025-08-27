@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %} User page {% endblock %}
+
+{% block head %} 
+<script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}">
+<script defer src="{{ url_for('profile.static', filename = 'js/profile.js') }}"></script>
+{% endblock %}
+
+{% block content %} 
+
+<div class="container">
+    <div class="user-block">
+        {% if image_name %}
+            <img src="{{ url_for('profile.static', filename='images/' + image_name) }}">
+        {% else %}
+            <div class="circle"></div>
+        {% endif %}
+        <textarea name="description" class="add-description" placeholder="Введіть опис...">{{ user.description if user.description is defined else '' }}</textarea>
+    </div>
+
+    <div class="tests-block">
+        <div class="wrapper">
+            <div class="option">
+                <input class="input" type="radio" name="btn" value="option1" checked="">
+                <div class="btn">
+                    <span class="span">Створенні</span>
+                </div>
+            </div>
+            <div class="option">
+                <input class="input" type="radio" name="btn" value="option2">
+                <div class="btn">
+                    <span class="span">Пройдені</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="created-tests">
+            {% if list_created_tests %}
+                {% for tid in list_created_tests %}
+                    {% set test = Test.query.get(tid) %}
+                    {% if test %}
+                        <div class="test" data-id="{{ test.id }}" data-title="{{ test.name }}">
+                            <div class="name-block">
+                                <span class="name test-title">{{ test.name }}</span>
+                                <button type="button" class="edit-name"><img src="{{ url_for('user.static', filename='images/edit.svg') }}"></button>
+                            </div>
+                            <div class="test-photo">
+                                {% if test.image_name %}
+                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                                {% else %}
+                                    <div class="photo"> </div>
+                                {% endif %}
+                            </div>
+                            <a href="{{ url_for('test.render_test', test_id=test.id) }}" class="custom-btn btn-1">Дізнатись більше</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="completed-tests">
+            {% if list_completed_tests %}
+                {% for tid in list_completed_tests %}
+                    {% set test = Test.query.get(tid) %}
+                    {% if test %}
+                        <div class="test" data-id="{{ test.id }}" data-title="{{ test.name }}">
+                            <div class="name-block">
+                                <span class="name test-title">{{ test.name }}</span>
+                                <button type="button" class="edit-name"><img src="{{ url_for('user.static', filename='images/edit.svg') }}"></button>
+                            </div>
+                            <div class="test-photo">
+                                {% if test.image_name %}
+                                    <img src="{{ url_for('test.static', filename='images/test_icons/' ~ test.id ~ '.png') }}">
+                                {% else %}
+                                    <div class="photo"> </div>
+                                {% endif %}
+                            </div>
+                            <a href="{{ url_for('test.render_test', test_id=test.id) }}" class="custom-btn btn-1">Дізнатись більше</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="arrows">
+            <div class="arrow-block">
+                <img src="{{ url_for('user.static', filename='images/arrow_left.svg') }}">
+                <span class="page-number">1</span>
+                <img src="{{ url_for('user.static', filename='images/arrow_right.svg') }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="settings">
+        <p class="settings-input">Налаштування профілю</p>
+        <div class="settings-choose">
+            <p class="settings-name">Ім’я користувача:</p>
+            <div class="settings-block">
+                <p class="text" data-field="nickname">{{ user.nickname }}</p>
+                <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+            </div>
+        </div>
+        <div class="settings-choose">
+            <p class="settings-name">Електронна адреса  користувача:</p>
+            <div class="settings-block">
+                <p class="text" data-field="email">{{ user.email }}</p>
+                <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+            </div>
+        </div>
+        <div class="settings-choose">
+            <p class="settings-name">Пароль користувача:</p>
+            <div class="settings-block password-block">
+                <input id="user-password" class="text" type="password" value="{{ user.password }}" readonly>
+                <button type="button" class="toggle-password">
+                    <img src="{{ url_for('user.static', filename='images/hide_close.svg') }}">
+                </button>
+                <img class="img_button" data-field="password" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+            </div>
+        </div>
+        <div class="settings-choose">
+            <p class="settings-name">Вказати заклад:</p>
+            <div class="settings-block">
+                <p class="text" data-field="organization">{{ user.organization if user.organization is defined else '' }}</p>
+                <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
