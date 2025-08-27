@@ -434,3 +434,29 @@ function selectQuestion(index) {
         event.preventDefault();
         saveSettings();
     });
+const STORAGE_KEY = 'testImagePreview';
+
+const input = document.getElementById('loadImgInput');
+const container = document.getElementById('addImgContainer');
+
+
+function showPreview(src) {
+  let img = document.getElementById('previewImg');
+  if (!img) {
+    img = document.createElement('img');
+    img.id = 'previewImg';
+    img.style.maxWidth = '100%';
+    img.style.display = 'block';
+    img.style.marginTop = '10px';
+    container.appendChild(img);
+  }
+  img.src = src;
+}
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) showPreview(saved);
+});
