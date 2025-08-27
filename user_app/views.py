@@ -10,6 +10,7 @@ from project.settings import DATABASE
 from project.config_page import config_page
 from .confirm_email import send_code
 from create_app.models import Test
+import flask_login
 try:
     from create_app.models import Questions
 except Exception:
@@ -23,7 +24,13 @@ profile_api = Blueprint('profile_api', __name__, url_prefix='/profile/api')
 @profile_api.route('/update_setting', methods=['POST'])
 def update_setting():
     data = request.get_json()
-    # обработка и сохранение в БД
+
+    setattr(
+        flask_login.current_user,
+        data["field"],
+        data["value"]
+    )
+    DATABASE.session.commit()
     return jsonify(success=True)
 def render_user():
     if 'messages' not in flask.session:

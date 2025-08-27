@@ -55,12 +55,10 @@ $(function(){
       pageNumberEl.textContent = String(page + 1);
     }
   };
-
   const activeContainer = ()=>{
     const checked = document.querySelector('input[name="btn"]:checked');
     return (!checked || checked.value==='option1') ? created : completed;
   };
-
   const updateView = ()=>{
     const checked = document.querySelector('input[name="btn"]:checked');
     const isCreated = !checked || checked.value==='option1';
