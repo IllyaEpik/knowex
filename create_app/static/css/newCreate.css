@@ -55,9 +55,12 @@
     /* BECEDF */
     transition: all 0.5s;
 }
+<<<<<<< HEAD
 .center{
     align-self: center;
 }
+=======
+>>>>>>> origin/stel
 .switch-checkbox:checked + .switch-label {
     background-color: #9FCCFA;
 }

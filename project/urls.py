@@ -3,6 +3,10 @@ import create_app
 import report_app
 import user_app
 import test_app
+
+# <-- добавляем импорт profile_api (подправь путь, если файл лежит в другом модуле) -->
+import user_app as profile_api
+
 from .settings import project
 
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main, methods = ['get', 'post'])
@@ -29,3 +33,6 @@ project.register_blueprint(blueprint=report_app.app.report)
 project.register_blueprint(blueprint=user_app.app.user)
 project.register_blueprint(blueprint=user_app.app.profile)
 project.register_blueprint(blueprint=test_app.app.test_page)
+
+# <-- регистрация profile_api блюпринта -->
+project.register_blueprint(blueprint=profile_api.profile_api)

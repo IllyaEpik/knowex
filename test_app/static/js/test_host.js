@@ -163,6 +163,7 @@ function renderAnswerOptions(answers) {
 //     }
 // }
 
+
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
         testStarted = true;

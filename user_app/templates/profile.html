@@ -3,6 +3,8 @@
 {% block title %} User page {% endblock %}
 
 {% block head %} 
+<script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
+
 <link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}">
 <script defer src="{{ url_for('profile.static', filename = 'js/profile.js') }}"></script>
 {% endblock %}
@@ -85,6 +87,7 @@
         <div class="arrows">
             <div class="arrow-block">
                 <img src="{{ url_for('user.static', filename='images/arrow_left.svg') }}">
+                <span class="page-number">1</span>
                 <img src="{{ url_for('user.static', filename='images/arrow_right.svg') }}">
             </div>
         </div>

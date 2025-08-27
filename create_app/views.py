@@ -23,6 +23,7 @@ def create_test():
     all_questions = ''
 
     for question in json.loads( request.form.get('data')):
+        print(question,type(question))
         question = json.loads( question)
         correct = question['correct']
         print(correct)

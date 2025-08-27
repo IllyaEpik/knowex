@@ -165,7 +165,6 @@ body::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     margin-top: 1.0498687664vw;
     background-color: transparent;
-    margin-left: 2.0997375328vw;
 }
 
 .container_test {
@@ -242,13 +241,12 @@ select option {
     width: 62.992125984000005vw;
     height: 8.6614173228vw;
     background: #F5FBFF;
-    border: 0.05249343832vw solid #A1B4AE;
-    border-radius: 1.36482939632vw;
-    padding-left: 2.0997375328vw;
-    padding-right: 2.0997375328vw;
-    margin-top: 1.0498687664vw;
-    gap: 6.8241469816vw;
-    padding: 1.0498687664vw;
+    border: 1px solid #A1B4AE;
+    border-radius: 26px;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-top: 55px;
+    gap: 130px;
 }
 
 .txt_container_info {
@@ -332,63 +330,4 @@ select option {
   -webkit-transition: all 0.25s;
   box-shadow: none;
   transform: scale(0.98);
-}
-
-
-
-.search-tests {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    width: 57.742782152000004vw;
-    height: 5.249343832vw;
-    background: #FFFFFF;
-    border-radius: 1.5748031496000001vw;
-    padding: 0.5249343832vw;
-    padding-left: 1.0498687664vw;
-    padding-right: 1.0498687664vw;
-    margin-top: 1.5748031496000001vw;
-    border: 0.05249343832vw solid #A1B4AE;
-    gap: 0.5249343832vw;
-}
-
-.input-search-tests {
-    width: 55.118110236vw;
-    height: 1.0498687664vw;
-    background-color: #D0EFFF;
-    color: #242424;
-    padding: .15rem .5rem;
-    min-height: 2.0997375328vw;
-    border-radius: 1.312335958vw;
-    outline: none;
-    border: none;
-    line-height: 1.15;
-    box-shadow: 0.0vw 0.2624671916vw 0.94488188976vw -0.94488188976vw;
-    font-size: 1.0498687664vw;
-
-}
-
-.input-search-tests:focus {
-  border-radius: 1.312335958vw;
-}
-
-.input-search-tests:hover {
-  outline: 0.05249343832vw solid lightgrey;
-}
-
-
-.search-tests-icon {
-    width: 2.0997375328vw;
-    height: 2.0997375328vw;
-    cursor: pointer;
-}
-
-.button-search-tests {
-    width: 2.0997375328vw;
-    height: 2.0997375328vw;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
 }
