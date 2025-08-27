@@ -1,3 +1,7 @@
+.body {
+    --bg-create: #dbeafe;
+}
+
 .sidebar{
     background-color: #F4FBFF;
     width: 280px;
@@ -310,4 +314,9 @@ img.selectImg{
     justify-content: stretch;
     position:relative;
     gap: 8px;
+}
+
+#create{
+    background-color: var(--bg-create);
+    border-radius: 6px;
 }
