@@ -5,9 +5,13 @@ $(function(){
   const leftArrow = document.querySelector('.arrow-block img[src*="arrow_left"]');
   const rightArrow = document.querySelector('.arrow-block img[src*="arrow_right"]');
   const radios = document.querySelectorAll('input[name="btn"]');
-  const testsPerPage = 2;
+  const testsPerPage = document.querySelector("#is_author").value;
   let currentPage = 0, currentEditing = null;
-
+  if (testsPerPage==4){
+    document.querySelector(".tests-block").className = "tests-block-user"
+    completed.className = "completed-tests-user"
+    created.className = "created-tests-user"
+  }
   const qs = s => document.querySelector(s);
   const qsa = s => Array.from(document.querySelectorAll(s));
   const getCsrf = ()=> (qs('meta[name="csrf-token"]')||{}).content||null;
@@ -62,8 +66,8 @@ $(function(){
   const updateView = ()=>{
     const checked = document.querySelector('input[name="btn"]:checked');
     const isCreated = !checked || checked.value==='option1';
-    if(created) created.style.display = isCreated ? 'block':'none';
-    if(completed) completed.style.display = !isCreated ? 'block':'none';
+    if(created) created.style.display = isCreated ? 'flex':'none';
+    if(completed) completed.style.display = !isCreated ? 'flex':'none';
     currentPage = 0;
     showPage(activeContainer(), currentPage);
     initEditingFeatures();

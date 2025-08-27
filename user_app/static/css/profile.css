@@ -1,3 +1,8 @@
+#profile {
+    background-color: #dbeafe;
+    border-radius: 10px;
+}
+
 .container{
     width: 100vw;
     height: 100vh;
@@ -28,8 +33,6 @@
 .circle {
     width: 370px;
     height: 350px;
-    border-radius: 50%;
-    background: #D9D9D9;
 }
 
 .add-description {
@@ -52,7 +55,7 @@
     min-width: 350px;
     max-width: 400px;
     min-height: 700px;
-    max-height: 770px;
+    max-height: 800px;
     padding: 22px 25px;
     display: flex;
     flex-direction: column;
@@ -69,7 +72,7 @@
     --main-color: #B9B9B9;
     position: relative;
     width: 100%;
-    height: 38px;
+    height: 38px !important;
     background-color: var(--bg-color);
     border: 2px solid var(--main-color);
     border-radius: 34px;
@@ -120,7 +123,17 @@
 .input:checked + .btn .span {
     color: var(--font-color-light);
 }
-    
+
+.created-tests, .completed-tests{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
 
 .test {
     display: none;
@@ -210,7 +223,7 @@
 
 .arrows {
     width: 100%;
-    height: 100%;
+    height: 50px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -256,6 +269,24 @@
 
 .img_button {
     cursor: pointer;
+}
+
+.logout-container {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 30px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.logout-container a {
+    text-decoration: none;
+    color: #000000;
+    border-radius: 20px;
+    padding: 20px;
+    background-color: #B8E1FF;
 }
 
 .settings-choose {
@@ -317,6 +348,7 @@
     background-color: transparent;
     border: none;
     outline: none;
+    width: fit-content;
 }
 
 .toggle-password {
@@ -448,3 +480,28 @@
 /* .edit-modal-window {
 
 } */
+.tests-block-user{
+    box-sizing: border-box;
+    height: max-content;
+    width: max-content;
+    max-width: 800px;
+    max-height: 800px;
+    padding: 22px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.created-tests-user, .completed-tests-user {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+

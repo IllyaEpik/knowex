@@ -33,32 +33,23 @@ def update_setting():
     DATABASE.session.commit()
     return jsonify(success=True)
 def render_user():
-    if 'messages' not in flask.session:
-        flask.session['messages'] = []
-    error = ''
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
-            if not User.query.filter_by(nickname=flask.request.form['nickname']).all():
-                if 'Неправильний логін' not in flask.session['messages']:
-                    flask.session['messages'].append('Неправильний логін')
-            else:
-                for user in User.query.filter_by(nickname=flask.request.form['nickname']):
-                    if user.password == flask.request.form['password']:
-                        flask.session['messages'].append('Ви успішно увійшли в аккаунт')
-                        try:
-                            import flask_login
-                            flask_login.login_user(user)
-                            return flask.redirect(location='/')
-                        except Exception:
-                            return flask.redirect(location='/')
-                    if user.password != flask.request.form['password']:
-                        if 'Неправильний пароль' not in flask.session['messages']:
-                            flask.session['messages'].append('Неправильний пароль')
+            for user in User.query.filter_by(nickname=flask.request.form['nickname']):
+                if user.password == flask.request.form['password']:
+                    flask_login.login_user(user)
+                    return flask.redirect(location='/')
         else:
             try:
                 email = flask.request.form.get('email', '').strip().lower()
+                user_exists = User.query.filter_by(email=email).first()
                 nickname = flask.request.form.get('nickname', '').strip()
-                if flask.request.form.get("password") == flask.request.form.get("confirm_password"):
+                nickname_exists = User.query.filter_by(nickname=nickname).first()
+                if user_exists:
+                    return flask.render_template("user.html")
+                elif nickname_exists:
+                    return flask.render_template("user.html")
+                elif flask.request.form.get("password") == flask.request.form.get("confirm_password"):
                     flask.session['pending_reg'] = {
                         'email': email,
                         'password': flask.request.form.get('password'),
@@ -77,20 +68,21 @@ def render_user():
     return flask.render_template("user.html")
 
 @config_page('profile.html')
-def render_profile_page():
-    try:
-        import flask_login
-        if not flask_login.current_user.is_authenticated:
-            return flask.redirect('/user')
-        user = User.query.filter_by(nickname=flask_login.current_user.nickname).first()
-    except Exception:
-        user = None
-    list_created_tests = user.create_tests.split(' ') if user and getattr(user, 'create_tests', None) else []
-    list_completed_tests = user.complete_tests.split(' ') if user and getattr(user, 'complete_tests', None) else []
+def render_profile_page(user_id: int):
+    if user_id == False:
+        flask.redirect("/")
+    if not flask_login.current_user.is_authenticated:
+        return flask.redirect('/user')
+    user = User.query.filter_by(id=user_id).first()
+    list_created_tests = user.create_tests.split(' ') if user.create_tests else []
+    list_completed_tests = user.complete_tests.split(' ') if user.complete_tests else []
     count_created_tests = len(list_created_tests)
     count_completed_tests = len(list_completed_tests)
+    print(list_created_tests,list_completed_tests)
     return {
         "user": user,
+        "user_id": user_id,
+        "current_id": flask_login.current_user.id,
         "list_created_tests": list_created_tests,
         "list_completed_tests": list_completed_tests,
         "count_created_tests": count_created_tests - 1 if count_created_tests>0 else 0,
@@ -137,14 +129,7 @@ def render_code():
             )
             DATABASE.session.add(user)
             DATABASE.session.commit()
-            try:
-                import flask_login
-                flask_login.login_user(user)
-            except Exception:
-                pass
-            flask.session['messages'].append('Користувач успішно доданий!')
-        else:
-            flask.session['messages'].append('Пароли не совпадают!')
+            flask_login.login_user(user)
         return flask.redirect('/')
     else:
         if 'Неправильний код підтвердження' not in flask.session['messages']:

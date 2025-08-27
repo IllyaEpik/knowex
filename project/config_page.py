@@ -11,7 +11,8 @@ def config_page(template_name: str):
             if not isinstance(context, dict):
                 return context
             return flask.render_template(
-                template_name_or_list= template_name, 
+                template_name_or_list= template_name,
+                id = current_user.id if current_user.is_authenticated else False,
                 nickname = current_user.nickname if current_user.is_authenticated else False, 
                 email = current_user.email if current_user.is_authenticated else False, 
                 password = current_user.password if current_user.is_authenticated else False, 

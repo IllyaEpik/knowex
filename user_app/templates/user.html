@@ -57,15 +57,6 @@
     </div>
 </form>
 
-<div class="messages" id="messages">
-    {% for message in session.get('messages', []) %}
-        <div class="message" id="message">
-            {{ message }}
-            {% do session.update({'messages': []}) %}
-        </div>
-    {% endfor %}
-</div>
-
 
 <script src="{{ url_for('user.static', filename='js/script.js') }}"></script>
 {% endblock %}
