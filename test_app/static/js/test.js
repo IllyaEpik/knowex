@@ -9,19 +9,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
-            console.log(selected)
             let selectList = []
             for (let select of selected){
                 selectList.push(select.value)
             }
-            console.log(selected)
-            if (selected.length == 1){
+            if (selected.length == 1 && selected[0].type=='radio'){
                 selected = selected[0].value
             }else{
                 selected = JSON.stringify(selectList)
             }
-            console.log(selected)
-            // return;
             $.ajax({
                 url: responseName,
                 type: 'POST',

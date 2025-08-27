@@ -77,25 +77,39 @@ document.addEventListener('DOMContentLoaded', function () {
             count++;
         }
     });
-
+    let our_data;
     socket.on('nextQuestion', (data) => {
         console.log('data:', data);
+        our_data = data
         overlayWait.classList.add('hidden');
         sendButton.classList.remove('hidden');
         loadingButton.classList.add('hidden');
         document.getElementById('questionText').textContent = data['question_text'];
         count_questions.textContent = `Питання ${data['question_number']} з ${window.COUNT_QUESTIONS}`;
         answers.innerHTML = '';
+        let count = 0
         for (let ans of data['answers']) {
-            let label = document.createElement('button');
+            let label = document.createElement('label');
             label.className = 'answer-option';
-            // label.innerHTML = `<input type="radio" name="answer" value="${ans}" required class= "hidden">${ans}`;
-            
+            label.innerHTML = `<input type="${data.type == "OneAnswerQuestion" ? "radio" : "checkbox"}" id="${count}" name="answer" value="${ans}" class="hidden">${ans}`;
+            label.htmlFor = `${count}`
             label.value = `${ans}` 
-            label.name = "answer"
-            label.textContent = `${ans}` 
+            label.addEventListener("click", function(){
+                    let answers = document.querySelectorAll(".answer-option")
+                    for (let answer of answers){
+                        console.log(answer.querySelector("input").checked)
+                        answer.querySelector("input").checked ? answer.classList.add("selected") : answer.classList.remove("selected")
+                        
+                    }
+                // }
+                // label.classList.add("selected")
+            })
+            // label.name = "answer"
+            // label.textContent = `${ans}` 
             label.style.backgroundColor = getRandomColor(); 
+            console.log(label)
             answers.append(label);
+            count++
         }
     });
 
@@ -105,10 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
         answerLabels.forEach(label => {
             const input = label
             // const input = label.querySelector('input');
+            // nothing bad
             label.classList.remove('correct', 'incorrect', 'pending', 'unanswered');
-            if (input.value === data.selected_answer) {
+            if (input.value == data.selected_answer) {
                 label.classList.add(data.is_correct ? 'correct' : 'incorrect');
-            } else if (input.value === data.correct_answer) {
+            } else if (input.value == data.correct_answer) {
                 label.classList.add('correct');
             } else {
                 label.classList.add('unanswered');
@@ -161,18 +176,31 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         if (e.target.tagName === 'FORM') {
             // console.log(e.target);
-            // const selected = e.target.querySelector('input[name="answer"]:checked');
-            console.log(e.submitter.value);
-            const selected = e.submitter;
+            let selected;
+            console.log(our_data)
+            if (our_data.type == "OneAnswerQuestion"){
+                selected = e.target.querySelector('input[name="answer"]:checked').value;
+            }else if (our_data.type == "multiple"){
+                let timeSelected = document.querySelectorAll('input[name="answer"]:checked');
+                console.log(timeSelected)
+                selected = []
+                for (let select of timeSelected){
+                    selected.push(select.value)
+                }
+                console.log(selected)
+                selected = JSON.stringify(selected)
+                console.log(selected)
+            }
+            console.log(selected)
             if (!selected) {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
-            const selectedValue = selected.value;
-            console.log(selectedValue);
+            
+            console.log(selected);
             sendButton.classList.add('hidden');
             loadingButton.classList.remove('hidden');
-            socket.emit('send_answer', { 'answer': selectedValue, 'user': username, 'test_id': testId });
+            socket.emit('send_answer', { 'answer': selected, 'user': username, 'test_id': testId, type: our_data.type});
             overlayWait.classList.remove('hidden');
             // $.ajax({
             //     url: window.location.pathname,

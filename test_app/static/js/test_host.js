@@ -147,21 +147,21 @@ function renderAnswerOptions(answers) {
     });
 }
 
-function updateParticipantSquare(username, status) {
-    const safeId = encodeURIComponent(username);
-    const square = document.getElementById(`participant-square-${safeId}`);
-    if (!square) return;
-    if (status === 'null') {
-        square.style.backgroundColor = '#bdbdbd'; // gray
-        square.style.border = '1px solid #999';
-    } else if (status === 'correct') {
-        square.style.backgroundColor = '#2ecc71'; // green
-        square.style.border = '1px solid #1ea85a';
-    } else if (status === 'incorrect') {
-        square.style.backgroundColor = '#e74c3c'; // red
-        square.style.border = '1px solid #c53a2b';
-    }
-}
+// function updateParticipantSquare(username, status) {
+//     const safeId = encodeURIComponent(username);
+//     const square = document.getElementById(`participant-square-${safeId}`);
+//     if (!square) return;
+//     if (status === 'null') {
+//         square.style.backgroundColor = '#bdbdbd'; // gray
+//         square.style.border = '1px solid #999';
+//     } else if (status === 'correct') {
+//         square.style.backgroundColor = '#2ecc71'; // green
+//         square.style.border = '1px solid #1ea85a';
+//     } else if (status === 'incorrect') {
+//         square.style.backgroundColor = '#e74c3c'; // red
+//         square.style.border = '1px solid #c53a2b';
+//     }
+// }
 
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
@@ -205,6 +205,11 @@ startBtn.addEventListener('click', () => {
 });
 socket.on('correct', (correct) => {
     currentCorrectAnswer = correct.answer;
+    // let timesCorrect = currentCorrectAnswer
+    // if (our_data.type == 'multiple'){
+    //     timesCorrect = JSON.parse(currentCorrectAnswer)
+    // }
+    // console.log(timesCorrect)
     correctAnswersHistory.push(currentCorrectAnswer)
 });
 
@@ -213,9 +218,9 @@ socket.on('nextQuestion', (data) => {
         questionTextElement.textContent = data.question_text;
         renderAnswerOptions(data.answers);
 
-        Object.keys(user_answers).forEach(username => {
-            updateParticipantSquare(username, 'null');
-        });
+        // Object.keys(user_answers).forEach(username => {
+        //     updateParticipantSquare(username, 'null');
+        // });
 
     } else {
         console.error('No question text received:', data);
@@ -246,14 +251,7 @@ socket.on('participants_update', (participants) => {
         const safeId = encodeURIComponent(p);
         square.id = `participant-square-${safeId}`;
         square.className = 'participant-square';
-        square.style.width = '20px';
-        square.style.height = '20px';
-        square.style.display = 'inline-block';
-        square.style.verticalAlign = 'middle';
-        square.style.marginRight = '8px';
-        square.style.borderRadius = '3px';
-        square.style.backgroundColor = '#bdbdbd';
-        square.style.border = '1px solid #999';
+        
         li.appendChild(square);
 
         const nameSpan = document.createElement('span');
@@ -266,32 +264,48 @@ socket.on('participants_update', (participants) => {
 
     });
 });
-
+function isSuperset(a, b) {
+    a = new Set(a)
+    b = new Set(b)
+    for (let elem of b) {
+        if (!a.has(elem)) {
+            return false;
+        }
+    }
+    return true;
+}
 socket.on('send_answer', (answer) => {
     const li = document.getElementById(`participant-${answer.user}`);
     if (li) {
-        li.className = answer.answer === currentCorrectAnswer ? 'green' : 'red';
-        li.innerHTML = `<strong>${answer.user}</strong> <span>(${answer.answer || 'Без відповіді'})</span>`;
-
-        const option = answerOptions.querySelector(`[data-index="${currentAnswers.indexOf(answer.answer)}"]`);
-        if (option) {
-            option.style.backgroundColor = option.dataset.bgColor;
-            option.style.border = answer.answer === currentCorrectAnswer
-                ? "3px solid #2ecc71"
-                : "3px solid #e74c3c";
+        if (answer.type == 'multiple'){
+            answer.answer = JSON.parse(answer.answer)
+            currentCorrectAnswer = JSON.parse(currentCorrectAnswer)
         }
+
+        console.log(isSuperset(answer.answer, currentCorrectAnswer), answer.answer,currentCorrectAnswer, new Set(answer.answer), new Set(currentCorrectAnswer))
+        li.className = isSuperset(answer.answer, currentCorrectAnswer) ? 'green' : 'red';
+        // li.innerHTML = `<strong>${answer.user}</strong> <span>(${answer.answer || 'Без відповіді'})</span>`;
+        console.log(li)
+        // user_answers[answer.user].push(answer.answer)
+        // const option = answerOptions.querySelector(`[data-index="${currentAnswers.indexOf(answer.answer)}"]`);
+        // if (option) {
+        //     option.style.backgroundColor = option.dataset.bgColor;
+        //     option.style.border = answer.answer === currentCorrectAnswer
+        //         ? "3px solid #2ecc71"
+        //         : "3px solid #e74c3c";
+        // }
     } else {
         console.error(`Participant element not found: participant-${answer.user}`);
     }
 
-    if (answer.answer == null || answer.answer === '') {
-        updateParticipantSquare(answer.user, 'null');
-    } else if (answer.answer === currentCorrectAnswer) {
-        updateParticipantSquare(answer.user, 'correct');
-    } else {
-        updateParticipantSquare(answer.user, 'incorrect');
-    }
-
+    // if (answer.answer == null || answer.answer === '') {
+    //     updateParticipantSquare(answer.user, 'null');
+    // } else if (answer.answer === currentCorrectAnswer) {
+    //     updateParticipantSquare(answer.user, 'correct');
+    // } else {
+    //     updateParticipantSquare(answer.user, 'incorrect');
+    // }
+    
     user_answers[answer.user].push(answer.answer || null);
     renderRating();
 });

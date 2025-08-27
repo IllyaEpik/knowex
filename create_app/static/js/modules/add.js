@@ -45,8 +45,7 @@ function add(first = false) {
             let questionNumber = document.querySelector(".select").querySelector(".questionNumber").textContent
             let data = localStorage.getItem(questionNumber)
             
-            let selectImg = document.querySelector(".selectImg")
-
+            let selectImg = document.querySelector(".selectImg").parentElement
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">

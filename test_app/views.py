@@ -367,12 +367,22 @@ def end_test(data: dict):
         for i, question_id in enumerate(questions):
             question = Questions.query.get(int(question_id))
             user_answer = answers[i] if i < len(answers) else None
-            is_correct = str(user_answer) == str(question.correct_answer)
-            corrects += is_correct
+            is_correct = user_answer == question.correct_answer
+            correct = question.correct_answer
+            if question.type == "multiple":
+                print(user_answer,correct, type(correct), type(user_answer))
+                user_answer2 = set(user_answer)
+                print('gogogg')
+                correct = json.loads(correct)
+                correct2 = set(correct)
+                print('erwetyy')
+                is_correct = user_answer2.issuperset(correct2) and correct2.issuperset(user_answer2)
+                print('what')
+            corrects += is_correct 
 
             question_data.append({
                 "text": question.text,
-                "correct_answer": question.correct_answer,
+                "correct_answer": correct,
                 "user_answer": user_answer if user_answer else "Не було відповіді",
                 "is_correct": is_correct
             })
@@ -493,11 +503,12 @@ def next_question(data):
         emit('error', {'msg': 'Питання не знайдено'}, room=room_name)
         return
 
-    answers = json.loads(question.answers) + [question.correct_answer] if question.answers else [question.correct_answer]
+    answers = json.loads(question.answers)
     emit('nextQuestion', {
         'answers': random.sample(answers, len(answers)),
         'question_text': question.text,
-        'question_number': question_number
+        'question_number': question_number,
+        "type":question.type
     }, room=room_name)
     cell = active_tests.get(test_id)
     if cell and 'host_sid' in cell:
