@@ -1,5 +1,5 @@
 :root {
-    --bg-main-choosen: #dbeafe;
+    --bg-main-chosen: #dbeafe;
     --bg-description: #ACDDFF;
     --bg-login: #ACDDFF;
     --bg-test: #fff;
@@ -192,4 +192,11 @@ body.dark .test_link a {
 body.dark .test_link a:hover,
 body.dark .test_link a:focus {
     background-color: var(--bg-link-hover);
+}
+
+
+
+#main{
+    background-color: var(--bg-main-chosen);
+    border-radius: 6px;
 }
