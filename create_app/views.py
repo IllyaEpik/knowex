@@ -36,7 +36,7 @@ def create_test():
         questions = all_questions,
         name = request.form.get('name'),
         description = description,
-        # user = flask_login.current_user.id,
+        user = flask_login.current_user.id,
         date = int(time.time()),
         count = 0
     )

@@ -9,6 +9,7 @@
 {% block content %}
 <div class="result-container">
     <h2>Результати тесту: {{ test.name }}</h2>
+    <p>Творець: <a href="/profile/{{ creator.id }}" class="user_profile">{{ creator.nickname }}</a></p>
     <p>Дата завершення: {{ time_date }}</p>
     <p>Час завершення: {{ time_text }}</p>
     <div class="ans"><p>Питання: {{ total_questions }}</p></div>

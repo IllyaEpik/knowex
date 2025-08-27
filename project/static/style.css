@@ -103,7 +103,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* CHANGE justify-content: center; CHANGE by Andrey 03.07.25 */ 
     overflow: hidden;
     user-select: none;
 }
@@ -171,10 +170,6 @@ body {
     left: 100px;
 }
 
-
-
-
-
 .login_page {
     width: 120px;
     height: 40px;
@@ -197,14 +192,7 @@ body {
     background: var(--btn-hover);
 }
 
-
-
-
-
-
-
 .to-test {
-    /* margin-right: 1px; */
     margin-top: 15px;
     display: flex;
     align-items: center;
@@ -350,7 +338,6 @@ body {
 }
 
 .profile_info {
-    /* z-index: 100; */
     pointer-events: all;
     position: fixed;
     right: 0;
@@ -461,19 +448,13 @@ body.dark .to-test button{
     background-color: #4a5bbd;
 }
 
-
-
 .top_panel {
-    margin-left: 250px; /* ширина .left_panel */
+    margin-left: 250px;
     transition: margin 0.3s;
 }
 .top_panel.full {
     margin-left: 0;
 }
-
-
-
-
 
 .theme_change {
   margin-left: 18px;
@@ -583,12 +564,3 @@ body.dark .to-test button{
 .input:checked + .slider:before {
   transform: translateX(30px);
 }
-
-
-
-
-
-
-
-
-

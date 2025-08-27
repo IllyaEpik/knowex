@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/knowex_icon.png') }}">
 </head>
     <body>
-        <!-- <body> -->
         <div class="left_panel">
             <div class="icon">
                 <img src="{{ url_for('static', filename='images/knowex_icon.png') }}" alt="" class="icon_photo">
@@ -24,7 +23,11 @@
             {% if is_authenticated or 1 %}
             <div class="menu_item" id="main">
                 <img src="{{ url_for('static', filename='new_icons/main.svg') }}" alt="Main" class="main_photo">
-                <a href="/profile" class="main">Кабінет</a>
+                {% if id %}  
+                    <a href="/profile/{{ id }}" class="profile">Кабінет</a>
+                {% else %}
+                    <a href="/" class="profile">Кабінет</a>
+                {% endif %}
             </div>
             <div class="menu_item" id="create">
                 <img src="{{ url_for('static', filename='new_icons/create.svg') }}" alt="Create" class="create_photo">
@@ -36,7 +39,6 @@
                 <a href="/report/0" class="report">Тести</a>
             </div>
         </div>
-    <!-- </body> -->
     
     <div class="top_panel{% if not is_authenticated %} full{% endif %}">
         {% if is_authenticated %}

@@ -195,10 +195,9 @@ def test_result(test_id):
     test = Test.query.filter_by(id=test_id).first()
     if not test:
         return flask.abort(404)
-    
-    time_complete = time.localtime(time.time())  # Поточний час: 01:33 AM EEST, 02.08.2025
-    time_date = time.strftime('%d.%m.20%y', time_complete)  # "02.08.2025"
-    time_text = time.strftime('%H:%M', time_complete)       # "01:33"
+    time_complete = time.localtime(time.time())
+    time_date = time.strftime('%d.%m.20%y', time_complete)
+    time_text = time.strftime('%H:%M', time_complete)
     
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
@@ -217,8 +216,6 @@ def test_result(test_id):
 
         if is_correct:
             correct += 1
-
-        # Додаємо варіанти відповідей (припустимо, вони в question.answers як JSON)
         options = []
         if question.answers:
             try:
@@ -227,13 +224,13 @@ def test_result(test_id):
                 options = [question.answers]
         options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
         options = list(set(options))  # Уникаємо дублікатів
-
+        
         questions.append({
             "text": question.text,
             "correct_answer": question.correct_answer,
             "user_answer": user_answer,
             "is_correct": is_correct,
-            "options": options  # Додано
+            "options": options
         })
     
     total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд
@@ -259,9 +256,9 @@ def test_result(test_id):
     null_count = sum(1 for q in questions if q["user_answer"] is None)
     incorrect_count = total_questions - correct - null_count
 
-    # ... оновлений return
     return {
-        "test": test,
+        "test": test,        
+        "creator": User.query.get(test.user),
         "total_questions": total_questions,
         "time_date": time_date,
         "time_text": time_text,

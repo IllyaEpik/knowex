@@ -13,7 +13,7 @@ class Questions(DATABASE.Model):
 
 class Test(DATABASE.Model):
     id = DATABASE.Column(DATABASE.Integer, primary_key=True)
-    # user = DATABASE.Column(DATABASE.Integer)
+    user = DATABASE.Column(DATABASE.Integer)
     questions = DATABASE.Column(DATABASE.String(255))
     subject = DATABASE.Column(DATABASE.String(255))
     class_name = DATABASE.Column(DATABASE.String(255))
