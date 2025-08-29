@@ -3,9 +3,9 @@ import save from "./save.js"
 function database() {
     
     document.addEventListener("DOMContentLoaded", function(){
-        save()
         let saveTest = document.querySelector('.saveTest')
         saveTest.addEventListener("click", function(){
+            save()
             let settingsData = JSON.parse(localStorage.getItem("settingsOfTest"))
             let listAllQuestions = []
             let Formdata = new FormData();
