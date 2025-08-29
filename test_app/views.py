@@ -12,7 +12,7 @@ def render_test(test_id: int):
     if not test:
         return flask.abort(404)
     user = User.query.filter(User.create_tests.contains(str(test_id))).first()
-    user = user.nickname if user else "Unknown"
+    username = user.nickname if user else "Unknown"
     question_ids = [int(qid) for qid in test.questions.split()]
     total_questions = len(question_ids)
     date = time.localtime(test.date)
@@ -20,7 +20,8 @@ def render_test(test_id: int):
     date = time.strftime('%d.%m.20%y', date)
     return {
         "test": test,
-        "name": user,
+        "name": username,
+        "user_id":user.id,
         "total_questions": total_questions,
         "date": date,
         "time_of_creation": time_of_creation
@@ -147,11 +148,11 @@ def test_question(test_id, question_id):
 
     current_index = question_ids.index(question_id)
     question = Questions.query.filter_by(id=question_id).first()
-    typeOfQuestion = "standart"
+    # typeOfQuestion = "standart"
     correct = question.correct_answer
-    if type(correct) == type("ewq"):
+    typeOfQuestion = question.type
+    if typeOfQuestion == "multiple":
         correct = json.loads(correct)
-        typeOfQuestion = "multiple"
     if not question:
         return flask.abort(404)
 
@@ -167,10 +168,10 @@ def test_question(test_id, question_id):
 
     if flask.request.method == "POST":
         print(typeOfQuestion)
+        print
         if typeOfQuestion == 'standart':
             selected = flask.request.form.get("answer")
             is_correct = selected == correct
-            
         elif typeOfQuestion == 'multiple':
             selected = json.loads(flask.request.form.get("answer"))
             print(selected,999999999, type(selected), type(correct))

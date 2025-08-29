@@ -11,7 +11,8 @@
     <div class="test-info-card">
             <h1 class="test-title">{{ test.name }}</h1>
             <ul class="test-details">
-                <li><b>Автор:</b> {{ name }}</li>
+                <!-- <a href="/profile/{{ user_id }}" class="profile">Кабінет</a> -->
+                <li><b>Автор:</b> <a href="/profile/{{ user_id }}">{{ name }}</a></li>
                 <li><b>Предмет:</b> {{ test.subject }}</li>
                 <li><b>Клас:</b> {{ test.class_name }}</li>
                 <li><b>Дата створення: {{ date }}</b></li>
