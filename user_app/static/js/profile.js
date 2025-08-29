@@ -2,6 +2,7 @@ $(function(){
   const $ = window.$;
   const created = document.querySelector('.created-tests');
   const completed = document.querySelector('.completed-tests');
+  const userBlock = document.querySelector('.user-block');
   const leftArrow = document.querySelector('.arrow-block img[src*="arrow_left"]');
   const rightArrow = document.querySelector('.arrow-block img[src*="arrow_right"]');
   const radios = document.querySelectorAll('input[name="btn"]');
@@ -11,6 +12,7 @@ $(function(){
     document.querySelector(".tests-block").className = "tests-block-user"
     completed.className = "completed-tests-user"
     created.className = "created-tests-user"
+    userBlock.className = "user-block-user"
   }
   const qs = s => document.querySelector(s);
   const qsa = s => Array.from(document.querySelectorAll(s));

@@ -20,13 +20,21 @@
 
     <div class="container">
         <div class="user-block">
-            {% if image %}
-                <img src="{{ url_for('profile.static', filename='images/' + user.nickname + '.png') }}">
-            {% else %}
-                <img class="circle" src="{{ url_for('profile.static', filename='images/profile.png') }}">
-            {% endif %}
-            <textarea name="description" class="add-description" placeholder="Введіть опис...">{{ user.description }}</textarea>
-
+            <div class="user-chartics">
+                {% if image %}
+                    <img src="{{ url_for('profile.static', filename='images/' + user.nickname + '.png') }}">
+                {% else %}
+                    <img class="circle" src="{{ url_for('profile.static', filename='images/profile.png') }}">
+                {% endif %}
+                {% if not is_author %}
+                    <div class="block-user">
+                        <p class="user-nickname">{{ user.nickname }}</p>
+                        <div class="user-count">Створених тестів: {{ user.created_tests|length }}</div>
+                        <div class="user-count">Пройдених тести: {{ user.completed_tests|length }}</div>
+                    </div>
+                {% endif %}
+            </div>
+                <textarea name="description" class="add-description" placeholder="Введіть опис...">{{ user.description }}</textarea>
         </div>
 
         <div class="tests-block">
