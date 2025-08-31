@@ -1,0 +1,23 @@
+<div class="test-bg">
+    <div class="test-info-card">
+            <h1 class="test-title">{{ test.name }}</h1>
+            <ul class="test-details">
+                <li><b>Автор:</b> {{ name }}</li>
+                <li><b>Предмет:</b> {{ test.subject }}</li>
+                <li><b>Клас:</b> {{ test.class_name }}</li>
+                <li><b>Дата створення: {{ date }}</b></li>
+                <li><b>creation time: {{ time_of_creation }}</b></li>
+                <li><b>Кількість питань:</b> {{ total_questions }}</li>
+                <li><b>Опис:</b> {{ test.description }}</li>
+            </ul>
+
+    <form id="join_form">
+        <a class="start-btn" href="{{ url_for('test.render_test_user', test_id=test.id) }}">Приєднатись</a>
+    </form>
+        {% set first_qid = test.questions.split()[0] %}
+            {% set first_qid = test.questions.split()[0] %}
+            <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}"></a>
+            <a class="start-btn-host" id="start-btn-host" href="{{ url_for('test.render_test_host', test_id=test.id) }}"></a>
+            <a href="start-btn-blitz"></a>
+            <a href="start-btn-homework"></a>
+</div>

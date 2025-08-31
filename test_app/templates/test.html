@@ -7,30 +7,35 @@
 {% endblock %}
 
 {% block content %}
-<div class="test-bg">
-    <div class="test-info-card">
+    <div class="test-block">
+        <div class="test-about">
             <h1 class="test-title">{{ test.name }}</h1>
-            <ul class="test-details">
-                <li><b>Автор:</b> {{ name }}</li>
-                <li><b>Предмет:</b> {{ test.subject }}</li>
-                <li><b>Клас:</b> {{ test.class_name }}</li>
-                <li><b>Дата створення: {{ date }}</b></li>
-                <li><b>creation time: {{ time_of_creation }}</b></li>
-                <li><b>Кількість питань:</b> {{ total_questions }}</li>
-                <li><b>Опис:</b> {{ test.description }}</li>
-            </ul>
-
-    <form id="join_form">
-        Введіть код тесту: <input type="text" id="test_code_input">
-        {% if is_authenticated == False %}
-            Ім'я: <input type="text" id="username_input">
-            <input type="text" placeholder="Введіть імя" id="username">
-        {% endif %}
-        <a class="start-btn" href="{{ url_for('test.render_test_user', test_id=test.id) }}">Приєднатись</a>
-    </form>
-        {% set first_qid = test.questions.split()[0] %}
-        <a class="start-btn" href="{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}">Почати тест</a>
-        <a class="start-btn-host" id="start-btn-host" href="{{ url_for('test.render_test_host', test_id=test.id) }}">Запустити тест</a>
+            <div class="info-block">
+                <h2>Опис тесту</h2>
+                <div class="info">
+                    <h3>{{ test.description }}</h3>
+                </div>
+            </div>
+            <div class="info-block">
+                <h2>O тесті</h2>
+                <div class="info">
+                    <h3>Автор: {{ name }}</h3>
+                    <h3>Предмет: {{ test.subject }}</h3>
+                    <h3>Клас: {{ test.class_name }}</h3>
+                    <h3>Створено: {{ date }}</h3>
+                    <h3>Кількість питань: {{ total_questions }}</h3>
+                    <!-- <h3>Час створення: {{ time_of_creation }}</h3> -->
+                </div>
+            </div>
+        </div>
+        <div class="test-choose">
+            {% set first_qid = test.questions.split()[0] %}
+            <button class="modal-btn picture1" onclick="showSimpleModal('Модалка 1', `<a class='start-btn' href='{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}'>Почати тест</a>`)">Модалка 1</button>
+            <button class="modal-btn picture2" onclick="showSimpleModal('Модалка 2', `<a class='start-btn-host' id='start-btn-host' href='{{ url_for('test.render_test_host', test_id=test.id) }}'>Почати тест</a>`)">Модалка 2</button>
+            <button class="modal-btn picture3" onclick="showSimpleModal('Модалка 3', 'Контент модалки 3')">Модалка 3</button>
+            <button class="modal-btn picture4" onclick="showSimpleModal('Модалка 4', 'Контент модалки 4')">Модалка 4</button>
+        </div>
     </div>
-</div>
+
+<script src="{{ url_for('test.static', filename='js/test_question.js') }}"></script>
 {% endblock %}
