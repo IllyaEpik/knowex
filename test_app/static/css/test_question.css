@@ -4,16 +4,16 @@ body {
     padding: 0;
     background-color: #f5f5f5;
     color: #333;
-    width: 1590px;
-    height: 867px;
+    width: 83.4645669288vw;
+    height: 45.51181102344vw;
     overflow: visible;
 }
 
 .test-container {
     display: flex;
     flex-direction: column;
-    height: 867px;
-    width: 1590px;
+    height: 45.51181102344vw;
+    width: 83.4645669288vw;
 }
 
 .test-header {
@@ -21,23 +21,23 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #f5f7fa;
-    padding: 10px 20px;
+    padding: 0.5249343832vw 1.0498687664vw;
     color: #333;
-    width: 1590px;
-    height: 60px;
+    width: 83.4645669288vw;
+    height: 3.1496062992000002vw;
     box-sizing: border-box;
 }
 
 .headerButton {
     background-color: #34495e;
-    border: 1px solid #2c3e50;
-    border-radius: 4px;
-    padding: 6px 12px;
+    border: 0.05249343832vw solid #2c3e50;
+    border-radius: 0.20997375328vw;
+    padding: 0.31496062992vw 0.62992125984vw;
     cursor: pointer;
     color: #ffffff;
-    font-size: 14px;
-    width: 80px;
-    height: 30px;
+    font-size: 0.7349081364800001vw;
+    width: 4.1994750656vw;
+    height: 1.5748031496000001vw;
 }
 
 .headerButton:hover {
@@ -51,68 +51,68 @@ body {
 
 .header-center h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 1.25984251968vw;
     font-weight: 600;
-    width: 200px;
-    height: 30px;
+    width: 10.498687664vw;
+    height: 1.5748031496000001vw;
 }
 
 .main-layout {
     display: flex;
     flex-grow: 0;
-    padding: 20px;
-    height: 787px;
-    width: 1590px;
+    padding: 1.0498687664vw;
+    height: 41.31233595784vw;
+    width: 83.4645669288vw;
     overflow: visible;
     box-sizing: border-box;
 }
 
 .main-content {
     flex-grow: 0;
-    margin-right: 20px;
-    height: 787px;
-    width: 1350px;
+    margin-right: 1.0498687664vw;
+    height: 41.31233595784vw;
+    width: 70.866141732vw;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1.0498687664vw;
     overflow: visible;
 }
 
 .question-section {
-    border: 1px solid #B9B9B9;
-    border-radius: 50px;
-    padding: 11px 25px;
+    border: 0.05249343832vw solid #B9B9B9;
+    border-radius: 2.624671916vw;
+    padding: 0.57742782152vw 1.312335958vw;
     background-color: #ffffff;
-    height: 207px;
-    width: 1600px;
+    height: 10.866141732240001vw;
+    width: 83.989501312vw;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.5249343832vw;
 }
 
 .question-code {
-    font-size: 16px;
+    font-size: 0.83989501312vw;
     color: #7f8c8d;
-    margin-bottom: 10px;
-    width: 1270px;
-    height: 30px;
+    margin-bottom: 0.5249343832vw;
+    width: 66.6666666664vw;
+    height: 1.5748031496000001vw;
 }
 
 .current-question,
 .question-text {
-    font-size: 18px;
+    font-size: 0.94488188976vw;
     color: #2c3e50;
-    margin-bottom: 10px;
-    width: 1270px;
-    height: 40px;
+    margin-bottom: 0.5249343832vw;
+    width: 66.6666666664vw;
+    height: 2.0997375328vw;
 }
 
 .question-progress {
     display: flex;
-    gap: 8px;
-    margin: 15px 0;
-    width: 1270px;
-    height: 40px;
+    gap: 0.41994750656vw;
+    margin: 0.7874015748000001vw 0;
+    width: 66.6666666664vw;
+    height: 2.0997375328vw;
 }
 
 .question-progress .question-box {
@@ -132,11 +132,11 @@ body {
 }
 
 .answer-block {
-    padding: 25px 15px;
+    padding: 1.312335958vw 0.7874015748000001vw;
     background-color: #F4FBFF;
-    border-top: 1px solid #B9B9B9;
-    height: 410px;
-    width: 1669px;
+    border-top: 0.05249343832vw solid #B9B9B9;
+    height: 21.522309711200002vw;
+    width: 87.61154855608001vw;
     overflow: visible;
     display: flex;
     flex-direction: column;
@@ -146,20 +146,20 @@ body {
 .answer-options {
     display: flex;
     flex-wrap: revert;
-    margin: 10px 0;
+    margin: 0.5249343832vw 0;
     justify-content: space-between;
-    width: 1469px;
-    height: 360px;
+    width: 77.11286089208001vw;
+    height: 18.8976377952vw;
 }
 
 .answer-option {
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    padding: 15px 25px;
+    border: 0.10498687664vw solid #ddd;
+    border-radius: 0.41994750656vw;
+    padding: 0.7874015748000001vw 1.312335958vw;
     cursor: pointer;
-    font-size: 16px;
-    width: 258px;
-    height: 340px;
+    font-size: 0.83989501312vw;
+    width: 13.54330708656vw;
+    height: 17.847769028800002vw;
     text-align: center;
     color: #333;
     display: flex;
@@ -197,24 +197,24 @@ body {
 }
 
 /* .header-right {
-    border: 1px solid #B9B9B9;
+    border: 0.05249343832vw solid #B9B9B9;
     background-color: #fff;
     color: #000000;
     display: flex;
     align-items: center;
     flex-direction: column-reverse;
     justify-content: center;
-    width: 240px;
-    height: 100px;
+    width: 12.598425196800001vw;
+    height: 5.249343832vw;
 }
 
 .question-count {
     border: none;
     background-color: #BEE7FF;
-    border-radius: 40px;
+    border-radius: 2.0997375328vw;
     color: #000000;
-    width: 210px;
-    height: 60px;
+    width: 11.0236220472vw;
+    height: 3.1496062992000002vw;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -227,13 +227,13 @@ body {
     background-color: #3498db;
     color: #ffffff;
     border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
+    border-radius: 0.31496062992vw;
+    padding: 0.5249343832vw 1.0498687664vw;
     cursor: pointer;
-    font-size: 16px;
-    width: 200px;
-    height: 40px;
-    margin-top: 20px;
+    font-size: 0.83989501312vw;
+    width: 10.498687664vw;
+    height: 2.0997375328vw;
+    margin-top: 1.0498687664vw;
 }
 
 .submit-btn:hover {
@@ -246,29 +246,29 @@ body {
 }
 
 .result-container {
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 2.0997375328vw;
+    padding: 1.0498687664vw;
     background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 1350px;
-    height: 787px;
+    border: 0.05249343832vw solid #ddd;
+    border-radius: 0.5249343832vw;
+    width: 70.866141732vw;
+    height: 41.31233595784vw;
 }
 
 .result-container h2 {
     margin-top: 0;
-    font-size: 24px;
+    font-size: 1.25984251968vw;
     color: #2c3e50;
 }
 
 .result-container p {
-    font-size: 16px;
+    font-size: 0.83989501312vw;
     color: #34495e;
 }
 
 .result-container a {
     display: inline-block;
-    margin-top: 10px;
+    margin-top: 0.5249343832vw;
     color: #3498db;
     text-decoration: none;
 }
@@ -293,7 +293,7 @@ body {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 32px;
+    font-size: 1.67979002624vw;
     font-weight: bold;
     text-align: center;
 }
@@ -303,16 +303,20 @@ body {
 }
 
 .overlay-message {
-    padding: 20px;
+    padding: 1.0498687664vw;
     background: rgba(0, 0, 0, 0.6);
-    border-radius: 12px;
+    border-radius: 0.62992125984vw;
 }
 .answers-grid {
+    max-width: 83.989501312vw;
     display: flex;
-    flex-wrap: wrap;
-    gap: 100px;
+    /* margin-left: 1vw; */
+    overflow: hidden;
+    flex-wrap: nowrap;
+    gap: 5.249343832vw;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 1.5748031496000001vw;
+
 }
 
 .answer-card {
@@ -320,15 +324,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 305px;       
+    width: 16.010498687600002vw;       
     height: 40vh;      
     background-color: #cce5f6;
-    border: 2px solid #cce5f6;
-    border-radius: 15px;
+    border: 0.10498687664vw solid #cce5f6;
+    border-radius: 0.7874015748000001vw;
     cursor: pointer;
     transition: 0.3s ease;
     text-align: center;
-    font-size: 20px;   
+    font-size: 1.0498687664vw;   
 }
 .right{
     width: 100%;
@@ -344,7 +348,7 @@ body {
 .answer-card .answer-text {
     font-weight: bold;
     color: #333;
-    padding: 10px;
+    padding: 0.5249343832vw;
     pointer-events: none; 
 }
 
@@ -355,13 +359,13 @@ body {
 .answer-card input[type="radio"]:checked + .answer-text {
     color: #007bff;
     font-weight: bold;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 0.10498687664vw solid #007bff;
 }
 .button {
-    border-radius: 70px;
-    width: 250px;
-    height: 50px;
-    font-size: 20px;
+    border-radius: 3.6745406824vw;
+    width: 13.12335958vw;
+    height: 2.624671916vw;
+    font-size: 1.0498687664vw;
     border: none;
     background-color: #84CFEF;
     margin-left: auto !important;
@@ -370,12 +374,12 @@ body {
     width: 80.8398950128vw;
     height:25vh;
     background-color: #f8f9fa;
-    border: 2px solid #dee2e6;
+    border: 0.10498687664vw solid #dee2e6;
     border-radius: 1.0498687664vw;
     padding: 1.5748031496vw;
     margin: 1.5748031496vw auto;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.20997375328vw 0.62992125984vw rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: center;

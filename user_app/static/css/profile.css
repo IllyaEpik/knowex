@@ -486,7 +486,11 @@
     align-items: center;
     gap: 10px;
 }
-
+#main{
+    
+    background-color: #dbeafe;
+    border-radius: 0.5249343832vw;
+}
 .block-user{
     width: 280px;
     height: 350px;

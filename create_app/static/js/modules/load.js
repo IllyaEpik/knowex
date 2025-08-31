@@ -17,7 +17,7 @@ function load() {
                 "answers":[
                     "Введіть варіант відповіді...",
                     "Введіть варіант відповіді..."],
-                "correct":[],
+                "correct":null,
                 "type":"OneAnswerQuestion"
             }
             localStorage.setItem(current,JSON.stringify(data))
@@ -26,27 +26,40 @@ function load() {
             document.querySelector(`#${data["type"]}`).querySelector("img").classList.add("selectImg")
         }else{
             document.querySelector(`#OneAnswerQuestion`).querySelector("img").classList.add("selectImg")
-
         }
         // {"question":"Введіть питання...","answers":["Введіть варіант відповіді...","Введіть варіант відповіді..."],"correct":null}
         let QuestionsList = document.querySelector("#QuestionsList")
         let trashSvg = document.querySelector('#trashSvg').value
         document.querySelector("#questionNameInput").value = data.question
         QuestionsList.innerHTML = ''
-        console.log(data.correct)
-        let timeCorrect = data.correct ? data.correct : []
+        console.log(data)
+        let timeCorrect;
+        let func;
+        
+        if (data["type"] == "multipleQuestion"){
+            timeCorrect = data.correct ? data.correct : []
+            func = (answer) => {return timeCorrect.includes(answer) ? " checked" : ""}
+        }else if (data["type"] == "OneAnswerQuestion"){
+            timeCorrect = data.correct ? data.correct : null
+            func = (answer) => {return timeCorrect == answer ? " checked" : ""}
+        }
         for (let answer of data.answers){
             let div = document.createElement("div")
             div.className = 'questionForTest'
             console.log(answer,timeCorrect)
+            
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
-                    <input type="${data.type == 'OneAnswerQuestion' ? "radio" : "checkbox"}" name="correct" class="isAnswerCorrect"${timeCorrect.includes(answer) ? " checked" : ""}>
+                    <input type="${data.type == 'OneAnswerQuestion' ? "radio" : "checkbox"}" name="correct" class="isAnswerCorrect"${func(answer)}>
                 </div>
                 <textarea class="answerInput">${answer}</textarea>
             `
-            timeCorrect = timeCorrect.filter((item) => item != answer)
+            if (data["type" == "multipleQuestion"]){
+                timeCorrect = timeCorrect.filter((item) => item != answer)
+            }else if (data["type" == "OneAnswerQuestion"]){
+                timeCorrect = null
+            }
             
             QuestionsList.append(div)
         }

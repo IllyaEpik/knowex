@@ -115,14 +115,14 @@
                     <p class="settings-name">Ім’я користувача:</p>
                     <div class="settings-block">
                         <p class="text">{{ user.nickname }}</p>
-                        <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+                        <img class="img_button" data-field="nickname" src="{{ url_for('user.static', filename='images/edit.svg') }}">
                     </div>
                 </div>
                 <div class="settings-choose">
                     <p class="settings-name">Електронна адреса  користувача:</p>
                     <div class="settings-block">
                         <p class="text">{{ user.email }}</p>
-                        <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+                        <img class="img_button" data-field="email" src="{{ url_for('user.static', filename='images/edit.svg') }}">
                     </div>
                 </div>
                 <div class="settings-choose">
@@ -132,7 +132,7 @@
                         <button type="button" class="toggle-password">
                             <img src="{{ url_for('user.static', filename='images/hide_close.svg') }}">
                         </button>
-                        <img class="img_button" src="{{ url_for('user.static', filename='images/edit.svg') }}">
+                        <img class="img_button" data-field="password" src="{{ url_for('user.static', filename='images/edit.svg') }}">
                     </div>
                 </div>
                     <div class="settings-choose">

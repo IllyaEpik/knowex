@@ -143,7 +143,8 @@ $(function(){
     });
   };
 
-  const saveSettingToServer = (field,value)=>{
+  function saveSettingToServer(field,value){
+    console.log(field,value)
     const csrf = getCsrf();
     $.ajax({
       url: '/profile/api/update_setting',
@@ -217,6 +218,7 @@ $(function(){
       if(!textEl||!imgBtn) return;
       imgBtn.addEventListener('click', ()=>{
         const field = imgBtn.dataset.field || textEl.dataset.field || null;
+
         if(field==='password'){
           const pw = block.querySelector('#user-password'); if(!pw) return;
           pw.removeAttribute('readonly'); pw.focus();
@@ -225,15 +227,20 @@ $(function(){
           pw.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); pw.blur(); } });
           return;
         }
+        console.log(textEl.innerText.trim(),textEl.innerText)
         const cur = textEl.innerText.trim();
+        console.log(cur)
         const input = document.createElement('input'); input.type='text'; input.value = cur; input.style.width='100%';
         const parent = textEl.parentNode;
+        console.log(input,textEl)
         try{ parent && parent.contains(textEl) ? parent.replaceChild(input,textEl) : block.appendChild(input); } catch(e){ block.appendChild(input); }
         input.focus();
         const save = ()=>{
           const val = input.value.trim();
           const p = document.createElement('p'); p.className='text'; if(field) p.dataset.field = field; p.innerText = val;
+          console.log(p.dataset.field)  
           try{ input.parentNode.replaceChild(p,input); } catch(e){ block.appendChild(p); }
+          console.log(field)
           if(field) saveSettingToServer(field,val);
         };
         input.addEventListener('blur', ()=>save(), {once:true});

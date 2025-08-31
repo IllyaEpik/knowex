@@ -24,7 +24,7 @@ profile_api = Blueprint('profile_api', __name__, url_prefix='/profile/api')
 @profile_api.route('/update_setting', methods=['POST'])
 def update_setting():
     data = request.get_json()
-
+    print(data,flask_login.current_user)
     setattr(
         flask_login.current_user,
         data["field"],

@@ -34,10 +34,21 @@ body.dark {
     color: var(--color-result-text);
     font-size: 20px;
     text-align: left;
-    width: 870px;
+    width: 800px;
     flex-direction: column;
 }
-
+.partOfRating{
+    height: 50 !important;
+    /* border-radius: 16px; */
+}
+.answers{
+    border-radius: 16px;
+    height: 50 !important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
 .result-stats {
     display: flex;
     justify-content: space-between;

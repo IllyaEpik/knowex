@@ -284,13 +284,16 @@ def test_result(test_id):
         if question.type == "multiple":
             corrects = json.loads(corrects)
         print(user_answer,type(user_answer))
+        print(User.query.get( test.user),test.user,test)
+        # int(total_questions/correct*12)
         questions.append({
             "text": question.text,
             "type": question.type,
+            "creator":User.query.get( test.user),
             "correct_answer": corrects,
             "user_answer": user_answer,
             "is_correct": is_correct,
-            "options": options
+            "options": options,
         })
     
     total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд
@@ -315,7 +318,7 @@ def test_result(test_id):
 
     null_count = sum(1 for q in questions if q["user_answer"] is None)
     incorrect_count = total_questions - correct - null_count
-
+    print(total_questions,correct)
     return {
         "test": test,        
         "creator": User.query.get(test.user),
@@ -328,7 +331,8 @@ def test_result(test_id):
         "null_count": null_count,
         "questions": questions,
         "total_time": total_time,
-        "average_time": int(average_time)
+        "average_time": int(average_time),
+        "grade":int(correct/total_questions*12) if correct!=0 else 0
     }
 
 # end_test
