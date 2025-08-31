@@ -21,10 +21,16 @@
                 <label class="answer-card">
                 {% if typeOfQuestion == "standart" %}
                     <input type="radio" name="answer" value="{{ ans }}" required>
+                    <span class="answer-text">{{ ans }}</span>
                 {% elif typeOfQuestion == 'multiple' %}
-                    <input type="checkbox" name="answer" value="{{ ans }}">
+                    <label class="answer-card">
+                        <label class="container">
+                            <input type="checkbox" name="answer" value="{{ ans }}">
+                            <div class="checkmark"></div>
+                        </label>
+                        <span class="answer-text">{{ ans }}</span>
+                    </label>
                 {% endif %}
-                <span class="answer-text">{{ ans }}</span>
                 </label>
             {% endfor %}
         </div>

@@ -1,5 +1,6 @@
-.body {
+:root {
     --bg-create: #dbeafe;
+    --border-radius-create: 0.5249343832vw;
 }
 
 .sidebar{
@@ -59,12 +60,9 @@
     /* BECEDF */
     transition: all 0.5s;
 }
-<<<<<<< HEAD
 .center{
     align-self: center;
 }
-=======
->>>>>>> origin/stel
 .switch-checkbox:checked + .switch-label {
     background-color: #9FCCFA;
 }
@@ -316,7 +314,7 @@ img.selectImg{
     gap: 8px;
 }
 
-#create{
+#create {
     background-color: var(--bg-create);
-    border-radius: 6px;
+    border-radius: 3px;
 }

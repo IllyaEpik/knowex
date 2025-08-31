@@ -16,6 +16,13 @@
     --border-radius-description: 1.5748031496000001vw;
     --border-radius-login: 3.1496062992000002vw;
     --border-radius-test: 0.83989501312vw;
+    --bg-main: #dbeafe;
+    --border-radius-main: 0.5249343832vw;
+}
+
+#main{
+    background-color: var(--bg-main);
+    border-radius: var(--border-radius-main);
 }
 
 body.dark {
@@ -197,6 +204,6 @@ body.dark .test_link a:focus {
 
 
 #main{
-    background-color: var(--bg-main-chosen);
-    border-radius: 6px;
+    background-color: var(--bg-main);
+    border-radius: var(--border-radius-main);
 }
