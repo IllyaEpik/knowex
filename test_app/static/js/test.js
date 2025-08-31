@@ -96,3 +96,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     ratingList.appendChild(bar);
 });
+
+
+
+
+
+
+
+
+
+
+document.querySelectorAll('.answer-card input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.answer-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        if (this.checked) {
+            this.closest('.answer-card').classList.add('selected');
+        }
+    });
+});

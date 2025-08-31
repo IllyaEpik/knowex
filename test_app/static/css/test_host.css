@@ -493,6 +493,7 @@ background:#f4fbff;
     flex-direction: column;
 }
 .header-left{
+    margin-top: 50px;
     border-radius: 34px;
     width: 400px;
     height: 40px;

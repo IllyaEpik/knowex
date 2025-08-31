@@ -1,5 +1,6 @@
-.body {
+:root {
     --bg-create: #dbeafe;
+    --border-radius-create: 0.5249343832vw;
 }
 
 .sidebar{
@@ -63,7 +64,6 @@
 .center{
     align-self: center;
 }
-
 .switch-checkbox:checked + .switch-label {
     background-color: #9FCCFA;
 }
