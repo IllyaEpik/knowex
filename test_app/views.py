@@ -148,7 +148,6 @@ def test_question(test_id, question_id):
 
     current_index = question_ids.index(question_id)
     question = Questions.query.filter_by(id=question_id).first()
-    # typeOfQuestion = "standart"
     correct = question.correct_answer
     typeOfQuestion = question.type
     if typeOfQuestion == "multiple":
@@ -162,22 +161,16 @@ def test_question(test_id, question_id):
             answers = json.loads(question.answers)
         except Exception:
             answers = [question.answers]
-    # answers.append(question.correct_answer)
     answers_list = random.sample(answers, len(answers))
     selected = None
 
     if flask.request.method == "POST":
-        print(typeOfQuestion)
-        print
         if typeOfQuestion == 'standart':
             selected = flask.request.form.get("answer")
             is_correct = selected == correct
         elif typeOfQuestion == 'multiple':
             selected = json.loads(flask.request.form.get("answer"))
-            print(selected,999999999, type(selected), type(correct))
             is_correct = len(selected) == len(correct) and set(selected).issuperset(set(correct))
-            print(len(selected), len(correct), set(selected).issuperset(set(correct)))
-            print(selected,correct, 99999999999999999999999999999999999)
         test_answers = flask.session.get("test_answers", [])
         test_answers = [item for item in test_answers if item["question_id"] != question_id]
         test_answers.append({
@@ -205,8 +198,6 @@ def test_question(test_id, question_id):
             else:
                 return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
     print(
-    # test,
-    # question,
     answers_list,
     current_index + 1,
     total_questions,

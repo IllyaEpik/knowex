@@ -9,7 +9,7 @@
 [Особиста сторінка / Personal Account Page](######особиста-сторінка/personal-account-page)
 ##### виконавці / create by: 
 * [Ілля Епік / Illya Epik](https://github.com/IllyaEpik/knowex)
-* [Макс Субач / Max Subach]()
+* [Макс Субач / Max Subach](https://github.com/MaxS2010/Knowex_test_app.git)
 * [Марк Попович / Mark Popovich]()
 * [Конев Олексій / Konev Oleksii]()
 * [Маринченко Андрій / Marynchenko Andrey]()

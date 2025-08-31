@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let responseName = window.location.pathname;
+
     document.addEventListener('submit', function (e) {
         e.preventDefault();
 

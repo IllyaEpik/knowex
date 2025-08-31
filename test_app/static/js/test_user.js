@@ -175,11 +175,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('submit', function (e) {
         e.preventDefault();
         if (e.target.tagName === 'FORM') {
-            // console.log(e.target);
             let selected;
             console.log(our_data)
-            if (our_data.type == "OneAnswerQuestion"){
-                selected = e.target.querySelector('input[name="answer"]:checked').value;
+            if (our_data.type == "standart"){
+                selected = document.querySelector('input:checked').value;
             }else if (our_data.type == "multiple"){
                 let timeSelected = document.querySelectorAll('input[name="answer"]:checked');
                 console.log(timeSelected)
@@ -191,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 selected = JSON.stringify(selected)
                 console.log(selected)
             }
-            console.log(selected)
             if (!selected) {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
