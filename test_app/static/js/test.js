@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () { 
     let responseName = window.location.pathname;
 
     document.addEventListener('submit', function (e) {
@@ -10,15 +10,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Будь ласка, оберіть відповідь.');
                 return;
             }
-            let selectList = []
+            let selectList = [];
             for (let select of selected){
-                selectList.push(select.value)
+                selectList.push(select.value);
             }
             if (selected.length == 1 && selected[0].type=='radio'){
-                selected = selected[0].value
-            }else{
-                selected = JSON.stringify(selectList)
+                selected = selected[0].value;
+            } else {
+                selected = JSON.stringify(selectList);
             }
+
             $.ajax({
                 url: responseName,
                 type: 'POST',
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         });
                     } else if (response.result_url) {
+                        // Переходим на страницу результатов
                         window.location.href = response.result_url;
                     }
                 },
@@ -59,14 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const ratingList = document.getElementById('rating-container');
     if (!ratingList || !ratingList.classList.contains('result-container')) {
-        console.log('rating-container не найден или не имеет класс result-container');
         return;
     }
 
     const total = Number(ratingList.dataset.total);
     const correctAnswers = Number(ratingList.dataset.correct);
     const incorrectAnswers = Number(ratingList.dataset.incorrect);
-    const nullAnswers = Number(ratingList.dataset.null);
 
     if (isNaN(total) || total <= 0) {
         return;
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ratingList.innerHTML = '';
 
     const oneWidth = 300 / total;
-
     const bar = document.createElement('div');
     bar.className = 'rating-bar-single';
 
@@ -92,19 +91,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setBar(correctAnswers, 'correct');
     setBar(incorrectAnswers, 'incorrect');
-    setBar(nullAnswers, 'null');
-
     ratingList.appendChild(bar);
+
+
+        const testId = ratingList.dataset.testid;
+        $.ajax({
+            url: "/save_result",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                test_id: testId,
+                total: total,
+                correct: correctAnswers,
+                incorrect: incorrectAnswers   
+            }),
+            success: function (resp) {
+                console.log("Результат збережено:", resp);
+            },
+            error: function () {
+                console.error("Помилка при збереженні результату.");
+            }
+        });
+    
 });
-
-
-
-
-
-
-
-
-
 
 document.querySelectorAll('.answer-card input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', function() {
