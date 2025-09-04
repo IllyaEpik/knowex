@@ -6,6 +6,7 @@ from user_app.models import User
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
 
+
 @config_page("test.html")
 def render_test(test_id: int):
     test = Test.query.filter_by(id=test_id).first()
@@ -545,3 +546,38 @@ def save_user_answer(data):
     test_id = data.get('test_id')
     room_name = f'test_{test_id}'
     emit('send_answer', data, room=room_name)
+
+from flask import request, jsonify
+from project.settings import DATABASE, socketio, active_tests, sid_to_username
+def save_result():
+    data = flask.request.get_json(silent=True)
+    if not data:
+        return jsonify({"status": "error", "msg": "No JSON payload"}), 400
+
+    test_id = data.get('test_id')
+    total = int(data.get('total', 0))
+    correct = int(data.get('correct', 0))
+    incorrect = int(data.get('incorrect', total - correct))  
+    answers = data.get('answers', None)
+
+    if flask_login.current_user.is_authenticated:
+        user = flask_login.current_user
+        had_before = any((r.get('test_id') == int(test_id)) for r in user.get_complete_tests())
+        user.add_test_result(test_id, total, correct, answers) 
+
+        test = Test.query.get(int(test_id)) if test_id is not None else None
+        if test and not had_before:
+            test.count = getattr(test, 'count', 0) + 1
+            DATABASE.session.commit()
+    else:
+        pass
+
+    return jsonify({
+        "status": "ok",
+        "saved": {
+            "test_id": test_id,
+            "total": total,
+            "correct": correct,
+            "incorrect": incorrect   
+        }
+    })

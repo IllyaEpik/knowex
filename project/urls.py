@@ -8,6 +8,17 @@ import test_app
 import user_app as profile_api
 
 from .settings import project
+from .settings import project
+from create_app.app import create as create_bp
+from test_app.views import save_result
+
+create_bp.add_url_rule(
+    "/save_result",
+    view_func=save_result,
+    methods=["POST"]
+)
+
+
 
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user/<int:question_id>", view_func=test_app.views.render_test_user_question, methods=['get', 'post'], endpoint="render_test_user_question")
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main, methods = ['get', 'post'])
