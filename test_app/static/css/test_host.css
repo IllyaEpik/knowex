@@ -650,11 +650,11 @@ background:#f4fbff;
     height: 40px;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #final_results {
-    display: none;
+    /* display: none; */
     width: 1350px;
     height: 787px;
     padding: 20px;

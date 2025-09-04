@@ -7,6 +7,7 @@
         window.TEST_ID = "{{ test.id }}";
         window.FIRST_QID = "{{ first_qid }}";
         window.COUNT_QUESTIONS = "{{ countQuestions }}";
+        window.is_authenticated = "{{ is_authenticated }}"
     </script>
     {% if current_user != " " %}
         <script> window.USERNAME = "{{ current_user }}" </script>
@@ -52,7 +53,14 @@
         <p>Вірних відповідей: <span id="correct"></span></p>
         <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a>
     </div>
+    <div id="usernameEnter" class="hidden">
+        <div class="formForUsername">
 
+            <!-- <label for="usernameInput" id="labelForUsername">username:</label> -->
+            <input type="text" id="usernameInput" placeholder="Введіть ім'я... ">
+            <button id="confirmUsername">продовжити</button>
+        </div>
+    </div>
     <div id="testWait">
         <p>Очікуйте на початок тесту...</p>
     </div>

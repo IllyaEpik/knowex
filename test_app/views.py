@@ -45,10 +45,11 @@ def render_test_user(test_id):
         return flask.abort(404)
     first_qid = int(test.questions.split()[0])
     return {
-        "current_user": flask_login.current_user.nickname if flask_login.current_user.nickname else " ",
+        "current_user": flask_login.current_user if flask_login.current_user.is_authenticated else "Anonym",
         "test": test,
         'count_questions':len(test.questions.split(' '))-1,
         "first_qid": first_qid,
+        # "is_authenticated": flask_login.current_user.is_authenticated
     }
     
 @config_page("test_user_quetion.html")
@@ -363,13 +364,13 @@ def end_test(data: dict):
             correct = question.correct_answer
             if question.type == "multiple":
                 print(user_answer,correct, type(correct), type(user_answer))
-                user_answer2 = set(user_answer)
-                print('gogogg')
-                correct = json.loads(correct)
-                correct2 = set(correct)
-                print('erwetyy')
-                is_correct = user_answer2.issuperset(correct2) and correct2.issuperset(user_answer2)
-                print('what')
+                if user_answer == None:
+                    is_correct = False if user_answer!=correct else True
+                else:
+                    user_answer2 = set(user_answer)
+                    correct = json.loads(correct)
+                    correct2 = set(correct)
+                    is_correct = user_answer2.issuperset(correct2) and correct2.issuperset(user_answer2)
             corrects += is_correct 
 
             question_data.append({

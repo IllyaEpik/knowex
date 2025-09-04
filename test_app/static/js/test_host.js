@@ -1,3 +1,4 @@
+
 const socket = io();
 let user_answers = {};
 let currentAnswers = [];
@@ -60,10 +61,19 @@ function renderRating() {
     Object.entries(user_answers).forEach(([user, answers]) => {
         let correctAnswers = 0, incorrectAnswers = 0, nullAnwers = 0, count = 0;
         answers.forEach(ans => {
-            if (ans === null) nullAnwers++;
-            else if (ans === correctAnswersHistory[count]) correctAnswers++;
-            else incorrectAnswers++;
+            let type = typeof ans == typeof [',13',12312] ? "multiple" : "standart"
+            let correct = correctAnswersHistory[count]
+            if (type == "multiple"){
+                correct = JSON.parse(correct)
+                // ans = JSON.parse(ans)
+                ans == null ? nullAnwers++ : isSuperset(correct,ans) ? correctAnswers++ : incorrectAnswers++
+            }else{
+                if (ans === null) nullAnwers++;
+                else if (ans === correctAnswersHistory[count]) correctAnswers++;
+                else incorrectAnswers++;
+            }
             count++
+            // console.log(ans,correctAnswersHistory[count], typeof ans,typeof correctAnswersHistory[count],"llllllllllllllllllllllllll")
         });
         nullAnwers += total - answers.length;
 
@@ -116,7 +126,7 @@ function getRandomColor() {
     // const b = Math.floor(Math.random() * 156) + 100;
     // return `rgb(${r}, ${g}, ${b})`;
     // Math.random
-    console.log(rand,colors[rand],colors)
+    // console.log(rand,colors[rand],colors)
     return colors[Number(rand)]
 }
 
@@ -275,6 +285,7 @@ function isSuperset(a, b) {
     }
     return true;
 }
+let typeOfQuestion
 socket.on('send_answer', (answer) => {
     const li = document.getElementById(`participant-${answer.user}`);
     if (li) {

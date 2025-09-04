@@ -280,8 +280,15 @@ body {
 .hidden {
     display: none;
 }
-
-#overlay-wait {
+#usernameInput{
+    width: 250px;
+    background-color: white;
+    height: 40px;
+    border: none;
+    box-shadow: 0px 10px 20px -18px;
+    border-radius: 4px;
+}
+#overlay-wait, #usernameEnter {
     position: fixed;
     top: 0;
     left: 0;
@@ -297,8 +304,42 @@ body {
     font-weight: bold;
     text-align: center;
 }
-
-#overlay-wait.hidden {
+#labelForUsername{
+    z-index: 99;
+    color: black;
+}
+.formForUsername{
+    width: 400px;
+    height: 400px;
+    background: #daeffd;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    /* padding: 1000px; */
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+#confirmUsername{
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    /* align-self: flex-start; */
+    width: 150px;
+    height: 40px;
+    /* transition: background-color 0.3s ease; */
+}
+#usernameEnter{
+    flex-direction: column;
+    /* width: 400px;
+    height: 400px; */
+}
+#overlay-wait.hidden, #usernameEnter.hidden {
     display: none;
 }
 

@@ -26,7 +26,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const allQuestions = questionElem.querySelector('ol');
     const testId = window.TEST_ID || null;
     let username = window.USERNAME || null;
+    let is_authenticated = window.is_authenticated || null;
+    console.log(is_authenticated)
+    if (is_authenticated == "False"){
+        let usernameEnter = document.getElementById("usernameEnter")
+        usernameEnter.classList.remove("hidden")
+    }
+    document.getElementById("confirmUsername").addEventListener("click", () => {
+        username = document.getElementById('usernameInput').value
+        usernameEnter.classList.add("hidden")
+        continueTest()
+    })
     let firstQid = window.FIRST_QID || null;
+    function continueTest(){
+        
 
     function getRandomColor() {
         const r = Math.floor(Math.random() * 156) + 100;
@@ -101,11 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         answer.querySelector("input").checked ? answer.classList.add("selected") : answer.classList.remove("selected")
                         
                     }
-                // }
-                // label.classList.add("selected")
             })
-            // label.name = "answer"
-            // label.textContent = `${ans}` 
             label.style.backgroundColor = getRandomColor(); 
             console.log(label)
             answers.append(label);
@@ -118,8 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const answerLabels = answers.querySelectorAll('.answer-option');
         answerLabels.forEach(label => {
             const input = label
-            // const input = label.querySelector('input');
-            // nothing bad
             label.classList.remove('correct', 'incorrect', 'pending', 'unanswered');
             if (input.value == data.selected_answer) {
                 label.classList.add(data.is_correct ? 'correct' : 'incorrect');
@@ -155,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('participant_ack', (d) => {
         console.log(d.msg);
-        // alert(d.msg); // Опціонально: додати сповіщення
     });
 
     socket.on('test_started', (data) => {
@@ -195,54 +201,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             
-            console.log(selected);
             sendButton.classList.add('hidden');
             loadingButton.classList.remove('hidden');
             socket.emit('send_answer', { 'answer': selected, 'user': username, 'test_id': testId, type: our_data.type});
             overlayWait.classList.remove('hidden');
-            // $.ajax({
-            //     url: window.location.pathname,
-            //     type: 'POST',
-            //     data: { answer: selectedValue },
-            //     success: function (response) {
-            //         if (response.error) {
-            //             alert('Помилка: ' + response.error);
-            //             return;
-            //         }
-            //         if (response.correct_answer && response.question_text && window.TEST_ID && window.USERNAME) {
-            //             socket.emit('participant_answered_with_correct', {
-            //                 test_id: window.TEST_ID,
-            //                 user: window.USERNAME,
-            //                 selected: selectedValue,
-            //                 correct: response.correct_answer,
-            //                 question_text: response.question_text
-            //             });
-            //         }
-            //         if (response.next_url) {
-            //             $.ajax({
-            //                 url: response.next_url,
-            //                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
-            //                 success: function (data) {
-            //                     const container = document.querySelector('.question-container');
-            //                     if (container) {
-            //                         container.innerHTML = data;
-            //                         history.pushState({}, '', response.next_url);
-            //                     } else {
-            //                         console.error('Елемент .question-container не знайдено');
-            //                     }
-            //                 },
-            //                 error: function () {
-            //                     alert('Не вдалося завантажити наступне питання.');
-            //                 }
-            //             });
-            //         } else if (response.result_url) {
-            //             window.location.href = response.result_url;
-            //         }
-            //     },
-            //     error: function () {
-            //         alert('Сталася помилка при перевірці відповіді.');
-            //     }
-            // });
         }
     });
+    }
+    if (is_authenticated != "False")continueTest()
 });
