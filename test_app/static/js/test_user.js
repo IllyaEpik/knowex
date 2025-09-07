@@ -41,11 +41,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function continueTest(){
         
 
+        let colors = [
+        "#24B9B2",
+        "#469597",
+        "#5BA199",
+        "#217074",
+        "#37745B",
+        "#2F70AF",
+        "#81BECE",
+        "#BACBDB"
+    ]
     function getRandomColor() {
-        const r = Math.floor(Math.random() * 156) + 100;
-        const g = Math.floor(Math.random() * 156) + 100;
-        const b = Math.floor(Math.random() * 156) + 100;
-        return `rgb(${r}, ${g}, ${b})`;
+        let rand = Math.floor(Math.random()*colors.length) 
+        return colors[Number(rand)]
     }
     socket.on('show_waiting_screen', () => {
         if (overlayWait) {

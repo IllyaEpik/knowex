@@ -177,10 +177,6 @@ body {
     border-color: #3498db !important;
     background-color: #e6f0fa !important;
 }
-/* input[type="radio"]:checked ~ label {
-    border-color: #3498db !important;
-    background-color: #e6f0fa !important;
-} */
 .answer-option.correct {
     border-color: #2ecc71;
     background-color: #e8f5e9;
@@ -196,29 +192,6 @@ body {
     color: #c0392b;
 }
 
-/* .header-right {
-    border: 0.05249343832vw solid #B9B9B9;
-    background-color: #fff;
-    color: #000000;
-    display: flex;
-    align-items: center;
-    flex-direction: column-reverse;
-    justify-content: center;
-    width: 12.598425196800001vw;
-    height: 5.249343832vw;
-}
-
-.question-count {
-    border: none;
-    background-color: #BEE7FF;
-    border-radius: 2.0997375328vw;
-    color: #000000;
-    width: 11.0236220472vw;
-    height: 3.1496062992000002vw;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-} */
 
 .submit-btn {
     display: flex;
@@ -315,7 +288,6 @@ body {
     border-radius: 25px;
     display: flex;
     justify-content: center;
-    /* padding: 1000px; */
     align-items: center;
     flex-direction: column;
     gap: 10px;
@@ -329,15 +301,11 @@ body {
     cursor: pointer;
     font-size: 16px;
     margin-top: 15px;
-    /* align-self: flex-start; */
     width: 150px;
     height: 40px;
-    /* transition: background-color 0.3s ease; */
 }
 #usernameEnter{
     flex-direction: column;
-    /* width: 400px;
-    height: 400px; */
 }
 #overlay-wait.hidden, #usernameEnter.hidden {
     display: none;
@@ -351,7 +319,6 @@ body {
 .answers-grid {
     max-width: 83.989501312vw;
     display: flex;
-    /* margin-left: 1vw; */
     overflow: hidden;
     flex-wrap: nowrap;
     gap: 5.249343832vw;
@@ -365,7 +332,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-/* <<<<<<< HEAD */
     width: 16.010498687600002vw;       
     height: 40vh;      
     background-color: #cce5f6;
@@ -374,16 +340,7 @@ body {
     cursor: pointer;
     transition: 0.3s ease;
     text-align: center;
-    font-size: 1.0498687664vw;   
-/* =======
-    width: 310px;
-    height: 400px;
-    background-color: #81BECE;
-    cursor: pointer;
-    transition: 0.3s ease;
-    text-align: center;
-    font-size: 20px;
->>>>>>> origin/andrey */
+    font-size: 1.0498687664vw;
 }
 .right{
     width: 100%;
@@ -401,19 +358,8 @@ body {
     padding: 0;
     font-weight: bold;
     color: #333;
-/* <<<<<<< HEAD */
     padding: 0.5249343832vw;
     pointer-events: none; 
-/* =======
-    pointer-events: none;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
->>>>>>> origin/andrey */
 }
 
 .answer-card.selected {

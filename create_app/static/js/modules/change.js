@@ -1,8 +1,4 @@
 function change(activate=true){
-    // let multipleQuestion = document.querySelector("#multipleQuestion")
-    let actions = [
-
-    ]
 
     for (let action of document.querySelectorAll(".action")){
         action.querySelector("img").classList.remove("selectImg")

@@ -17,9 +17,6 @@ const answerOptions = document.getElementById("answer-options");
 const participantsSection = document.getElementById("participants-section");
 const finalResults = document.getElementById("final_results");
 let currentCorrectAnswer = undefined;
-// let correctAnswers = 0
-// let incorrectAnswers = 0 
-// let nullAnwers = 0 
 let correctAnswersHistory = [];
 
 let currentQuestion = 1;
@@ -65,7 +62,6 @@ function renderRating() {
             let correct = correctAnswersHistory[count]
             if (type == "multiple"){
                 correct = JSON.parse(correct)
-                // ans = JSON.parse(ans)
                 ans == null ? nullAnwers++ : isSuperset(correct,ans) ? correctAnswers++ : incorrectAnswers++
             }else{
                 if (ans === null) nullAnwers++;
@@ -73,7 +69,6 @@ function renderRating() {
                 else incorrectAnswers++;
             }
             count++
-            // console.log(ans,correctAnswersHistory[count], typeof ans,typeof correctAnswersHistory[count],"llllllllllllllllllllllllll")
         });
         nullAnwers += total - answers.length;
 
@@ -120,13 +115,7 @@ let colors = [
     "#BACBDB"
 ]
 function getRandomColor() {
-    let len = colors.length
-    let rand = Math.floor(Math.random()*colors.length) // const r = Math.floor(Math.random() * 156) + 100;
-    // const g = Math.floor(Math.random() * 156) + 100;
-    // const b = Math.floor(Math.random() * 156) + 100;
-    // return `rgb(${r}, ${g}, ${b})`;
-    // Math.random
-    // console.log(rand,colors[rand],colors)
+    let rand = Math.floor(Math.random()*colors.length) 
     return colors[Number(rand)]
 }
 
@@ -156,23 +145,6 @@ function renderAnswerOptions(answers) {
         answerOptions.appendChild(option);
     });
 }
-
-// function updateParticipantSquare(username, status) {
-//     const safeId = encodeURIComponent(username);
-//     const square = document.getElementById(`participant-square-${safeId}`);
-//     if (!square) return;
-//     if (status === 'null') {
-//         square.style.backgroundColor = '#bdbdbd'; // gray
-//         square.style.border = '1px solid #999';
-//     } else if (status === 'correct') {
-//         square.style.backgroundColor = '#2ecc71'; // green
-//         square.style.border = '1px solid #1ea85a';
-//     } else if (status === 'incorrect') {
-//         square.style.backgroundColor = '#e74c3c'; // red
-//         square.style.border = '1px solid #c53a2b';
-//     }
-// }
-
 
 startBtn.addEventListener('click', () => {
     if (!testStarted) {
@@ -208,7 +180,6 @@ startBtn.addEventListener('click', () => {
         } else {
             questionTextElement.textContent = `Тест завершено`;
             questionCountElement.textContent = `Питання: ${countQuestions} / ${countQuestions}`;
-            console.log(user_answers);
             startBtn.disabled = true;
             socket.emit('end_test', { test_id: testId, user_answers: user_answers });
         }
@@ -216,11 +187,6 @@ startBtn.addEventListener('click', () => {
 });
 socket.on('correct', (correct) => {
     currentCorrectAnswer = correct.answer;
-    // let timesCorrect = currentCorrectAnswer
-    // if (our_data.type == 'multiple'){
-    //     timesCorrect = JSON.parse(currentCorrectAnswer)
-    // }
-    // console.log(timesCorrect)
     correctAnswersHistory.push(currentCorrectAnswer)
 });
 
@@ -229,52 +195,41 @@ socket.on('nextQuestion', (data) => {
         questionTextElement.textContent = data.question_text;
         renderAnswerOptions(data.answers);
 
-        // Object.keys(user_answers).forEach(username => {
-        //     updateParticipantSquare(username, 'null');
-        // });
-
     } else {
-        console.error('No question text received:', data);
     }
 });
 
-socket.on('host_ack', (data) => {
-    console.log('Хост підключений:', data);
-});
+
 
 socket.on('participants_update', (participants) => {
-    // participantsSection.innerHTML += `
-    //     <h3>Учасники: ${participants.length}</h3>
-    //     <ul id="participants_list" class="participants-list"></ul>
-    // `;
+
     const participantsCount = document.getElementById('participantsCount');
     participantsCount.textContent = participants.length;
     const ul = document.getElementById('participants_list');
-    user_answers = {};
+    // user_answers = {};
     participants.forEach((p) => {
         if (!user_answers[p]) {
             user_answers[p] = [];
+        
+            const li = document.createElement('li');
+            li.id = `participant-${p}`;
+            
+            const square = document.createElement('div');
+            const safeId = encodeURIComponent(p);
+            square.id = `participant-square-${safeId}`;
+            square.className = 'participant-square';
+            
+            li.appendChild(square);
+
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = p;
+            li.appendChild(nameSpan);
+
+            ul.appendChild(li);
         }
-        const li = document.createElement('li');
-        li.id = `participant-${p}`;
-        
-        const square = document.createElement('div');
-        const safeId = encodeURIComponent(p);
-        square.id = `participant-square-${safeId}`;
-        square.className = 'participant-square';
-        
-        li.appendChild(square);
-
-        const nameSpan = document.createElement('span');
-        nameSpan.textContent = p;
-        li.appendChild(nameSpan);
-
-        // li.className = getParticipantColor(p);
-        ul.appendChild(li);
-        // ul.appendChild(startBtn);
-
     });
 });
+
 function isSuperset(a, b) {
     a = new Set(a)
     b = new Set(b)
@@ -294,36 +249,15 @@ socket.on('send_answer', (answer) => {
             currentCorrectAnswer = JSON.parse(currentCorrectAnswer)
         }
 
-        console.log(isSuperset(answer.answer, currentCorrectAnswer), answer.answer,currentCorrectAnswer, new Set(answer.answer), new Set(currentCorrectAnswer))
         li.className = isSuperset(answer.answer, currentCorrectAnswer) ? 'green' : 'red';
-        // li.innerHTML = `<strong>${answer.user}</strong> <span>(${answer.answer || 'Без відповіді'})</span>`;
-        console.log(li)
-        // user_answers[answer.user].push(answer.answer)
-        // const option = answerOptions.querySelector(`[data-index="${currentAnswers.indexOf(answer.answer)}"]`);
-        // if (option) {
-        //     option.style.backgroundColor = option.dataset.bgColor;
-        //     option.style.border = answer.answer === currentCorrectAnswer
-        //         ? "3px solid #2ecc71"
-        //         : "3px solid #e74c3c";
-        // }
     } else {
-        console.error(`Participant element not found: participant-${answer.user}`);
     }
-
-    // if (answer.answer == null || answer.answer === '') {
-    //     updateParticipantSquare(answer.user, 'null');
-    // } else if (answer.answer === currentCorrectAnswer) {
-    //     updateParticipantSquare(answer.user, 'correct');
-    // } else {
-    //     updateParticipantSquare(answer.user, 'incorrect');
-    // }
     
     user_answers[answer.user].push(answer.answer || null);
     renderRating();
 });
 
 socket.on('testEnd', (data) => {
-    console.log("Финальні дані:", data);
     renderFinalResults(data);
     document.querySelector('.test-container').style.display = 'none';
     finalResults.classList.remove('hidden');
@@ -332,30 +266,74 @@ socket.on('testEnd', (data) => {
 function renderFinalResults(data) {
     const resultsList = document.getElementById('results_list');
     resultsList.innerHTML = '';
-
+    let count = 0;
     Object.entries(data.users)
+        
         .sort((a, b) => b[1].correct - a[1].correct)
         .forEach(([user, info]) => {
+            count++
             const totalQuestions = data.total_questions;
             const accuracy = Math.round((info.correct / totalQuestions) * 100);
 
             const line = document.createElement('div');
             line.className = 'line';
 
+            const viewButton = document.createElement('button');
             const userName = document.createElement('div');
             userName.className = 'userName';
             userName.textContent = user;
-
+            viewButton.id = `buttonNumber${count}`
+            viewButton.className = "viewButton"
+            viewButton.textContent = "v"
+            userName.append(viewButton)
+            
             const stretchWrap = document.createElement('div');
             stretchWrap.className = 'stretchWrap';
 
             const answersContainer = document.createElement('div');
             answersContainer.className = 'answers';
+            let questionsText = "<h3>Ваші відповіді:</h3>"
             info.questions.forEach((q, index) => {
                 const box = document.createElement('div');
+                let type = q.type
+                let options = ""
+                let answers = JSON.parse(q.answers)
                 box.className = `answer ${q.is_correct ? 'correct' : 'incorrect'}`;
                 box.textContent = index + 1;
                 answersContainer.appendChild(box);
+                let count2 = 0
+                for (let option of answers){
+                    count2++
+                    let isCorrect = false
+                    let isUser= false
+                    if (type=="multiple"){
+                        q.correct_answer = typeof q.correct_answer == typeof "213" ? JSON.parse(q.correct_answer) : q.correct_answer
+                        q.user_answer = typeof q.user_answer == typeof "213" ? q.user_answer == "Не було відповіді" ? false :  JSON.parse(q.user_answer) : q.user_answer
+                        isCorrect = q.correct_answer.includes(option)
+                        isUser = q.user_answer ? q.user_answer.includes(option) : false
+                    }else{
+                        isCorrect = option == q.correct_answer
+                        isUser = option == q.user_answer
+                    }
+                    options += `
+                     <li>
+                        <input type="checkbox" name="question-${count2}"
+                        id="option-${count2}" disabled ${isUser ? "checked" : ""}
+                        
+                        >
+                        <label for="option-${count2}"
+                        class = ${isCorrect ? "correct" : isUser ? "incorrect" : ""}
+                        >${option}</label>
+                     </li>
+                    `
+                }
+                questionsText += `
+                <div class="question-block">
+                <b>Питання: ${q.text}</b>
+                <ul class="answer-options-result">${options}</ul>
+                
+                </div>
+                `
             });
 
             stretchWrap.appendChild(answersContainer);
@@ -370,7 +348,18 @@ function renderFinalResults(data) {
             line.appendChild(stretchWrap);
             line.appendChild(statsBlock);
 
+            const listQuestions = document.createElement("div")
+            listQuestions.className = "hidden listOfQuestions"
+            viewButton.addEventListener("click", () => {
+                listQuestions.classList.toggle("hidden")
+            })
             resultsList.appendChild(line);
+            resultsList.append(listQuestions)
+
+
+
+            
+            listQuestions.innerHTML = questionsText
         });
 }
 
@@ -386,9 +375,3 @@ socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");
     location.reload();
 });
-
-// function getParticipantColor(username) {
-//     const colors = ['green', 'red', 'gray', 'yellow'];
-//     const index = Math.floor(Math.random() * colors.length);
-//     return colors[index];
-// }

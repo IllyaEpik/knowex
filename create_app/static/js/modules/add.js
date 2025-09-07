@@ -53,13 +53,6 @@ function add(first = false) {
                 </div>
                 <textarea class="answerInput">Введіть варіант відповіді...</textarea>
             `;
-            // QuestionsList.querySelector("#addAnswer").remove()
-            // QuestionsList.append(div);
-            // QuestionsList.innerHTML += `
-            // <button class="center action" id="addAnswer">
-            //     <img src="${addQuestionImg.value}" alt="" class="add-question-icon">
-            // </button>
-            // `
 
             QuestionsList.insertBefore(div, QuestionsList.querySelector("#addAnswer"));
             if (QuestionsList.querySelectorAll(".settings-question-block").length>=5){

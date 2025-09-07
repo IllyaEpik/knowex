@@ -31,26 +31,6 @@ li.green .participant-square{
 li.red .participant-square{
     background-color: #fe5454;
 }
-/* fe5454 */
-/* .participants-list li.green {
-    background-color: #2ecc71;
-    color: #ffffff;
-} */
-
-/* .participants-list li.red {
-    background-color: #e74c3c;
-    color: #ffffff;
-} */
-
-/* .participants-list li.gray {
-    background-color: #7f8c8d;
-    color: #ffffff;
-}
-
-.participants-list li.yellow {
-    background-color: #f1c40f;
-    color: #ffffff;
-} */
 .test-header {
     display: flex;
     justify-content: space-between;
@@ -515,10 +495,6 @@ background:#f4fbff;
 .headerButton.selected{
     background-color: #7DD0FF;
 }
-/* .content {
-    width: 100%;
-    height: 100%;
-} */
 .answer-options {
     
     display: flex;
@@ -579,7 +555,6 @@ background:#f4fbff;
     flex-direction: column;
     justify-content: space-between;
     overflow: visible;
-    /* border-radius: 8px; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .participants-section h3 {
@@ -602,19 +577,6 @@ background:#f4fbff;
     width: 200px;
 }
 
-/* .participants-section {
-    width: max-content;
-    height: 800px;
-    background-color: #ffffff;
-    border-left: 1px solid #ddd;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow: visible;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-} */
 
 
 .next-question {
@@ -654,7 +616,6 @@ background:#f4fbff;
 }
 
 #final_results {
-    /* display: none; */
     width: 1350px;
     height: 787px;
     padding: 20px;
@@ -680,8 +641,31 @@ background:#f4fbff;
     width: 1310px;
     height: 40px;
     transition: all 0.3s ease;
+}ul {
+  list-style-type: none;
 }
+.answer-options-result{
+    display: flex;
+    flex-direction: column;
+}
+#final_results{
+     
+    overflow-y: scroll;
+}
+.correct{
+    color: limegreen;
+}
+.viewButton{
+    margin-left: 10px;
 
+}
+.incorrect{
+
+    color: red;
+}
+/* .listOfQuestions{ */
+    /* height: 80%; */
+/* } */
 .results-list .line:hover {
     background-color: #f8f9fa;
 }

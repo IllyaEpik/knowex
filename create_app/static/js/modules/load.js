@@ -7,7 +7,6 @@ function load() {
     select = select ? select : document.querySelector("#settingButton")
     if (select.id != "settingButton"){
         change(true)
-        // QuestionsList
         let current = select.querySelector(".questionNumber").textContent
         let data = JSON.parse(localStorage.getItem(current))
         let addQuestionImg = document.querySelector("#addQuestionImg")
@@ -27,7 +26,6 @@ function load() {
         }else{
             document.querySelector(`#OneAnswerQuestion`).querySelector("img").classList.add("selectImg")
         }
-        // {"question":"Введіть питання...","answers":["Введіть варіант відповіді...","Введіть варіант відповіді..."],"correct":null}
         let QuestionsList = document.querySelector("#QuestionsList")
         let trashSvg = document.querySelector('#trashSvg').value
         document.querySelector("#questionNameInput").value = data.question

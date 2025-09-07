@@ -14,13 +14,9 @@
     <p>Дата завершення: {{ time_date }}</p>
     <p>Час завершення: {{ time_text }}</p>
     <div class="ans"><p>Кількість питань: {{ total_questions }}</p></div>
-    <!-- <a href="{{ url_for('test.render_test', test_id=test.id) }}">Повернутися до тесту</a> -->
 </div>
 <div class="result-details">
     
-    <!-- <p>Вірних відповідей: {{ correct }} з {{ total_questions }}</p>
-    <p>Усього часу: {{ total_time }}с</p>
-    <p>Ср. час на запитання: {{ average_time }}с</p> -->
     <div сlass="result-summary">
         <p>Бали: {{ correct }} з {{ total_questions }}</p>
         <p>оцінка: {{ grade }} з 12</p>
@@ -44,14 +40,6 @@
     <p>Усього часу: {{ total_time }}с</p>
     <p>Ср. час на запитання: {{ average_time }}с</p>
     </div>
-    <!-- <p>Рейтинг: {{ rating }}</p>
-    <div id="rating-container" class="result-container"
-    
-        data-total="{{ total_questions }}"
-        data-correct="{{ correct }}"
-        data-incorrect="{{ incorrect_count }}"
-        data-null="{{ null_count }}">
-    </div> -->
 </div>
 <div class="questions-result-list" style="margin-top:32px;">
     <h3>Ваші відповіді:</h3>

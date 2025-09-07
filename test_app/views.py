@@ -378,7 +378,9 @@ def end_test(data: dict):
                 "text": question.text,
                 "correct_answer": correct,
                 "user_answer": user_answer if user_answer else "Не було відповіді",
-                "is_correct": is_correct
+                "is_correct": is_correct,
+                "type": question.type,
+                "answers":question.answers
             })
 
         data_to_emit["users"][username] = {
