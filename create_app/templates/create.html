@@ -15,15 +15,13 @@
     <hr>
     <div class="actions">
         <button class="action" id="addQuestion">
-            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="add-question-icon">
+            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="">
         </button>
-
-        <button class="action" id="OneAnswerQuestion">
-            <img src="{{ url_for('create.static', filename='images/one_choose.svg') }}" alt="" class="one-choose-icon">
-        </button>
-
-        <button class="action" id="multipleQuestion">
-            <img src="{{ url_for('create.static', filename='images/multi_choose.svg') }}" alt="" class="multi-choose-icon">
+        <button class="action" id="questionType">
+            <select id="correctCount" title="Правильних відповідей">
+                <option value="1">1 правильна відповідь</option>
+                <option value="2">2 правильні відповіді</option>
+            </select>
         </button>
 
         <button class="action" id="textQuestion">
@@ -35,7 +33,7 @@
     <div class="bottomPart">
         <input type="hidden" value="{{ url_for('create.static', filename='images/bin.svg') }}" id="binInputSrc">
         <div class="questionContainer">
-            <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
+            <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="removeButton"></button>
         </div>
         <button class="button saveTest">Зберегти тест</button>
     </div>
