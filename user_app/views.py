@@ -45,6 +45,7 @@ def render_user():
                 user_exists = User.query.filter_by(email=email).first()
                 nickname = flask.request.form.get('nickname', '').strip()
                 nickname_exists = User.query.filter_by(nickname=nickname).first()
+                print(nickname,nickname_exists,user_exists,email)
                 if user_exists:
                     return flask.render_template("user.html")
                 elif nickname_exists:
@@ -114,8 +115,10 @@ def render_code():
     nickname = flask.request.form.get('nickname')
     confirm_password = flask.request.form.get('confirm_password')
     if confirm_code == "__check__":
-        if User.query.filter_by(nickname=nickname).first() or User.query.filter_by(email=email).first():
-            return "Не вдалося зареєструвати користувача!"
+        if User.query.filter_by(nickname=nickname).first():
+            return "вже існує користувач із таким ім'ям"
+        elif  User.query.filter_by(email=email).first():
+            return "вже існує користувач з такою поштою"
         return 'OK'
     if confirm_code == flask.session.get('confirm_code') or confirm_code == 'admin':
         if password == confirm_password:

@@ -12,10 +12,10 @@ function load() {
         let addQuestionImg = document.querySelector("#addQuestionImg")
         if (!data){
             data = {
-                question:"Введіть питання...",
+                question:"",
                 "answers":[
-                    "Введіть варіант відповіді...",
-                    "Введіть варіант відповіді..."],
+                    "",
+                    ""],
                 "correct":null,
                 "type":"OneAnswerQuestion"
             }
@@ -51,7 +51,7 @@ function load() {
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
                     <input type="${data.type == 'OneAnswerQuestion' ? "radio" : "checkbox"}" name="correct" class="isAnswerCorrect"${func(answer)}>
                 </div>
-                <textarea class="answerInput">${answer}</textarea>
+                <textarea class="answerInput" placeholder = "Введіть варіант відповіді...">${answer}</textarea>
             `
             if (data["type" == "multipleQuestion"]){
                 timeCorrect = timeCorrect.filter((item) => item != answer)

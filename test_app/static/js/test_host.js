@@ -292,7 +292,7 @@ function renderFinalResults(data) {
 
             const answersContainer = document.createElement('div');
             answersContainer.className = 'answers';
-            let questionsText = "<h3>Ваші відповіді:</h3>"
+            let questionsText = `<h3>відповіді ${user}:</h3>`
             info.questions.forEach((q, index) => {
                 const box = document.createElement('div');
                 let type = q.type
@@ -358,7 +358,7 @@ function renderFinalResults(data) {
 
 
 
-            
+            questionsText+= "<div class='empty'></div>"
             listQuestions.innerHTML = questionsText
         });
 }

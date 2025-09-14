@@ -319,6 +319,7 @@ body {
 .answers-grid {
     max-width: 83.989501312vw;
     display: flex;
+    position: relative;
     overflow: hidden;
     flex-wrap: nowrap;
     gap: 5.249343832vw;
@@ -332,7 +333,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16.010498687600002vw;       
+    /* width: 16.010498687600002%; */
+    width: 100%;
     height: 40vh;      
     background-color: #cce5f6;
     border: 0.10498687664vw solid #cce5f6;

@@ -112,8 +112,9 @@ if (regSaveBtn && regEmailInput && modalBg && modalForm && modalInput) {
         })
         .then(response => response.text())
         .then(text => {
-            if (text.trim() !== "OK") {
-                rightPrint("Не вдалося зареєструвати користувача");
+            if (text.trim() != "OK") {
+                // rightPrint("Не вдалося зареєструвати користувача");
+                rightPrint(text.trim())
                 return;
             }
             // Если нет ошибок, отправляем код

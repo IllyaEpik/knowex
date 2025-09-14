@@ -281,16 +281,19 @@ background:#f4fbff;
     margin-right: 20px;
     height: 650px;
     overflow: visible;
-    width: 700px;
+    width: 1500px;
+    
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 15px;
     margin-bottom: 100px;
     background:#FFFFFF ;
-    border-radius: 12px;
+    border-radius: 50px;
 }
-
+.empty{
+    height: 350px;
+}
 
 #rating-section {
     border: #B9B9B9 1px solid;

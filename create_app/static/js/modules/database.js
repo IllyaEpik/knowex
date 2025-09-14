@@ -7,17 +7,49 @@ function database() {
         saveTest.addEventListener("click", function(){
             save()
             let settingsData = JSON.parse(localStorage.getItem("settingsOfTest"))
-            let listAllQuestions = []
+            let listAllQuestions = {}
             let Formdata = new FormData();
             let count = 0;
             for (let key in localStorage){
                 if (count < localStorage.length && !isNaN(Number(key))){
                     let questionData = localStorage.getItem(key)
-                    listAllQuestions.push(questionData)
+                    listAllQuestions[key] = questionData
+                    console.log(key)
                 }
                 count++
             }
-            if (listAllQuestions.length){
+            console.log(listAllQuestions,"aLL")
+            let checkList = []
+            let error = ""
+            for (let key in listAllQuestions){
+                let question = JSON.parse(listAllQuestions[key])
+                checkList.push(question)
+                console.log(question)
+                console.log(key,'NUMBER')
+                if (question.question == ""){
+                    error = `Введіть запитання для питання номер ${Number(key)}`
+                    break
+                }
+                for (let answer of question.answers){
+                    if (answer==""){
+                        error = `не всі відповіді в ${Number(key)} питанні поставлені`
+                        break
+                    }
+                }
+                console.log(question.correct,'weqqew', typeof question.correct, typeof question.correct,typeof undefined)
+                if (typeof question.correct==typeof undefined){
+                    error = `ви забули вказати правильну відповідь для запитання номер ${Number(key)}`
+                    break
+
+                }
+                
+                // if (question)
+            }
+            if (!listAllQuestions['1']){
+                error = "у тесту немає запитань задайте їх"
+            }
+            console.log(checkList)
+            if ( error==""){
             Formdata.append('data', JSON.stringify(listAllQuestions));
             Formdata.append('subject', settingsData['subject']);
             Formdata.append('class_name', settingsData['class']);
@@ -27,8 +59,6 @@ function database() {
             try {
                 Formdata.append('image', document.querySelector('#loadImgInput').files[0]);
             } catch (error) {}
-            console.log(listAllQuestions)
-            console.log(Formdata.get("data"))
             $.ajax(
                 '/create_test', {
                 type: "POST",
@@ -51,7 +81,10 @@ function database() {
                 }
                 }
             );
-            }}
+            }else{
+                alert(error)
+            }
+        }
     )})
     
 }

@@ -5,7 +5,8 @@ from create_app.models import Test, Questions
 from user_app.models import User
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
-
+import matplotlib.pyplot as plt
+import io, base64
 
 @config_page("test.html")
 def render_test(test_id: int):
@@ -353,11 +354,11 @@ def end_test(data: dict):
         "total_questions": total_questions,
         "users": {}
     }
+    
 
     for username, answers in user_answers.items():
         question_data = []
         corrects = 0
-
         for i, question_id in enumerate(questions):
             question = Questions.query.get(int(question_id))
             user_answer = answers[i] if i < len(answers) else None
@@ -373,7 +374,7 @@ def end_test(data: dict):
                     correct2 = set(correct)
                     is_correct = user_answer2.issuperset(correct2) and correct2.issuperset(user_answer2)
             corrects += is_correct 
-
+            
             question_data.append({
                 "text": question.text,
                 "correct_answer": correct,
@@ -387,7 +388,20 @@ def end_test(data: dict):
             "questions": question_data,
             "correct": corrects
         }
-
+    columns = []
+    values = []
+    first = True
+    for check_data in data_to_emit["users"]:
+        print()
+        count = 0
+        for question in data_to_emit["users"][check_data]["questions"]:
+            print(question["is_correct"])
+            count += 1
+            if first:
+                values.append(int(question["is_correct"]))
+            # question[0]["is_correct"]
+    # {'test': 'simple test', 'time_date': '14.09.2025', 'time_text': '17:34', 'total_questions': 5, 'users': {'123': {'questions': [{'text': '5/2/2/2', 'correct_answer': '0.625', 'user_answer': '0.625', 'is_correct': True, 'type': 'standart', 'answers': '["0.625", "1.25", "20", "0.3125", "40"]'}, {'text': '5*5', 'correct_answer': '["25", "30-5", "-25*-1"]', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'multiple', 'answers': '["25", "30-5", "55", "-25", "-25*-1"]'}, {'text': '2**3', 'correct_answer': '8', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["5", "4", "8", "6", "10"]'}, {'text': '1+1', 'correct_answer': '2', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["2", "1", "3", "22", "11"]'}, {'text': '35% від 1100', 'correct_answer': '385', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["300", "35", "385", "388.5", "350"]'}], 'correct': 1}}}
+    # print(json.dumps(question_data,indent=4) )
     print("Отправляем testEnd:", data_to_emit)
     emit('testEnd', data_to_emit, room=room)
 
