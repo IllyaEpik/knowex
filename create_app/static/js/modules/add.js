@@ -17,7 +17,6 @@ function add(first = false) {
                     document.querySelector('#settingButton').classList.add('select');
                     document.querySelectorAll('.questionButton').forEach(b => b.classList.remove('select'));
                 }
-
                 questionContainer.querySelectorAll('.questionButton').forEach((button, index) => {
                     button.querySelector('.questionNumber').textContent = index + 1;
                 });
@@ -30,33 +29,40 @@ function add(first = false) {
             questionContainer.innerHTML += `
                 <button class="button questionButton">
                     Питання <span class="questionNumber">${questionNumber}</span>
-                    <img src="${binInputSrc.value}" alt="" class="add-question-icon removeButton">
+                    <img src="${binInputSrc.value}" alt="" class="removeButton">
                 </button>`;
             update();
         });
     }
-    
 
     addAnswer.addEventListener("click", () => {
         if (QuestionsList.querySelectorAll(".settings-question-block").length<5){
-
             let div = document.createElement("div");
             div.className = 'questionForTest';
-            let questionNumber = document.querySelector(".select").querySelector(".questionNumber").textContent
-            let data = localStorage.getItem(questionNumber)
-            
-            let selectImg = document.querySelector(".selectImg").parentElement
+            let questionNumber = document.querySelector(".select").querySelector(".questionNumber").textContent;
+            let data = localStorage.getItem(questionNumber);
+
+            let selectedEl = document.querySelector(".selectImg");
+            let inputType = "radio";
+            if (selectedEl){
+                let parent = selectedEl.parentElement;
+                if (parent && parent.id == 'questionType'){
+                    inputType = selectedEl.value == "1" ? "radio" : "checkbox";
+                } else {
+                    inputType = (parent && parent.id == 'OneAnswerQuestion') ? "radio" : "checkbox";
+                }
+            }
+
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
-                    <input type="${selectImg.id == 'OneAnswerQuestion' ? "radio" : "checkbox"}" name="correct" class="isAnswerCorrect">
+                    <input type="${inputType}" name="correct" class="isAnswerCorrect">
                 </div>
                 <textarea class="answerInput">Введіть варіант відповіді...</textarea>
             `;
-
             QuestionsList.insertBefore(div, QuestionsList.querySelector("#addAnswer"));
             if (QuestionsList.querySelectorAll(".settings-question-block").length>=5){
-                QuestionsList.querySelector("#addAnswer").classList.add("hidden")
+                QuestionsList.querySelector("#addAnswer").classList.add("hidden");
             }
             update();
         }

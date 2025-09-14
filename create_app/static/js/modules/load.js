@@ -1,6 +1,5 @@
 import add from "./add.js";
-import change from "./change.js"
-
+import change from "./change.js";
 
 function load() {
     let select = document.querySelector('.select')
@@ -22,18 +21,26 @@ function load() {
             localStorage.setItem(current,JSON.stringify(data))
         }
         if (data["type"]){
-            document.querySelector(`#${data["type"]}`).querySelector("img").classList.add("selectImg")
+            if (data["type"] == "OneAnswerQuestion"){
+                let sel = document.querySelector('#questionType').querySelector('select')
+                if (sel){ sel.value = "1"; sel.classList.add("selectImg") }
+            } else if (data["type"] == "multipleQuestion"){
+                let sel = document.querySelector('#questionType').querySelector('select')
+                if (sel){ sel.value = "2"; sel.classList.add("selectImg") }
+            } else {
+                const el = document.querySelector(`#${data["type"]}`)
+                if (el && el.querySelector('img')) el.querySelector('img').classList.add("selectImg")
+            }
         }else{
-            document.querySelector(`#OneAnswerQuestion`).querySelector("img").classList.add("selectImg")
+            let sel = document.querySelector('#questionType').querySelector('select')
+            if (sel) sel.classList.add("selectImg")
         }
         let QuestionsList = document.querySelector("#QuestionsList")
         let trashSvg = document.querySelector('#trashSvg').value
         document.querySelector("#questionNameInput").value = data.question
         QuestionsList.innerHTML = ''
-        console.log(data)
-        let timeCorrect;
-        let func;
-        
+        let timeCorrect
+        let func
         if (data["type"] == "multipleQuestion"){
             timeCorrect = data.correct ? data.correct : []
             func = (answer) => {return timeCorrect.includes(answer) ? " checked" : ""}
@@ -44,8 +51,6 @@ function load() {
         for (let answer of data.answers){
             let div = document.createElement("div")
             div.className = 'questionForTest'
-            console.log(answer,timeCorrect)
-            
             div.innerHTML = `
                 <div class="settings-question-block">
                     <img src="${trashSvg}" alt="" class="trashQuestionMark">
@@ -55,27 +60,22 @@ function load() {
             `
             if (data["type" == "multipleQuestion"]){
                 timeCorrect = timeCorrect.filter((item) => item != answer)
-            }else if (data["type" == "OneAnswerQuestion"]){
+            }else if (data["type"] == "OneAnswerQuestion"){
                 timeCorrect = null
             }
-            
             QuestionsList.append(div)
         }
-    
         QuestionsList.innerHTML += `
             <button class="center action" id="addAnswer">
                 <img src="${addQuestionImg.value}" alt="" class="add-question-icon">
             </button>
         `
-        
         add()
     }else{
         change(false)
         let objectsToLoad = ['class', 'subject', 'testNameInput', 'description']
         let data = JSON.parse(localStorage.getItem("settingsOfTest"))
         if (data){
-
-
             for (let object of objectsToLoad){
                 document.querySelector(`#${object}`).value = data[object]
             }
