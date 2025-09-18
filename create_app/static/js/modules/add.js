@@ -23,7 +23,7 @@ function add(first = false) {
                 update();
             }
         });
-
+        // querySelector(".eqwqew").classList.add("hidden")
         addQuestion.addEventListener("click", () => {
             let questionNumber = document.querySelectorAll('.questionButton').length + 1;
             questionContainer.innerHTML += `

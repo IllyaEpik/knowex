@@ -21,10 +21,14 @@ def create_test():
     if not flask_login.current_user.is_authenticated:
         return jsonify({'error': 1})
     all_questions = ''
-
-    for question in json.loads( request.form.get('data')):
+    questionsTest = json.loads( request.form.get('data'))
+    print(request.form.get('data'))
+    for question in questionsTest:
         print(question,type(question))
         question = json.loads( question)
+        question = json.loads(questionsTest[str(question)])
+        print(question,type(question))
+        # if type(question)!=type(1):
         correct = question['correct']
         print(correct)
         typeQuestion = "standart"
@@ -37,7 +41,7 @@ def create_test():
             answers = json.dumps(question['answers']),
             type = typeQuestion
         )
-        DATABASE.session.add(question_object)
+        DATABASE.session.add(question_object) 
         DATABASE.session.commit()
         all_questions += f"{question_object.id} "
     description = request.form.get('description')

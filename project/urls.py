@@ -20,7 +20,7 @@ create_bp.add_url_rule(
 
 
 
-test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user/<int:question_id>", view_func=test_app.views.render_test_user_question, methods=['get', 'post'], endpoint="render_test_user_question")
+# test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user/<int:question_id>", view_func=test_app.views.render_test_user_question, methods=['get', 'post'], endpoint="render_test_user_question")
 main_app.main.add_url_rule(rule="/", view_func=main_app.views.render_main, methods = ['get', 'post'])
 main_app.main.add_url_rule(rule="/logout", view_func=main_app.views.logout)
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])

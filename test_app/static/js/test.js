@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () { 
     let responseName = window.location.pathname;
-
+    console.log(responseName)
+    console.log(document.URL, document.URL[document.URL.length-1]=='t')
+    let start = performance.now()
     document.addEventListener('submit', function (e) {
+        let current = performance.now()
         e.preventDefault();
 
         if (e.target.tagName === 'FORM') {
@@ -23,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $.ajax({
                 url: responseName,
                 type: 'POST',
-                data: { answer: selected },
+                data: { answer: selected, start:start, current:current },
                 success: function (response) {
                     if (response.error) {
                         alert('Помилка: ' + response.error);
@@ -57,8 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
+// result http://127.0.0.1:3000/test/1/1/result
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('13')
     const ratingList = document.getElementById('rating-container');
     if (!ratingList || !ratingList.classList.contains('result-container')) {
         return;

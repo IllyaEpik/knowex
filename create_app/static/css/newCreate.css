@@ -207,16 +207,21 @@ img.selectImg{
     justify-content: center;
     gap: 20px;
     flex-direction: column;
+    align-items: center;
 }
 .bottomPart{
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between;  */
     flex-direction: column;
     align-items: center;
+    gap: 10px;
     height: 575px;
     margin-bottom: 0px;
     flex-grow: 1;
     /* height: 630px; */
+}
+.saveTestDiv{
+    margin-top: auto;
 }
 .saveTest{
     background-color: #5EDCFF;

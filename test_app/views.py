@@ -1,5 +1,5 @@
 import flask, flask_login, random, json, time
-from flask import request
+from flask import request, jsonify
 from project.config_page import config_page
 from create_app.models import Test, Questions
 from user_app.models import User
@@ -50,81 +50,9 @@ def render_test_user(test_id):
         "current_user": flask_login.current_user if flask_login.current_user.is_authenticated else "Anonym",
         "test": test,
         'count_questions':len(test.questions.split(' '))-1,
-        "first_qid": first_qid,
-        # "is_authenticated": flask_login.current_user.is_authenticated
+        "first_qid": first_qid
     }
     
-@config_page("test_user_quetion.html")
-def render_test_user_question(test_id, question_id):
-    test = Test.query.filter_by(id=test_id).first()
-    if not test:
-        return flask.abort(404)
-
-    question_ids = [int(qid) for qid in test.questions.split()]
-    total_questions = len(question_ids)
-
-    if question_id not in question_ids:
-        return flask.abort(404)
-
-    current_index = question_ids.index(question_id)
-    question = Questions.query.filter_by(id=question_id).first()
-    if not question:
-        return flask.abort(404)
-
-    answers = []
-    if question.answers:
-        try:
-            answers = json.loads(question.answers)
-        except Exception:
-            answers = [question.answers]
-    answers.append(question.correct_answer)
-    answers_list = random.sample(answers, len(answers))
-    selected = None
-
-    if flask.request.method == "POST":
-        selected = flask.request.form.get("answer")
-        is_correct = selected == question.correct_answer
-
-        test_answers = flask.session.get("test_answers", [])
-        test_answers = [item for item in test_answers if item["question_id"] != question_id]
-        test_answers.append({
-            "question_id": question_id,
-            "answer": selected,
-            "is_correct": is_correct
-        })
-        flask.session["test_answers"] = test_answers
-        flask.session.modified = True
-
-        if flask.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            response_data = {
-                "correct_answer": question.correct_answer,
-                "question_text": question.text
-            }
-
-            if current_index + 1 < total_questions:
-                next_question_id = question_ids[current_index + 1]
-                response_data["next_url"] = flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id)
-            else:
-                response_data["result_url"] = flask.url_for("test.test_result", test_id=test_id)
-
-            return flask.jsonify(response_data)
-
-        else:
-            if current_index + 1 < total_questions:
-                next_question_id = question_ids[current_index + 1]
-                return flask.redirect(flask.url_for("test.test_question", test_id=test_id, question_id=next_question_id))
-            else:
-                return flask.redirect(flask.url_for("test.test_result", test_id=test_id))
-
-    return {
-        "test": test,
-        "question": question,
-        "answers": answers_list,
-        "question_id": current_index + 1,
-        "total_questions": total_questions,
-        "selected": selected,
-        "correct_answer": question.correct_answer,
-    }
 @socketio.on('end_current_question')
 def handle_end_current_question(data):
     test_id = data.get('test_id')
@@ -168,6 +96,9 @@ def test_question(test_id, question_id):
     selected = None
 
     if flask.request.method == "POST":
+        
+        start = flask.request.form.get("start")
+        current = flask.request.form.get("current")
         if typeOfQuestion == 'standart':
             selected = flask.request.form.get("answer")
             is_correct = selected == correct
@@ -179,7 +110,9 @@ def test_question(test_id, question_id):
         test_answers.append({
             "question_id": question_id,
             "answer": selected,
-            "is_correct": is_correct
+            "is_correct": is_correct,
+            "start":start,
+            "current":current
         })
         flask.session["test_answers"] = test_answers
         flask.session.modified = True
@@ -232,54 +165,29 @@ def test_result(test_id):
     test_answers = flask.session.get("test_answers", [])
     correct = 0
     questions = []
-    
     for qid in question_ids:
         question = Questions.query.filter_by(id=qid).first()
         if not question:
             continue
-        # typeOfQuestion = "standart"
-        # correct = question.correct_answer
-        # if type(correct) == type("ewq"):
-        #     correct = json.loads(correct)
-        #     typeOfQuestion = "multiple"
 
         user_answer_info = next((item for item in test_answers if item["question_id"] == qid), None)
         user_answer = user_answer_info["answer"] if user_answer_info else None
-
-        # if typeOfQuestion == 'standart':
-        #     selected = flask.request.form.get("answer")
-        # elif typeOfQuestion == 'multiple':
-        #     selected = flask.request.form.getlist("answer")
-        #     is_correct = len(selected) == len(correct) and set(selected).issuperset(set(correct))
+        current = user_answer_info["current"] 
         is_correct = user_answer_info["is_correct"] if user_answer_info else False
-        
-        # is_correct = len(user_answer) == len(correct) and set(user_answer).issuperset(set(correct))
-        print(user_answer_info["is_correct"])
         if is_correct:
             correct += 1
         options = []
-        # correct_options = []
         if question.answers:
             try:
                 options = json.loads(question.answers)
             except Exception:
                 options = [question.answers]
-        # list_to_remove = []
-        # for option in options:
-        #     if 
-        # options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
         options = list(set(options))  # Уникаємо дублікатів
-        # {% if type == "standart" %}
-        #         {% set is_correct = option == q.correct_answer %}
-        #         {% elif type == "multiple" %}
-        #         {% set is_correct = option == q.correct_answer %}
-        #         {% endif %}
         corrects = question.correct_answer
         if question.type == "multiple":
             corrects = json.loads(corrects)
         print(user_answer,type(user_answer))
         print(User.query.get( test.user),test.user,test)
-        # int(total_questions/correct*12)
         questions.append({
             "text": question.text,
             "type": question.type,
@@ -288,11 +196,11 @@ def test_result(test_id):
             "user_answer": user_answer,
             "is_correct": is_correct,
             "options": options,
+            "currentTime":current
         })
     
-    total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд
+    total_time = float(questions[-1]['currentTime'])/1000
     average_time = total_time / total_questions if total_questions > 0 else 0
-
     if flask_login.current_user.is_authenticated:
         user = flask_login.current_user
         if not (str(test.id) in user.complete_tests):
@@ -307,12 +215,10 @@ def test_result(test_id):
         DATABASE.session.commit()
     
     flask.session.pop("test_answers", None)
-
     average_time = total_time / total_questions if total_questions > 0 else 0
 
     null_count = sum(1 for q in questions if q["user_answer"] is None)
     incorrect_count = total_questions - correct - null_count
-    print(total_questions,correct)
     return {
         "test": test,        
         "creator": User.query.get(test.user),
@@ -324,7 +230,7 @@ def test_result(test_id):
         "incorrect_count": incorrect_count,
         "null_count": null_count,
         "questions": questions,
-        "total_time": total_time,
+        "total_time": int(total_time),
         "average_time": int(average_time),
         "grade":int(correct/total_questions*12) if correct!=0 else 0
     }
@@ -365,7 +271,6 @@ def end_test(data: dict):
             is_correct = user_answer == question.correct_answer
             correct = question.correct_answer
             if question.type == "multiple":
-                print(user_answer,correct, type(correct), type(user_answer))
                 if user_answer == None:
                     is_correct = False if user_answer!=correct else True
                 else:
@@ -529,33 +434,28 @@ def next_question(data):
             'total_questions': len(question_ids)
         }, to=cell['host_sid'])
 
-# @socketio.on('next_question')
-# def cqwwewqeweq(data):
-#     room_name = f'test_{test_id}'
-#     emit('url',{"data":'something'}, room=room)
-#     pass
 
-@socketio.on('save_user_answer')
-def handle_save_user_answer(data):
-    test_id = data.get('test_id')
-    username = data.get('username')
-    question_id = data.get('question_id')
-    answer = data.get('answer')
-    correct_answer = data.get('correct_answer')
-    question_text = data.get('question_text')
+# @socketio.on('save_user_answer')
+# def handle_save_user_answer(data):
+#     test_id = data.get('test_id')
+#     username = data.get('username')
+#     question_id = data.get('question_id')
+#     answer = data.get('answer')
+#     correct_answer = data.get('correct_answer')
+#     question_text = data.get('question_text')
 
-    cell = active_tests.setdefault(test_id, {'participants': set(), 'results': {}, 'answers': {}})
-    user_answers = cell['answers'].setdefault(username, [])
-    user_answers.append({
-        'question_id': question_id,
-        'question_text': question_text,
-        'answer': answer,
-        'correct_answer': correct_answer,
-        'is_correct': answer == correct_answer
-    })
-    # Можно добавить сохранение в базу данных здесь
+#     cell = active_tests.setdefault(test_id, {'participants': set(), 'results': {}, 'answers': {}})
+#     user_answers = cell['answers'].setdefault(username, [])
+#     user_answers.append({
+#         'question_id': question_id,
+#         'question_text': question_text,
+#         'answer': answer,
+#         'correct_answer': correct_answer,
+#         'is_correct': answer == correct_answer
+#     })
+#     # Можно добавить сохранение в базу данных здесь
 
-    emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
+#     emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
 
 @socketio.on('send_answer')
 def save_user_answer(data):
