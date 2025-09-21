@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 {% block title %} Сторінка тесту {% endblock %}
 {% block head %}
 <script defer src="{{ url_for('create.static', filename='js/jquery.js') }}"></script>
@@ -7,16 +7,17 @@
 <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
 {% endblock %}
 {% block content %}
+
 <div id="final_results" class="hidden">
     <h3>Результати тесту:</h3>
     <div id="results_list" class="results-list"></div>
 </div>
 <input type="hidden" name="" id="closeQuestion" value="{{ url_for('test.static', filename='images/close_question.svg') }}">
 <input type="hidden" name="" id="countQuestion" value="{{ countQuestions }}">
-<div>
-    <!-- Код для подключення: <span id="test_code">{{ test_id }}</span> -->
-</div>
+
 <link rel="stylesheet" href="{{ url_for('test.static', filename='css/test_host.css') }}">
+
+
 
 <div class="test-container">
     <header class="test-header">
@@ -30,11 +31,14 @@
     </header>
 
     <div class="main-layout">
+        <div class="code-block"></div>
+            <div class="question-code">
+                <span id="test_code">Код для підключення: {{ code }}</span>
+            </div>
+        </div>
         <div class="main-content" id="questions-section">
+            
             <div class="question-section">
-                <!-- <div class="question-code">
-                    Код для підключення: <span id="test_code">{{ test_id }}</span>
-                </div> -->
                 <!-- <div id="currentQuestion" class="current-question"></div> -->
                 <p id="questionText" class="question-text"></p>
                 <div type="hidden" id="question-progress" class="question-progress"></div>
@@ -63,8 +67,6 @@
             </div>
         </div>
     </div>
-
-    
 
     <input type="hidden" id="closeQuestion" value="{{ url_for('test.static', filename='images/close_question.svg') }}">
     <input type="hidden" id="countQuestion" value="{{ countQuestions }}">

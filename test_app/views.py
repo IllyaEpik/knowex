@@ -1,11 +1,14 @@
-import flask, flask_login, random, json, time
-from flask import request
+import flask, flask_login, random, json, time, string
+from flask import request, session
 from project.config_page import config_page
 from create_app.models import Test, Questions
 from user_app.models import User
+from test_app.models import TestCode
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
+from flask import request, jsonify
 
+# как мне в тест хост сначала скрывать всё кроме  и выводить только код к подключению
 
 @config_page("test.html")
 def render_test(test_id: int):
@@ -31,12 +34,26 @@ def render_test(test_id: int):
 @config_page("test_host.html")
 def render_test_host(test_id):
     test = Test.query.filter_by(id=test_id).first()
-    test_id = test_id
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        if not TestCode.query.filter_by(session_id=code).first():
+            break
+
+    code_db = TestCode(
+        session_id=code,
+        test_id=test_id
+    )
+    print(code)
+    DATABASE.session.add(code_db)
+    DATABASE.session.commit()
+
+
     return{
         "test": test,
         "test_id": test_id,
         "host_name": flask_login.current_user.nickname,
-        'countQuestions': len(test.questions.split(' '))-1
+        'countQuestions': len(test.questions.split(' '))-1,
+        "code": code
     }
 
 @config_page("test_user.html")
@@ -50,7 +67,6 @@ def render_test_user(test_id):
         "test": test,
         'count_questions':len(test.questions.split(' '))-1,
         "first_qid": first_qid,
-        # "is_authenticated": flask_login.current_user.is_authenticated
     }
     
 @config_page("test_user_quetion.html")
@@ -236,23 +252,9 @@ def test_result(test_id):
         question = Questions.query.filter_by(id=qid).first()
         if not question:
             continue
-        # typeOfQuestion = "standart"
-        # correct = question.correct_answer
-        # if type(correct) == type("ewq"):
-        #     correct = json.loads(correct)
-        #     typeOfQuestion = "multiple"
-
         user_answer_info = next((item for item in test_answers if item["question_id"] == qid), None)
         user_answer = user_answer_info["answer"] if user_answer_info else None
-
-        # if typeOfQuestion == 'standart':
-        #     selected = flask.request.form.get("answer")
-        # elif typeOfQuestion == 'multiple':
-        #     selected = flask.request.form.getlist("answer")
-        #     is_correct = len(selected) == len(correct) and set(selected).issuperset(set(correct))
         is_correct = user_answer_info["is_correct"] if user_answer_info else False
-        
-        # is_correct = len(user_answer) == len(correct) and set(user_answer).issuperset(set(correct))
         print(user_answer_info["is_correct"])
         if is_correct:
             correct += 1
@@ -263,22 +265,12 @@ def test_result(test_id):
                 options = json.loads(question.answers)
             except Exception:
                 options = [question.answers]
-        # list_to_remove = []
-        # for option in options:
-        #     if 
-        # options.append(question.correct_answer)  # Додаємо правильну відповідь до списку
-        options = list(set(options))  # Уникаємо дублікатів
-        # {% if type == "standart" %}
-        #         {% set is_correct = option == q.correct_answer %}
-        #         {% elif type == "multiple" %}
-        #         {% set is_correct = option == q.correct_answer %}
-        #         {% endif %}
+        options = list(set(options))
         corrects = question.correct_answer
         if question.type == "multiple":
             corrects = json.loads(corrects)
         print(user_answer,type(user_answer))
         print(User.query.get( test.user),test.user,test)
-        # int(total_questions/correct*12)
         questions.append({
             "text": question.text,
             "type": question.type,
@@ -289,7 +281,7 @@ def test_result(test_id):
             "options": options,
         })
     
-    total_time = getattr(test, 'duration', 330)  # Припустимо 330 секунд
+    total_time = getattr(test, 'duration', 330)
     average_time = total_time / total_questions if total_questions > 0 else 0
 
     if flask_login.current_user.is_authenticated:
@@ -328,14 +320,18 @@ def test_result(test_id):
         "grade":int(correct/total_questions*12) if correct!=0 else 0
     }
 
-# end_test
+
 @socketio.on('end_test')
 def end_test(data: dict):
     test_id = data.get("test_id")
+    code_obj = TestCode.query.filter_by(test_id=test_id).first()
+    if code_obj:
+        DATABASE.session.delete(code_obj)
+        DATABASE.session.commit()
+
     room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
     if not test:
-        print("Ошибка: тест не найден")
         return
 
     user_answers = data.get('user_answers', {})
@@ -493,7 +489,7 @@ def next_question(data):
         emit('error', {'msg': 'Недійсний номер питання'}, room=room_name)
         return
 
-    question_id = question_ids[question_number - 1]  # Индексация начинается с 0
+    question_id = question_ids[question_number - 1]
     question = Questions.query.get(question_id)
     if not question:
         emit('error', {'msg': 'Питання не знайдено'}, room=room_name)
@@ -509,17 +505,10 @@ def next_question(data):
     cell = active_tests.get(test_id)
     if cell and 'host_sid' in cell:
         emit('correct', {'answer': question.correct_answer}, to=cell['host_sid'])
-        # Додано оновлення поточного питання для хоста
         emit('update_question_status', {
             'current_question': question_number,
             'total_questions': len(question_ids)
         }, to=cell['host_sid'])
-
-# @socketio.on('next_question')
-# def cqwwewqeweq(data):
-#     room_name = f'test_{test_id}'
-#     emit('url',{"data":'something'}, room=room)
-#     pass
 
 @socketio.on('save_user_answer')
 def handle_save_user_answer(data):
@@ -539,7 +528,6 @@ def handle_save_user_answer(data):
         'correct_answer': correct_answer,
         'is_correct': answer == correct_answer
     })
-    # Можно добавить сохранение в базу данных здесь
 
     emit('user_answer_saved', {'status': 'ok'}, to=request.sid)
 
@@ -548,9 +536,6 @@ def save_user_answer(data):
     test_id = data.get('test_id')
     room_name = f'test_{test_id}'
     emit('send_answer', data, room=room_name)
-
-from flask import request, jsonify
-from project.settings import DATABASE, socketio, active_tests, sid_to_username
 def save_result():
     data = flask.request.get_json(silent=True)
     if not data:
@@ -573,7 +558,6 @@ def save_result():
             DATABASE.session.commit()
     else:
         pass
-
     return jsonify({
         "status": "ok",
         "saved": {

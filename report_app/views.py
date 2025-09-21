@@ -3,6 +3,7 @@ from project.config_page import config_page
 from create_app.models import Test
 from user_app.models import User
 import random
+from flask import request, jsonify
 
 
 @config_page("report.html")
@@ -21,3 +22,12 @@ def render_report(user_id):
         "tests": tests,
         'filters':filters
     }
+
+def find_test():
+    data = flask.request.get_json(silent=True)
+    code = data.get("code")
+    from test_app.models import TestCode
+    code_obj = TestCode.query.filter_by(session_id=code).first()
+    if code_obj:
+        return flask.jsonify({"success": True, "test_id": code_obj.test_id})
+    return flask.jsonify({"success": False})
