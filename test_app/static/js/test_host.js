@@ -265,7 +265,9 @@ socket.on('testEnd', (data) => {
 
 function renderFinalResults(data) {
     const resultsList = document.getElementById('results_list');
-    resultsList.innerHTML = '';
+    resultsList.innerHTML = data.diagramm;
+    let diagramm = resultsList.querySelector("img")
+    diagramm.className = "diagramm"
     let count = 0;
     Object.entries(data.users)
         

@@ -14,7 +14,7 @@ function setAnswers(questions, color){
     answersDiv.append(div)
     console.log(div)
 }
-setAnswers(correct,"#00FF88")
-setAnswers(incorrect,"#FE5454")
+setAnswers(correct,"#77b670")
+setAnswers(incorrect,"#eb5254")
 // setAnswers(unanswered,"#00FF88")
 // FE5454

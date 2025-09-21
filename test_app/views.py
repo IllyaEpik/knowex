@@ -186,8 +186,6 @@ def test_result(test_id):
         corrects = question.correct_answer
         if question.type == "multiple":
             corrects = json.loads(corrects)
-        print(user_answer,type(user_answer))
-        print(User.query.get( test.user),test.user,test)
         questions.append({
             "text": question.text,
             "type": question.type,
@@ -214,7 +212,7 @@ def test_result(test_id):
                 test.count += 1
         DATABASE.session.commit()
     
-    flask.session.pop("test_answers", None)
+    # flask.session.pop("test_answers", None)
     average_time = total_time / total_questions if total_questions > 0 else 0
 
     null_count = sum(1 for q in questions if q["user_answer"] is None)
@@ -301,12 +299,30 @@ def end_test(data: dict):
         count = 0
         for question in data_to_emit["users"][check_data]["questions"]:
             print(question["is_correct"])
-            count += 1
             if first:
                 values.append(int(question["is_correct"]))
-            # question[0]["is_correct"]
-    # {'test': 'simple test', 'time_date': '14.09.2025', 'time_text': '17:34', 'total_questions': 5, 'users': {'123': {'questions': [{'text': '5/2/2/2', 'correct_answer': '0.625', 'user_answer': '0.625', 'is_correct': True, 'type': 'standart', 'answers': '["0.625", "1.25", "20", "0.3125", "40"]'}, {'text': '5*5', 'correct_answer': '["25", "30-5", "-25*-1"]', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'multiple', 'answers': '["25", "30-5", "55", "-25", "-25*-1"]'}, {'text': '2**3', 'correct_answer': '8', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["5", "4", "8", "6", "10"]'}, {'text': '1+1', 'correct_answer': '2', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["2", "1", "3", "22", "11"]'}, {'text': '35% від 1100', 'correct_answer': '385', 'user_answer': 'Не було відповіді', 'is_correct': False, 'type': 'standart', 'answers': '["300", "35", "385", "388.5", "350"]'}], 'correct': 1}}}
-    # print(json.dumps(question_data,indent=4) )
+                columns.append(str(count))
+            else:
+                values[count] += int(question["is_correct"])
+            count += 1
+        first = False
+    print(values)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(columns, values, marker='H', linestyle='-', color='#34668f', mfc='#34668f', mec='#34668f', lw=2)
+    plt.title('результат теста', fontsize=18, pad=20)
+    plt.ylabel('количество правильных ответов', fontsize=12)
+    # plt.grid(True, which='major', linestyle='--', linewidth=0.5, axis='y')
+    # plt.subplots_adjust(bottom=0.15)
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    plt.close()
+    # buffer.seek(0)
+    image_bytes = buffer.getvalue()
+    image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+    html_tag = f'<img src="data:image/png;base64,{image_base64}" alt="diagramm">'
+    data_to_emit["diagramm"] = html_tag
     print("Отправляем testEnd:", data_to_emit)
     emit('testEnd', data_to_emit, room=room)
 

@@ -267,6 +267,11 @@ background:#f4fbff;
 .question-count:hover{
     background-color: #BEE7FF !important;
 }
+.listOfQuestions{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
 .main-layout {
     display: flex;
     flex-grow: 0;
@@ -290,6 +295,10 @@ background:#f4fbff;
     margin-bottom: 100px;
     background:#FFFFFF ;
     border-radius: 50px;
+}
+.diagramm{
+    width: 800px;
+    height: 600px;
 }
 .empty{
     height: 350px;
