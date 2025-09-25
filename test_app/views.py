@@ -1,12 +1,12 @@
 import flask, flask_login, random, json, time, string
-from flask import request, session
+from flask import request, session, request, jsonify
 from project.config_page import config_page
 from create_app.models import Test, Questions
 from user_app.models import User
 from test_app.models import TestCode
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
-from flask import request, jsonify
+from datetime import datetime, timedelta
 
 # как мне в тест хост сначала скрывать всё кроме  и выводить только код к подключению
 
@@ -320,14 +320,18 @@ def test_result(test_id):
         "grade":int(correct/total_questions*12) if correct!=0 else 0
     }
 
+def remove_old_codes():
+    threshold = datetime.utcnow() - timedelta(hours=1)
+    old_codes = TestCode.query.filter(TestCode.created_at < threshold).all()
+    for code in old_codes:
+        DATABASE.session.delete(code)
+    DATABASE.session.commit()
 
 @socketio.on('end_test')
 def end_test(data: dict):
     test_id = data.get("test_id")
     code_obj = TestCode.query.filter_by(test_id=test_id).first()
-    if code_obj:
-        DATABASE.session.delete(code_obj)
-        DATABASE.session.commit()
+    remove_old_codes()
 
     room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
