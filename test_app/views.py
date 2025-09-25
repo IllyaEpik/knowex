@@ -1,8 +1,10 @@
-import flask, flask_login, random, json, time
-from flask import request, jsonify
+import flask, flask_login, random, json, time, string
+from flask import request, jsonify, session
+
 from project.config_page import config_page
 from create_app.models import Test, Questions
 from user_app.models import User
+from test_app.models import TestCode
 from project.settings import DATABASE, socketio, active_tests, sid_to_username
 from flask_socketio import join_room, leave_room, emit
 import matplotlib.pyplot as plt
@@ -32,12 +34,26 @@ def render_test(test_id: int):
 @config_page("test_host.html")
 def render_test_host(test_id):
     test = Test.query.filter_by(id=test_id).first()
-    test_id = test_id
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        if not TestCode.query.filter_by(session_id=code).first():
+            break
+
+    code_db = TestCode(
+        session_id=code,
+        test_id=test_id
+    )
+    print(code)
+    DATABASE.session.add(code_db)
+    DATABASE.session.commit()
+
+
     return{
         "test": test,
         "test_id": test_id,
         "host_name": flask_login.current_user.nickname,
-        'countQuestions': len(test.questions.split(' '))-1
+        'countQuestions': len(test.questions.split(' '))-1,
+        "code": code
     }
 
 @config_page("test_user.html")
@@ -233,10 +249,15 @@ def test_result(test_id):
         "grade":int(correct/total_questions*12) if correct!=0 else 0
     }
 
-# end_test
+
 @socketio.on('end_test')
 def end_test(data: dict):
     test_id = data.get("test_id")
+    code_obj = TestCode.query.filter_by(test_id=test_id).first()
+    if code_obj:
+        DATABASE.session.delete(code_obj)
+        DATABASE.session.commit()
+
     room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
     if not test:
@@ -422,7 +443,7 @@ def next_question(data):
         emit('error', {'msg': 'Недійсний номер питання'}, room=room_name)
         return
 
-    question_id = question_ids[question_number - 1]  # Индексация начинается с 0
+    question_id = question_ids[question_number - 1]
     question = Questions.query.get(question_id)
     if not question:
         emit('error', {'msg': 'Питання не знайдено'}, room=room_name)
@@ -438,7 +459,6 @@ def next_question(data):
     cell = active_tests.get(test_id)
     if cell and 'host_sid' in cell:
         emit('correct', {'answer': question.correct_answer}, to=cell['host_sid'])
-        # Додано оновлення поточного питання для хоста
         emit('update_question_status', {
             'current_question': question_number,
             'total_questions': len(question_ids)
@@ -472,9 +492,6 @@ def save_user_answer(data):
     test_id = data.get('test_id')
     room_name = f'test_{test_id}'
     emit('send_answer', data, room=room_name)
-
-from flask import request, jsonify
-from project.settings import DATABASE, socketio, active_tests, sid_to_username
 def save_result():
     data = flask.request.get_json(silent=True)
     if not data:
@@ -497,7 +514,6 @@ def save_result():
             DATABASE.session.commit()
     else:
         pass
-
     return jsonify({
         "status": "ok",
         "saved": {

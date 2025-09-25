@@ -377,3 +377,21 @@ socket.on('test_closed', () => {
     alert("Тест завершено або хост відключився.");
     location.reload();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Скрываем всё кроме .question-code и #rightPanel
+    document.querySelectorAll('.test-header, .main-content:not(#rightPanel), #rating-section').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.querySelector('.question-code').style.display = '';
+    document.getElementById('rightPanel').style.display = '';
+
+    // После нажатия "Розпочати тест" показываем всё, скрываем код
+    const startBtn = document.getElementById('start_test_btn');
+    startBtn.addEventListener('click', function () {
+        document.querySelectorAll('.test-header, .main-content, #rating-section').forEach(el => {
+            el.style.display = '';
+        });
+        document.querySelector('.question-code').style.display = 'none';
+    });
+});

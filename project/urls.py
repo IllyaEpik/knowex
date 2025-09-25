@@ -38,6 +38,7 @@ test_app.test_page.add_url_rule(rule="/test/<int:test_id>/user", view_func=test_
 test_app.test_page.add_url_rule(rule='/test/<int:test_id>', view_func=test_app.views.render_test, methods = ['get', 'post'], endpoint='render_test')
 test_app.test_page.add_url_rule(rule="/test/<int:test_id>/result", view_func=test_app.views.test_result, methods=['get'], endpoint="test_result")
 report_app.report.add_url_rule(rule="/report/<int:user_id>", view_func=report_app.views.render_report, methods = ['get', 'post'])
+report_app.report.add_url_rule(rule="/find_test", view_func=report_app.views.find_test, methods=['post', 'get'])
 user_app.user.add_url_rule(rule="/send_email_code", view_func=user_app.views.send_email_code, methods = ['post', 'get'])
 user_app.user.add_url_rule(rule="/profile", view_func=user_app.views.render_profile_page, methods = ['get', 'post'])
 create_app.create.add_url_rule(rule="/create", view_func=create_app.views.render_create, methods = ['get', 'post'])
