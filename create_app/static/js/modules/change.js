@@ -1,3 +1,4 @@
+
 function change(activate=true){
     document.querySelectorAll(".action img, .action select").forEach(el => el.classList.remove("selectImg"))
     const questionTypeAction = document.querySelector('#questionType')

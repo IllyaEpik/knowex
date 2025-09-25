@@ -240,7 +240,7 @@ def end_test(data: dict):
     room = f'test_{test_id}'
     test = Test.query.get(int(test_id))
     if not test:
-        print("Ошибка: тест не найден")
+        print("Помилка: тест не знайдено")
         return
 
     user_answers = data.get('user_answers', {})
@@ -295,10 +295,8 @@ def end_test(data: dict):
     values = []
     first = True
     for check_data in data_to_emit["users"]:
-        print()
         count = 0
         for question in data_to_emit["users"][check_data]["questions"]:
-            print(question["is_correct"])
             if first:
                 values.append(int(question["is_correct"]))
                 columns.append(str(count))
@@ -306,19 +304,15 @@ def end_test(data: dict):
                 values[count] += int(question["is_correct"])
             count += 1
         first = False
-    print(values)
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 6))
     plt.plot(columns, values, marker='H', linestyle='-', color='#34668f', mfc='#34668f', mec='#34668f', lw=2)
-    plt.title('результат теста', fontsize=18, pad=20)
-    plt.ylabel('количество правильных ответов', fontsize=12)
-    # plt.grid(True, which='major', linestyle='--', linewidth=0.5, axis='y')
-    # plt.subplots_adjust(bottom=0.15)
+    plt.title('результат тесту', fontsize=18, pad=20)
+    plt.ylabel('кількість правильних відповідей', fontsize=12)
 
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
     plt.close()
-    # buffer.seek(0)
     image_bytes = buffer.getvalue()
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
     html_tag = f'<img src="data:image/png;base64,{image_base64}" alt="diagramm">'
@@ -348,12 +342,12 @@ def handle_join(data):
     username = data['username']
     role = data.get('role', 'participant')
     room_name = f'test_{test_id}'
-
+    print(request.sid)
     join_room(room_name)
     sid_to_username[request.sid] = username
 
     data_cell = active_tests.setdefault(test_id, {'participants': set(), 'results': {}})
-
+    
     if role == 'host':
         data_cell['host_sid'] = request.sid
         emit('host_ack', {'msg': 'Хост підключено', 'test_id': test_id}, to=request.sid)

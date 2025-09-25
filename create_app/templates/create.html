@@ -10,9 +10,9 @@
 <input type="hidden" value="{{ url_for('create.static', filename='images/add-question.svg') }}" id="addQuestionImg">
 <aside class="sidebar">
     <h2 class="QuestionName">Питання</h2>
-    <hr>
+    <div class="hr"></div>
     <button id="settingButton" class="button select">Налаштування тесту</button>
-    <hr>
+    <div class="hr"></div>
     <div class="actions">
         <!-- <button class="action" id="addQuestion">
             <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="">
@@ -29,15 +29,15 @@
         </button> -->
 
     </div>
-    <hr>
+    <div class="hr"></div>
     <div class="bottomPart">
         
         <input type="hidden" value="{{ url_for('create.static', filename='images/bin.svg') }}" id="binInputSrc">
         <div class="questionContainer">
-            <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="removeButton"></button>
+            <button class="button questionButton">Питання <span class="questionNumber">1</span> <img src="{{ url_for('create.static', filename='images/bin.svg') }}" alt="" class="add-question-icon removeButton"></button>
         </div>
         <button class="action" id="addQuestion">
-            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="">
+            <img src="{{ url_for('create.static', filename='images/add-question.svg') }}" alt="" class="addQuestionImage">
         </button>
         <div class="saveTestDiv">
             <button class="button saveTest">Зберегти тест</button>
@@ -148,5 +148,9 @@
         </button>
     </div>
 </div>
+<div class="modalWindow hidden">
+    <p>text</p>
+</div>
+<div class="background hidden"></div>
 <script type="module" src="{{ url_for('create.static', filename='js/mainCreate.js') }}"></script>
 {% endblock %}

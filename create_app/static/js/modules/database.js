@@ -1,5 +1,23 @@
 import $ from "../mainCreate.js";
 import save from "./save.js"
+import update from "./update.js";
+function redirect(key,text){
+    update(Number(key))
+    const modalWindow = document.querySelector(".modalWindow")
+    const background = document.querySelector(".background")
+    modalWindow.style.opacity = 1   
+    modalWindow.classList.remove("hidden")
+    background.classList.remove("hidden")
+    modalWindow.querySelector("p").textContent = text
+    const remover = () =>{
+        modalWindow.style.opacity = 0
+        setTimeout(()=>{modalWindow.classList.add("hidden")},200)
+        
+        background.classList.add("hidden")
+    }
+    modalWindow.addEventListener("click",remover)
+    background.addEventListener("click",remover)
+}
 function database() {
     
     document.addEventListener("DOMContentLoaded", function(){
@@ -28,19 +46,24 @@ function database() {
                 console.log(key,'NUMBER')
                 if (question.question == ""){
                     error = `Введіть запитання для питання номер ${Number(key)}`
-                    break
+                    // update(Number(key))
+                    redirect(key,error)
+                    return;
                 }
                 for (let answer of question.answers){
                     if (answer==""){
                         error = `не всі відповіді в ${Number(key)} питанні поставлені`
-                        break
+                        redirect(key,error)
+                        // update(Number(key))
+                        return;
                     }
                 }
                 console.log(question.correct,'weqqew', typeof question.correct, typeof question.correct,typeof undefined)
                 if (typeof question.correct==typeof undefined){
                     error = `ви забули вказати правильну відповідь для запитання номер ${Number(key)}`
-                    break
-
+                    // break
+                    redirect(key,error)
+                    return;
                 }
                 
                 // if (question)
