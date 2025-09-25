@@ -1,18 +1,20 @@
 function save() {
     let select = document.querySelector('.select')
-    if (select.id != "settingButton"){
+    let payload = {}
+
+    if (select.id != "settingButton") {
         let selectImgEl = document.querySelector(".selectImg");
-        let selectImgParent = selectImgEl ? selectImgEl.parentElement : null
+        let selectImgParent = selectImgEl ? selectImgEl.parentElement : null;
 
         let saveData = {
-            "question":document.querySelector("#questionNameInput").value,
-            'answers':[],
-            "correct":[],
-            "type":"OneAnswerQuestion"
-        }
+            "question": document.querySelector("#questionNameInput").value,
+            "answers": [],
+            "correct": [],
+            "type": "OneAnswerQuestion"
+        };
 
-        if (selectImgParent){
-            if (selectImgParent.id == 'questionType'){
+        if (selectImgParent) {
+            if (selectImgParent.id == 'questionType') {
                 let sel = selectImgParent.querySelector('select')
                 saveData["type"] = sel && sel.value == "2" ? "multipleQuestion" : "OneAnswerQuestion"
             } else {
@@ -20,26 +22,48 @@ function save() {
             }
         }
 
-        let answer
-        for (let question of document.querySelectorAll(".questionForTest")){
-            answer = question.querySelector("textarea").value
-            if (question.querySelector(".isAnswerCorrect").checked){
+        for (let question of document.querySelectorAll(".questionForTest")) {
+            let answer = question.querySelector("textarea").value
+            if (question.querySelector(".isAnswerCorrect").checked) {
                 saveData.correct.push(answer)
             }
             saveData.answers.push(answer)
         }
-        if (saveData["type"]=="OneAnswerQuestion"){
+
+        if (saveData["type"] == "OneAnswerQuestion") {
             saveData['correct'] = saveData['correct'][0]
         }
-        localStorage.setItem(select.querySelector(".questionNumber").textContent,JSON.stringify(saveData))
-    }else{
+
+        // localStorage
+        localStorage.setItem(select.querySelector(".questionNumber").textContent, JSON.stringify(saveData))
+
+        payload = {
+            key: select.querySelector(".questionNumber").textContent,
+            data: saveData,
+            type: "question"
+        }
+
+    } else {
         let objectsToSave = ['class', 'testNameInput', 'subject', 'description']
         let data = {}
-        for (let object of objectsToSave){
+        for (let object of objectsToSave) {
             data[object] = document.querySelector(`#${object}`).value
         }
-        localStorage.setItem('settingsOfTest',JSON.stringify(data))
+        localStorage.setItem('settingsOfTest', JSON.stringify(data))
+
+        payload = {
+            key: "settingsOfTest",
+            data: data,
+            type: "settings"
+        }
     }
+
+    fetch("/save", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    }).catch(err => console.error("Ошибка при сохранении:", err));
 }
+
 window.addEventListener('beforeunload', save)
 export default save
