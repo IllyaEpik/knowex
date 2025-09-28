@@ -50,7 +50,6 @@ function update(numberOfQuestion){
         settingButton.classList.add('select')
         load()
     })
-
     // удаление варианта ответа
     for (let bin of bins) {
         bin.addEventListener('click', () => {

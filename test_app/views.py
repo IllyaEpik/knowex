@@ -47,12 +47,12 @@ def render_test_host(test_id):
     DATABASE.session.add(code_db)
     DATABASE.session.commit()
 
-
+    flask.url_for(f'test.render_test_user/{test_id}')
     return{
         "test": test,
         "test_id": test_id,
         "host_name": flask_login.current_user.nickname,
-        'countQuestions': len(test.questions.split(' '))-1,
+        'countQuestions': len(test.questions.split(' '))-1, 
         "code": code
     }
 

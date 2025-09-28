@@ -22,7 +22,7 @@
 
 body.dark {
     --bg-report: #7e7f80;
-    --bg-test: #1a1a2d;
+    --bg-test: #333333;
     --bg-completed: #0a2a45;
     --bg-filter: transparent;
     --bg-btn: #3a3a7d;
@@ -250,7 +250,12 @@ select option {
     gap: 6.8241469816vw;
     padding: 1.0498687664vw;
 }
-
+body.dark .txt_container {
+    background: #f5fbff2f;
+}
+body.dark .txt_container_info {
+    background: #f5fbff49;
+}
 .txt_container_info {
     display: flex;
     align-items: center;
@@ -297,7 +302,12 @@ select option {
   line-height: 1.15;
   box-shadow: 0.0vw 0.5249343832vw 1.0498687664vw -0.94488188976vw;
 }
-
+body.dark .input-code {
+    background: #444444;
+}
+body.dark .codee {
+    background: #333;
+}
 .input-code:focus {
   border-radius: 1.312335958vw;
 }
@@ -319,7 +329,10 @@ select option {
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
 }
+body.dark .button_code{
+  background-color: #6fc5ffbb;
 
+}
 .button_code:hover {
   background-color: #6fc5ff;
   box-shadow: 0 0 1.0498687664vw #6fc5ff50;
@@ -352,7 +365,14 @@ select option {
     border: 0.05249343832vw solid #A1B4AE;
     gap: 0.5249343832vw;
 }
-
+body.dark .search-tests{
+    background: #333333;
+    color: white;
+}
+body.dark .input-search-tests {
+    background-color: #444444;
+    color: white;
+}
 .input-search-tests {
     width: 55.118110236vw;
     height: 1.0498687664vw;

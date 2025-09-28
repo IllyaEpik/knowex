@@ -28,7 +28,7 @@
 body.dark {
     --bg-description: #005c9e;
     --bg-login: #005c9e;
-    --bg-test: #1a1a2d;
+    --bg-test: #333333;
     --bg-link: #4a5bbd;
     --bg-link-hover: #2563eb;
     --color-main: #dbeafe;
@@ -43,7 +43,7 @@ body.dark {
     --border-radius-description: 1.5748031496000001vw;
     --border-radius-login: 3.1496062992000002vw;
     --border-radius-test: 0.83989501312vw;
-    --bg-test: #23243a; 
+    --bg-test: #333333; 
     --color-main: #e0e7ff;
     --color-title: #e0e7ff;
     --shadow-test: 0 0.10498687664vw 0.62992125984vw rgba(0,0,0,0.4);
@@ -174,7 +174,7 @@ body.dark #message {
 }
 
 body.dark .description {
-    background-color: #23243a;
+    background-color: #383737;
     color: var(--color-title);
     border: 0.05249343832vw solid #3b3c5a;
 }
@@ -206,4 +206,8 @@ body.dark .test_link a:focus {
 #main{
     background-color: var(--bg-main);
     border-radius: var(--border-radius-main);
+}
+body.dark #main{
+
+    background-color:  #7e7f80;
 }
