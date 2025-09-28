@@ -47,7 +47,7 @@ def render_test_host(test_id):
     DATABASE.session.add(code_db)
     DATABASE.session.commit()
 
-    flask.url_for(f'test.render_test_user/{test_id}')
+    # flask.url_for(f'test.render_test_user/{test_id}')
     return{
         "test": test,
         "test_id": test_id,
