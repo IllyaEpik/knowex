@@ -436,7 +436,9 @@ body.dark select, body.dark input{
 body.dark *{
     color: white;
 }
-
+object{
+    pointer-events: none;
+}
 /* font-size: 16px; */
 body.dark  #description{
     background: #333333;
