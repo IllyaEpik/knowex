@@ -39,8 +39,8 @@ function load() {
         let trashSvg = document.querySelector('#trashSvg').value
         document.querySelector("#questionNameInput").value = data.question
         QuestionsList.innerHTML = ''
-        let timeCorrect
-        let func
+        let timeCorrect;
+        let func;
         if (data["type"] == "multipleQuestion"){
             timeCorrect = data.correct ? data.correct : []
             func = (answer) => {return timeCorrect.includes(answer) ? " checked" : ""}
@@ -67,9 +67,17 @@ function load() {
         }
         QuestionsList.innerHTML += `
             <button class="center action" id="addAnswer">
-                <img src="${addQuestionImg.value}" alt="" class="add-question-icon">
+                <object data="${addQuestionImg.value}" type="image/svg+xml" class="svgToWhite add-question-icon"></object>
             </button>
         `
+        let svg = QuestionsList.querySelector("object")
+        svg.onload = function () {
+            if (body.classList.contains("dark")){
+                const realSvg = this.contentDocument.querySelector("path");
+                realSvg.style.stroke = "white";
+            }
+        }
+        
         add()
     }else{
         change(false)

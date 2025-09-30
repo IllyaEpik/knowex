@@ -10,11 +10,23 @@
         body.classList.add(savedTheme);
         input.checked = 'true'
     }
+    if (document.body.classList.contains('dark')){
+        const svgs = document.getElementsByClassName("svgToWhite")
+        for (let svg of svgs){
+            svg.addEventListener("load", function() {
+                const realSvg = this.contentDocument.querySelector("path");
+                realSvg.style.stroke = "white";
+                // realSvg.style.fill = "white";
+            })
+        }
+		// body.dark .allArrows path{
+		//     stroke: white;
 
+		// }
+	}
     themeToggleButton.addEventListener("click", function(event) {
         console.log(body.classList.contains("dark"))
         if (count){
-
             if (body.classList.contains("dark")) {
                 body.classList.remove("dark");
                 localStorage.setItem("theme", "");

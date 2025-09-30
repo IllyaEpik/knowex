@@ -10,7 +10,7 @@ function showSimpleModal(title, content) {
 
   const win = document.createElement('div');
   win.id = 'simple-modal-window';
-  win.style = 'background:#fff; padding:30px; border-radius:10px; min-width:300px; max-width:90vw; position:relative; box-shadow:0 8px 30px rgba(0,0,0,0.2);';
+  // win.style = '';
 
   const closeBtn = document.createElement('span');
   closeBtn.id = 'simple-modal-close';

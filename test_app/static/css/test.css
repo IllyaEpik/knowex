@@ -25,7 +25,10 @@ body, html {
     align-items: center;
     justify-content: center;
 }
+body.dark .test-block{
+    background-color: #333;
 
+}
 .test-about {
     width: 100%;
     height: 400px;
@@ -39,6 +42,9 @@ body, html {
     justify-content: center;
 }
 
+body.dark .test-about{
+    background-color: #555;
+}
 .test-title {
     width: 100%;
     height: max-content;
@@ -57,7 +63,10 @@ body, html {
     align-items: center;
     border-radius: 40px;
 }
+body.dark .info-block{
+    background-color: #6e6e6e;
 
+}
 .info {
     width: 90%;
     display: flex;
@@ -81,14 +90,58 @@ body, html {
 }
 
 .modal-btn {
-    width: 80px;
-    height: 80px;
+    width: 200px;
+    height: 220px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     margin: 10px;
+    background-color: white;
+    font-size: large;
 }
+body.dark .modal-btn{
+    background-color: #555;
+    color: white;
 
+}
+#simple-modal-window{
+    background:#fff; 
+    padding:30px; 
+    border-radius:10px; 
+    min-width:300px; 
+    max-width:90vw; 
+    position:relative; 
+    box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    color: white;
+    text-align: center;
+}
+#simple-modal-window h3{
+    align-self: center; 
+
+}
+#simple-modal-window div{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.start-btn-host,.start-btn{
+    color: black;
+    align-self: center;
+    /* text-decoration: none;
+    margin-left: auto;
+    margin-right: auto; */
+}
+body.dark #simple-modal-window{
+    background-color: #555;
+}
+body.dark .start-btn-host, body.dark .start-btn{
+    color: white;
+}
+.svgToWhite {
+    width: 150px;
+    height: 150px;
+    pointer-events: none; /* allows click to pass to button */
+}
 .picture1{
     background-image: url('../../static/images/single.svg');
     background-size: cover;

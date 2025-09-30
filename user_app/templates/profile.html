@@ -103,8 +103,9 @@
             </div>
             <div class="arrows">
                 <div class="arrow-block">
-                    <img src="{{ url_for('user.static', filename='images/arrow_left.svg') }}">
-                    <img src="{{ url_for('user.static', filename='images/arrow_right.svg') }}">
+                    <object data="{{ url_for('user.static', filename='images/arrow_left.svg') }}" type="image/svg+xml" class="svgToWhite"></object>
+                    <object data="{{ url_for('user.static', filename='images/arrow_right.svg') }}" type="image/svg+xml" class="svgToWhite"></object>
+                    <!-- <img src="{{ url_for('user.static', filename='images/arrow_right.svg') }}"> -->
                 </div>
             </div>
         </div>

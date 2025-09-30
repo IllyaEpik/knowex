@@ -30,10 +30,14 @@
         </div>
         <div class="test-choose">
             {% set first_qid = test.questions.split()[0] %}
-            <button class="modal-btn picture1" onclick="showSimpleModal('Модалка 1', `<a class='start-btn' href='{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}'>Почати тест</a>`)">Модалка 1</button>
-            <button class="modal-btn picture2" onclick="showSimpleModal('Модалка 2', `<a class='start-btn-host' id='start-btn-host' href='{{ url_for('test.render_test_host', test_id=test.id) }}'>Почати тест</a>`)">Модалка 2</button>
-            <button class="modal-btn picture3" onclick="showSimpleModal('Модалка 3', 'Контент модалки 3')">Модалка 3</button>
-            <button class="modal-btn picture4" onclick="showSimpleModal('Модалка 4', 'Контент модалки 4')">Модалка 4</button>
+            <button class="modal-btn picture1" onclick="showSimpleModal('пройти тест самостійно', `<a class='start-btn' href='{{ url_for('test.test_question', test_id=test.id, question_id=first_qid) }}'>Почати тест</a>`)">
+                <object data="{{ url_for('test.static', filename='images/single.svg') }}" type="image/svg+xml" class="svgToWhite"></object>
+                пройти тест самостійно</button>
+            <button class="modal-btn picture2" onclick="showSimpleModal('створити хост', `<a class='start-btn-host' id='start-btn-host' href='{{ url_for('test.render_test_host', test_id=test.id) }}'>Почати тест</a>`)">
+                <object data="{{ url_for('test.static', filename='images/multi_user.svg') }}" type="image/svg+xml" class="svgToWhite"></object>
+                створити хост</button>
+            <!-- <button class="modal-btn picture3" onclick="showSimpleModal('Модалка 3', 'Контент модалки 3')">Модалка 3</button>
+            <button class="modal-btn picture4" onclick="showSimpleModal('Модалка 4', 'Контент модалки 4')">Модалка 4</button> -->
         </div>
     </div>
 
