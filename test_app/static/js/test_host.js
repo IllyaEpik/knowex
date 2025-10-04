@@ -114,7 +114,11 @@ let colors = [
     "#81BECE",
     "#BACBDB"
 ]
+
 function getRandomColor() {
+    if (body.classList.contains("dark")){
+        return "#495057 "
+    }
     let rand = Math.floor(Math.random()*colors.length) 
     return colors[Number(rand)]
 }

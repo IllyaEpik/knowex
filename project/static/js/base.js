@@ -16,20 +16,17 @@
             svg.addEventListener("load", function() {
                 const realSvg = this.contentDocument.querySelector("path");
                 realSvg.style.stroke = "white";
-                // realSvg.style.fill = "white";
             })
         }
-		// body.dark .allArrows path{
-		//     stroke: white;
-
-		// }
 	}
     themeToggleButton.addEventListener("click", function(event) {
         console.log(body.classList.contains("dark"))
+        const svgs = document.getElementsByClassName("svgToWhite")
         if (count){
             if (body.classList.contains("dark")) {
                 body.classList.remove("dark");
                 localStorage.setItem("theme", "");
+                
             } else {
                 body.classList.add("dark");
                 localStorage.setItem("theme", "dark"); 
@@ -37,6 +34,17 @@
             count = false
         }else{
             count = true
+        }
+        for (let svg of svgs){
+            console.log(svg)
+            if (!svg || !svg.contentDocument){
+                svg.addEventListener("load", function() {
+                    const realSvg = this.contentDocument.querySelector("path");
+                    realSvg.style.stroke = "white";
+                })
+                return;
+            }
+            svg.contentDocument.querySelector("path").style.stroke = body.classList.contains("dark") ? "white" : "black"
         }
     });
 // });

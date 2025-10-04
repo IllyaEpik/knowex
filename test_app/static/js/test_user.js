@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
         "#BACBDB"
     ]
     function getRandomColor() {
+        if (body.classList.contains("dark")){
+            return "#495057 "
+        }
         let rand = Math.floor(Math.random()*colors.length) 
         return colors[Number(rand)]
     }
@@ -183,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     socket.on('test_closed', () => {
         alert('Тест було закрито хостом');
-        window.location.href = '/';
+        // window.location.href = '/';
     });
 
     document.addEventListener('submit', function (e) {

@@ -35,15 +35,18 @@ li.red .participant-square{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #ffffff;
+    /* background: #ffffff; */
     padding: 10px 20px;
-    color: #ffffff;
+    /* color: #ffffff; */
     width: 1590px;
     height: 60px;
     width: max-content;
     
 }
+/* body.dark .test-header{
+    background: #181818;
 
+} */
 .headerButon {
 
 
@@ -77,21 +80,28 @@ li.red .participant-square{
 background:#f4fbff;
 }
 #rightPanel {
-    
+    display: flex;
+    flex-direction: column;
     width: 240px;
-    height: 92%;
+    flex-grow: 1;
+    height: calc(100vh - 5.30183727032vw);
+    /* height: 92%; */
     flex-direction: column;
     align-items: flex-start;
     /* background: linear-gradient(to bottom, var(--bg-panel), 50%, #ffffff); */
     position: fixed;
     bottom: 0;
     right: 0;
+    /* top: 10px;    */
     z-index: 4;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
 
+}
+body.dark span{
+    color: white    ;
 }
 .header-right {
 
@@ -265,13 +275,20 @@ background:#f4fbff;
     font-size: 24px;
 
 }
+body.dark .participants-title{
+    background-color: #4A5A6D;
+    color: white;
+}
 body.dark{
     background-color: #181818;
 }
-
-.question-count:hover{
-    background-color: #BEE7FF !important;
+body.dark .question-count{
+    background-color: #4A5A6D;
+    color: white    ;
 }
+/* .question-count:hover{
+    background-color: #BEE7FF !important;
+} */
 .listOfQuestions{
     display: flex;
     flex-direction: column;
@@ -301,6 +318,9 @@ body.dark{
     background:#FFFFFF ;
     border-radius: 50px;
 }
+body.dark .main-content{
+    background:#222 ;
+}
 .diagramm{
     width: 800px;
     height: 600px;
@@ -328,7 +348,11 @@ body.dark{
     background-color: #ffffff;
     align-items: center;
 }
+body.dark .question-section{
+    background-color: #333;
+    color:white;
 
+}
 /* начало Рейтинга участников */
 .rating-block {
     font-size: 16px;
@@ -402,11 +426,13 @@ body.dark{
 
 }
 
-.test_code{
+#test_code{
     font-size: 16px;
     color: #7f8c8d;
 }
-
+body.dark #test_code{
+    color: lightcyan;
+}
 .current-question,
 .question-text {
     /* margin-bottom: 10px; */
@@ -415,7 +441,9 @@ body.dark{
     /* width: 1270px; */
     /* height: 40px; */
 }
-
+body.dark .question-text{
+    color: #e6e6e6;
+}
 /* .question-progress {
     display: flex;
     gap: 8px;
@@ -508,15 +536,25 @@ body.dark{
     border: #B9B9B9 2px solid;
     align-items: center;
 }
+body.dark .header-left{
+    background-color: #323232;
+}
 .headerButton{
     border-radius: 50px;
     width: 190.5px;
     height: 28px;
     border: 1px solid rgba(185, 185, 185, 0.5);
+    cursor: pointer;
     background-color: white;
+}
+body.dark .headerButton{
+    background-color: #333;
 }
 .headerButton.selected{
     background-color: #7DD0FF;
+}
+body.dark .headerButton.selected{
+    background-color: #00BCD4;
 }
 .answer-options {
     
@@ -540,10 +578,13 @@ body.dark{
     color: #333;
     display: flex;
     align-items: center;
+    font-size: 24px;
     justify-content: center;
     transition: all 0.3s ease;
 }
-
+body.dark .answer-option{
+    color: #F8F9FA;
+}
 .answer-option:hover {
     border-color: #3498db;
     background-color: #ecf0f1;
@@ -570,7 +611,8 @@ body.dark{
     border: 1px solid #ddd;
 
     width: 240px;
-    height: 660px;
+    /* height: 660px; */
+    height: 90%;
     background-color: #ffffff;
     border-left: 1px solid #ddd;
     padding: 20px;
@@ -581,11 +623,11 @@ body.dark{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 body.dark .participants-section {
-    background-color: #444;
+    background-color: #282828 ;
     border-color: #666;
 }
 body.dark .header-right{
-    background-color: #444;
+    background-color: #282828  ;
     border-color: #666;
 }
 
@@ -654,7 +696,12 @@ body.dark .header-right{
     background-color: #f5f5f5;
     overflow: visible;
 }
-
+body.dark #final_results{
+    background-color: #282828;
+}
+body.dark li, body.dark, body.dark b, body.dark .results-list .userName{
+    color: white ;
+}
 .results-list {
     display: flex;
     flex-direction: column;
@@ -865,4 +912,7 @@ body.dark .header-right{
     align-self: flex-start;
     width: 200px;
     height: 40px;
+}
+body.dark #end_test_btn, body.dark #start_test_btn{
+    background-color: #4A5A6D;
 }
