@@ -16,7 +16,6 @@ try:
 except Exception:
     Questions = None
 
-# python
 from flask import Blueprint, request, jsonify
 
 profile_api = Blueprint('profile_api', __name__, url_prefix='/profile/api')
@@ -168,7 +167,6 @@ def api_update_test():
                 test = None
         if not test:
             test = Test()
-        # Check ownership
         user = flask_login.current_user
         if str(test_id) not in (user.create_tests or '').split():
             return jsonify({'success': False, 'error': 'Not owner of test'}), 403
@@ -320,26 +318,21 @@ def create_test_route():
             questions = []
         if Questions is not None:
             for q in questions:
-                q_text = q.get('question', '')
-                q_correct = q.get('correct', '')
-                q_options = q.get('options', [])
+                q_text = q.get('question', '') or q.get('text', '')
+                q_correct = q.get('correct', '') or q.get('correct_answer', '')
+                q_options = q.get('options', []) or q.get('answers', [])
                 question_obj = Questions()
                 try: question_obj.test_id = test.id
+                except Exception: pass
+                try: question_obj.text = q_text
+                except Exception: pass
+                try: question_obj.correct_answer = q_correct
+                except Exception: pass
+                try:
+                    question_obj.answers = json.dumps(q_options, ensure_ascii=False)
                 except Exception:
-                    try: setattr(question_obj, 'test_id', test.id)
-                    except Exception: pass
-                try: question_obj.question = q_text
-                except Exception:
-                    try: setattr(question_obj, 'question', q_text)
-                    except Exception: pass
-                try: question_obj.correct = q_correct
-                except Exception:
-                    try: setattr(question_obj, 'correct', q_correct)
-                    except Exception: pass
-                try: question_obj.options = json.dumps(q_options, ensure_ascii=False)
-                except Exception:
-                    try: setattr(question_obj, 'options', json.dumps(q_options))
-                    except Exception: pass
+                    try: question_obj.answers = json.dumps(q_options)
+                    except Exception: question_obj.answers = str(q_options)
                 DATABASE.session.add(question_obj)
         else:
             try: test.questions_json = json.dumps(questions, ensure_ascii=False)
@@ -365,9 +358,6 @@ def create_test_route():
         DATABASE.session.rollback()
         current_app.logger.exception("create_test error")
         return jsonify({'success': False, 'error': str(e)}), 500
-# ...existing code...
-from flask import Blueprint, request, jsonify
-# ...existing code...
 
 def _find_column_name(model, candidates):
     try:
@@ -400,24 +390,19 @@ def api_get_test():
             test = None
         if not test:
             return jsonify({'success': False, 'error': 'Test not found'}), 404
-        # Check ownership
         user = flask_login.current_user
         if str(test_id) not in (user.create_tests or '').split():
             return jsonify({'success': False, 'error': 'Not owner of test'}), 403
-        # build test dict
         t = {}
-        # title/name
         t['id'] = getattr(test, 'id', None)
         t['title'] = getattr(test, 'title', None) or getattr(test, 'name', None) or getattr(test, 'subject', None) or ''
         t['description'] = getattr(test, 'description', None) or ''
-        # questions
         questions_out = []
         if 'Questions' in globals() and Questions is not None:
             q_test_col = _find_column_name(Questions, ['test_id', 'test', 'testId', 'testid'])
             q_text_col = _find_column_name(Questions, ['question', 'text', 'question_text'])
             q_options_col = _find_column_name(Questions, ['options', 'answers', 'options_json'])
             q_correct_col = _find_column_name(Questions, ['correct', 'correct_answer', 'answer'])
-            # try to query
             try:
                 if q_test_col:
                     filt = {q_test_col: test.id}
@@ -438,25 +423,21 @@ def api_get_test():
                     'options': [],
                     'correct': None
                 }
-                # options parsing
                 raw_opts = getattr(r, q_options_col, None) if q_options_col else None
                 if raw_opts:
                     if isinstance(raw_opts, str):
                         try:
                             q['options'] = json.loads(raw_opts)
                         except Exception:
-                            # try pipe or comma separated
                             sep = '|' if '|' in raw_opts else ','
                             q['options'] = [s.strip() for s in raw_opts.split(sep) if s.strip()]
                     else:
                         q['options'] = raw_opts
-                # correct
                 corr = getattr(r, q_correct_col, None) if q_correct_col else None
                 if corr is not None:
                     q['correct'] = corr
                 questions_out.append(q)
         else:
-            # fallback: test.questions or questions_json
             raw = getattr(test, 'questions', None) or getattr(test, 'questions_json', None) or getattr(test, 'questions_json_str', None)
             try:
                 questions_out = json.loads(raw) if raw else []
@@ -492,11 +473,9 @@ def api_update_test_full():
                 test = None
         if not test:
             test = Test()
-        # Check ownership
         user = flask_login.current_user
         if str(test_id) not in (user.create_tests or '').split():
             return jsonify({'success': False, 'error': 'Not owner of test'}), 403
-        # set title/description robustly
         try:
             field = 'title' if hasattr(test, 'title') else 'name'
             setattr(test, field, title)
@@ -510,14 +489,11 @@ def api_update_test_full():
             raise e
         DATABASE.session.add(test)
         DATABASE.session.flush()
-        # save questions
         if 'Questions' in globals() and Questions is not None:
-            # determine column names
             q_test_col = _find_column_name(Questions, ['test_id', 'test', 'testId', 'testid'])
             q_text_col = _find_column_name(Questions, ['question', 'text', 'question_text'])
             q_options_col = _find_column_name(Questions, ['options', 'answers', 'options_json'])
             q_correct_col = _find_column_name(Questions, ['correct', 'correct_answer', 'answer'])
-            # delete existing for this test
             try:
                 if q_test_col:
                     filt = {q_test_col: test.id}
@@ -525,7 +501,6 @@ def api_update_test_full():
                     for ex in existing:
                         DATABASE.session.delete(ex)
                 else:
-                    # fallback: try to delete anything referencing this test by attribute 'test' equals id
                     existing = Questions.query.all()
                     for ex in existing:
                         try:
@@ -533,12 +508,11 @@ def api_update_test_full():
                                 DATABASE.session.delete(ex)
                         except Exception:
                             pass
-            except Exception as e:
-                current_app.logger.exception("Failed to delete existing questions")
-            # add provided questions
+            except Exception:
+                pass
             for q in questions:
                 q_text = q.get('text') or q.get('question') or ''
-                q_options = q.get('options') or []
+                q_options = q.get('options') or q.get('answers') or []
                 q_correct = q.get('correct', None)
                 qobj = Questions()
                 try:
@@ -546,19 +520,17 @@ def api_update_test_full():
                         setattr(qobj, q_test_col, test.id)
                     else:
                         setattr(qobj, 'test_id', test.id)
-                except Exception as e:
-                    current_app.logger.exception("Failed to set test_id for question")
+                except Exception:
+                    pass
                 try:
                     if q_text_col:
                         setattr(qobj, q_text_col, q_text)
                     else:
-                        setattr(qobj, 'question', q_text)
-                except Exception as e:
-                    current_app.logger.exception("Failed to set question text")
-                # options: store as JSON string if DB field is string
+                        setattr(qobj, 'text', q_text)
+                except Exception:
+                    pass
                 try:
                     if q_options_col:
-                        # if column type is string, save JSON text
                         val = q_options
                         if isinstance(val, (list, dict)):
                             try:
@@ -568,19 +540,18 @@ def api_update_test_full():
                         else:
                             setattr(qobj, q_options_col, val)
                     else:
-                        setattr(qobj, 'options', json.dumps(q_options, ensure_ascii=False))
-                except Exception as e:
-                    current_app.logger.exception("Failed to set options for question")
+                        setattr(qobj, 'answers', json.dumps(q_options, ensure_ascii=False))
+                except Exception:
+                    pass
                 try:
                     if q_correct_col:
                         setattr(qobj, q_correct_col, q_correct)
                     else:
-                        setattr(qobj, 'correct', q_correct)
-                except Exception as e:
-                    current_app.logger.exception("Failed to set correct for question")
+                        setattr(qobj, 'correct_answer', q_correct)
+                except Exception:
+                    pass
                 DATABASE.session.add(qobj)
         else:
-            # store questions into Test.questions_json or Test.questions
             try:
                 setattr(test, 'questions_json', json.dumps(questions, ensure_ascii=False))
             except Exception as e:
@@ -593,4 +564,3 @@ def api_update_test_full():
         DATABASE.session.rollback()
         current_app.logger.exception("update_test_full error")
         return jsonify({'success': False, 'error': str(e)}), 500
-# ...existing code...
