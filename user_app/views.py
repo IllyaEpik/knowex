@@ -21,17 +21,6 @@ from flask import Blueprint, request, jsonify
 
 profile_api = Blueprint('profile_api', __name__, url_prefix='/profile/api')
 
-@profile_api.route('/update_setting', methods=['POST'])
-def update_setting():
-    data = request.get_json()
-    print(data,flask_login.current_user)
-    setattr(
-        flask_login.current_user,
-        data["field"],
-        data["value"]
-    )
-    DATABASE.session.commit()
-    return jsonify(success=True)
 def render_user():
     if flask.request.method == "POST":
         if flask.request.form.get('auth'):
@@ -45,7 +34,6 @@ def render_user():
                 user_exists = User.query.filter_by(email=email).first()
                 nickname = flask.request.form.get('nickname', '').strip()
                 nickname_exists = User.query.filter_by(nickname=nickname).first()
-                print(nickname,nickname_exists,user_exists,email)
                 if user_exists:
                     return flask.render_template("user.html")
                 elif nickname_exists:
@@ -62,9 +50,15 @@ def render_user():
                     flask.session.modified = True
                     return flask.render_template("user.html")
                 else:
-                    flask.session['messages'].append('Пароли не совпадают!')
+                    messages = flask.session.get('messages', [])
+                    messages.append('Пароли не совпадают!')
+                    flask.session['messages'] = messages
+                    flask.session.modified = True
             except Exception:
-                flask.session['messages'].append('Ошибка регистрации!')
+                messages = flask.session.get('messages', [])
+                messages.append('Ошибка регистрации!')
+                flask.session['messages'] = messages
+                flask.session.modified = True
     flask.session.pop('show_modal', None)
     return flask.render_template("user.html")
 
@@ -75,19 +69,18 @@ def render_profile_page(user_id: int):
     if not flask_login.current_user.is_authenticated:
         return flask.redirect('/user')
     user = User.query.filter_by(id=user_id).first()
-    list_created_tests = user.create_tests.split(' ') if user.create_tests else []
-    list_completed_tests = user.complete_tests.split(' ') if user.complete_tests else []
+    list_created_tests = list(filter(None, user.create_tests.split(' ') if user.create_tests else []))
+    list_completed_tests = list(filter(None, user.complete_tests.split(' ') if user.complete_tests else []))
     count_created_tests = len(list_created_tests)
     count_completed_tests = len(list_completed_tests)
-    print(list_created_tests,list_completed_tests)
     return {
         "user": user,
         "user_id": user_id,
         "current_id": flask_login.current_user.id,
         "list_created_tests": list_created_tests,
         "list_completed_tests": list_completed_tests,
-        "count_created_tests": count_created_tests - 1 if count_created_tests>0 else 0,
-        "count_completed_tests": count_completed_tests - 1 if count_completed_tests>0 else 0,
+        "count_created_tests": count_created_tests,
+        "count_completed_tests": count_completed_tests,
         "Test": Test
     }
 
@@ -135,8 +128,10 @@ def render_code():
             flask_login.login_user(user)
         return flask.redirect('/')
     else:
-        if 'Неправильний код підтвердження' not in flask.session['messages']:
-            flask.session['messages'].append('Неправильний код підтвердження')
+        messages = flask.session.get('messages', [])
+        if 'Неправильний код підтвердження' not in messages:
+            messages.append('Неправильний код підтвердження')
+        flask.session['messages'] = messages
         flask.session['show_modal'] = True
         flask.session.modified = True
         return "Неправильний код підтвердження", 400
@@ -148,10 +143,12 @@ def add_cors(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     return response
 
-@profile_api.route('/profile/api/update_test', methods=['POST', 'OPTIONS'])
+@profile_api.route('/update_test', methods=['POST', 'OPTIONS'])
 def api_update_test():
     if request.method == 'OPTIONS':
-        return jsonify({'success': True}), 200
+         return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
     try:
         data = request.get_json(silent=True) or {}
         if not data and request.form:
@@ -162,21 +159,27 @@ def api_update_test():
         test = None
         if test_id:
             try:
+                test_id = int(test_id)
+            except ValueError:
+                return jsonify({'success': False, 'error': 'Invalid id format'}), 400
+            try:
                 test = Test.query.filter_by(id=test_id).first()
             except Exception:
                 test = None
         if not test:
             test = Test()
-        try:
+        # Check ownership
+        user = flask_login.current_user
+        if str(test_id) not in (user.create_tests or '').split():
+            return jsonify({'success': False, 'error': 'Not owner of test'}), 403
+        if hasattr(test, 'title'):
             test.title = title
-        except Exception:
-            try: setattr(test, 'title', title)
-            except Exception: pass
-        try:
+        else:
+            setattr(test, 'title', title)
+        if hasattr(test, 'description'):
             test.description = desc
-        except Exception:
-            try: setattr(test, 'description', desc)
-            except Exception: pass
+        else:
+            setattr(test, 'description', desc)
         DATABASE.session.add(test)
         DATABASE.session.commit()
         return jsonify({'success': True, 'id': getattr(test, 'id', None), 'title': title, 'description': desc})
@@ -185,32 +188,24 @@ def api_update_test():
         current_app.logger.exception("api_update_test error")
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@profile_api.route('/profile/api/update_setting', methods=['POST', 'OPTIONS'])
+@profile_api.route('/update_setting', methods=['POST', 'OPTIONS'])
 def api_update_setting():
     if request.method == 'OPTIONS':
-        return jsonify({'success': True}), 200
+         return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
     try:
         data = request.get_json(silent=True) or {}
         if not data and request.form:
             data = {'field': request.form.get('field'), 'value': request.form.get('value')}
         field = (data.get('field') or '').strip()
         value = data.get('value')
-        user = None
-        try:
-            import flask_login
-            if flask_login.current_user and getattr(flask_login.current_user, 'is_authenticated', False):
-                user = flask_login.current_user
-        except Exception:
-            user = None
-        if user is None:
-            user = User.query.first()
-        if user is None:
-            return jsonify({'success': False, 'error': 'No user found to update'}), 500
-        try:
-            setattr(user, field, value)
-        except Exception:
-            try: setattr(user, field, value)
-            except Exception: pass
+        user = flask_login.current_user
+        if not field:
+            return jsonify({'success': False, 'error': 'No field provided'}), 400
+        if not hasattr(user, field):
+            return jsonify({'success': False, 'error': 'Invalid field'}), 400
+        setattr(user, field, value)
         DATABASE.session.add(user)
         DATABASE.session.commit()
         return jsonify({'success': True, 'field': field, 'value': value})
@@ -223,41 +218,35 @@ def api_update_setting():
 def update_user():
     if request.method == 'OPTIONS':
         return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
     try:
-        user = None
-        try:
-            import flask_login
-            if flask_login.current_user and getattr(flask_login.current_user, 'is_authenticated', False):
-                user = flask_login.current_user
-        except Exception:
-            user = None
-        if user is None:
-            user = User.query.first()
-        if user is None:
-            return jsonify({'success': False, 'error': 'No user found'}), 500
+        user = flask_login.current_user
         username = request.form.get('username')
         email = request.form.get('email')
         description = request.form.get('description')
         password = request.form.get('password')
         if username is not None:
-            if hasattr(user, 'username'):
-                user.username = username
-            elif hasattr(user, 'nickname'):
-                user.nickname = username
+            field = 'username' if hasattr(user, 'username') else 'nickname'
+            if hasattr(user, field):
+                setattr(user, field, username)
             else:
-                try: setattr(user, 'username', username)
-                except Exception: pass
+                return jsonify({'success': False, 'error': 'Invalid field username/nickname'}), 400
         if email is not None:
-            try: user.email = email
-            except Exception: setattr(user, 'email', email)
+            if hasattr(user, 'email'):
+                user.email = email
+            else:
+                return jsonify({'success': False, 'error': 'Invalid field email'}), 400
         if description is not None:
-            try: user.description = description
-            except Exception:
-                try: setattr(user, 'description', description)
-                except Exception: pass
+            if hasattr(user, 'description'):
+                user.description = description
+            else:
+                return jsonify({'success': False, 'error': 'Invalid field description'}), 400
         if password is not None:
-            try: user.password = password
-            except Exception: setattr(user, 'password', password)
+            if hasattr(user, 'password'):
+                user.password = password
+            else:
+                return jsonify({'success': False, 'error': 'Invalid field password'}), 400
         avatar = request.files.get('avatar') or request.files.get('image')
         if avatar and avatar.filename:
             filename = secure_filename(avatar.filename)
@@ -265,10 +254,11 @@ def update_user():
             os.makedirs(dest_dir, exist_ok=True)
             save_path = os.path.join(dest_dir, filename)
             avatar.save(save_path)
-            try: user.avatar = filename
-            except Exception:
-                try: user.image = filename
-                except Exception: setattr(user, 'avatar', filename)
+            field = 'avatar' if hasattr(user, 'avatar') else 'image'
+            if hasattr(user, field):
+                setattr(user, field, filename)
+            else:
+                return jsonify({'success': False, 'error': 'Invalid field avatar/image'}), 400
         DATABASE.session.add(user)
         DATABASE.session.commit()
         return jsonify({'success': True, 'message': 'User updated'})
@@ -284,6 +274,8 @@ def update_user():
 def create_test_route():
     if request.method == 'OPTIONS':
         return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
     try:
         subject = request.form.get('subject') or ''
         class_name = request.form.get('class_name') or ''
@@ -303,12 +295,8 @@ def create_test_route():
         try: test.subject = subject
         except Exception: setattr(test, 'subject', subject)
         try:
-            if hasattr(test, 'name'):
-                test.name = name
-            elif hasattr(test, 'title'):
-                test.title = name
-            else:
-                setattr(test, 'name', name)
+            field = 'name' if hasattr(test, 'name') else 'title'
+            setattr(test, field, name)
         except Exception:
             pass
         try: test.class_name = class_name
@@ -359,14 +347,13 @@ def create_test_route():
                 try: setattr(test, 'questions_json', json.dumps(questions))
                 except Exception: pass
         try:
-            user = User.query.first()
-            if user and hasattr(user, 'create_tests'):
-                cur = user.create_tests or ''
-                if cur.strip() == '':
-                    user.create_tests = str(test.id)
-                else:
-                    user.create_tests = cur + ' ' + str(test.id)
-                DATABASE.session.add(user)
+            user = flask_login.current_user
+            cur = user.create_tests or ''
+            if cur.strip() == '':
+                user.create_tests = str(test.id)
+            else:
+                user.create_tests = cur + ' ' + str(test.id)
+            DATABASE.session.add(user)
         except Exception:
             current_app.logger.exception("Failed to update user.create_tests")
         DATABASE.session.commit()
@@ -378,3 +365,232 @@ def create_test_route():
         DATABASE.session.rollback()
         current_app.logger.exception("create_test error")
         return jsonify({'success': False, 'error': str(e)}), 500
+# ...existing code...
+from flask import Blueprint, request, jsonify
+# ...existing code...
+
+def _find_column_name(model, candidates):
+    try:
+        cols = set(c.name for c in model.__table__.columns)
+    except Exception:
+        cols = set(dir(model))
+    for c in candidates:
+        if c in cols or hasattr(model, c):
+            return c
+    return None
+
+@profile_api.route('/get_test', methods=['GET', 'OPTIONS'])
+def api_get_test():
+    if request.method == 'OPTIONS':
+        return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
+    try:
+        test_id = request.args.get('id') or (request.json.get('id') if request.is_json else None)
+        if not test_id:
+            return jsonify({'success': False, 'error': 'No id provided'}), 400
+        try:
+            test_id = int(test_id)
+        except ValueError:
+            return jsonify({'success': False, 'error': 'Invalid id format'}), 400
+        test = None
+        try:
+            test = Test.query.filter_by(id=test_id).first()
+        except Exception:
+            test = None
+        if not test:
+            return jsonify({'success': False, 'error': 'Test not found'}), 404
+        # Check ownership
+        user = flask_login.current_user
+        if str(test_id) not in (user.create_tests or '').split():
+            return jsonify({'success': False, 'error': 'Not owner of test'}), 403
+        # build test dict
+        t = {}
+        # title/name
+        t['id'] = getattr(test, 'id', None)
+        t['title'] = getattr(test, 'title', None) or getattr(test, 'name', None) or getattr(test, 'subject', None) or ''
+        t['description'] = getattr(test, 'description', None) or ''
+        # questions
+        questions_out = []
+        if 'Questions' in globals() and Questions is not None:
+            q_test_col = _find_column_name(Questions, ['test_id', 'test', 'testId', 'testid'])
+            q_text_col = _find_column_name(Questions, ['question', 'text', 'question_text'])
+            q_options_col = _find_column_name(Questions, ['options', 'answers', 'options_json'])
+            q_correct_col = _find_column_name(Questions, ['correct', 'correct_answer', 'answer'])
+            # try to query
+            try:
+                if q_test_col:
+                    filt = {q_test_col: test.id}
+                    rows = Questions.query.filter_by(**filt).all()
+                else:
+                    rows = Questions.query.all()
+            except Exception:
+                rows = Questions.query.all()
+            for r in rows:
+                try:
+                    if q_test_col and getattr(r, q_test_col, None) != test.id:
+                        continue
+                except Exception:
+                    pass
+                q = {
+                    'id': getattr(r, 'id', None),
+                    'text': (getattr(r, q_text_col, '') or '').strip() if q_text_col else '',
+                    'options': [],
+                    'correct': None
+                }
+                # options parsing
+                raw_opts = getattr(r, q_options_col, None) if q_options_col else None
+                if raw_opts:
+                    if isinstance(raw_opts, str):
+                        try:
+                            q['options'] = json.loads(raw_opts)
+                        except Exception:
+                            # try pipe or comma separated
+                            sep = '|' if '|' in raw_opts else ','
+                            q['options'] = [s.strip() for s in raw_opts.split(sep) if s.strip()]
+                    else:
+                        q['options'] = raw_opts
+                # correct
+                corr = getattr(r, q_correct_col, None) if q_correct_col else None
+                if corr is not None:
+                    q['correct'] = corr
+                questions_out.append(q)
+        else:
+            # fallback: test.questions or questions_json
+            raw = getattr(test, 'questions', None) or getattr(test, 'questions_json', None) or getattr(test, 'questions_json_str', None)
+            try:
+                questions_out = json.loads(raw) if raw else []
+            except Exception:
+                questions_out = []
+        t['questions'] = questions_out
+        return jsonify({'success': True, 'test': t})
+    except Exception as e:
+        current_app.logger.exception("get_test error")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@profile_api.route('/update_test_full', methods=['POST', 'OPTIONS'])
+def api_update_test_full():
+    if request.method == 'OPTIONS':
+        return jsonify({'success': True}), 200
+    if not flask_login.current_user.is_authenticated:
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
+    try:
+        data = request.get_json(silent=True) or {}
+        test_id = data.get('id')
+        title = (data.get('title') or '').strip()
+        desc = (data.get('description') or '').strip()
+        questions = data.get('questions', [])
+        test = None
+        if test_id:
+            try:
+                test_id = int(test_id)
+            except ValueError:
+                return jsonify({'success': False, 'error': 'Invalid id format'}), 400
+            try:
+                test = Test.query.filter_by(id=test_id).first()
+            except Exception:
+                test = None
+        if not test:
+            test = Test()
+        # Check ownership
+        user = flask_login.current_user
+        if str(test_id) not in (user.create_tests or '').split():
+            return jsonify({'success': False, 'error': 'Not owner of test'}), 403
+        # set title/description robustly
+        try:
+            field = 'title' if hasattr(test, 'title') else 'name'
+            setattr(test, field, title)
+        except Exception as e:
+            current_app.logger.exception("Failed to set title")
+            raise e
+        try:
+            setattr(test, 'description', desc)
+        except Exception as e:
+            current_app.logger.exception("Failed to set description")
+            raise e
+        DATABASE.session.add(test)
+        DATABASE.session.flush()
+        # save questions
+        if 'Questions' in globals() and Questions is not None:
+            # determine column names
+            q_test_col = _find_column_name(Questions, ['test_id', 'test', 'testId', 'testid'])
+            q_text_col = _find_column_name(Questions, ['question', 'text', 'question_text'])
+            q_options_col = _find_column_name(Questions, ['options', 'answers', 'options_json'])
+            q_correct_col = _find_column_name(Questions, ['correct', 'correct_answer', 'answer'])
+            # delete existing for this test
+            try:
+                if q_test_col:
+                    filt = {q_test_col: test.id}
+                    existing = Questions.query.filter_by(**filt).all()
+                    for ex in existing:
+                        DATABASE.session.delete(ex)
+                else:
+                    # fallback: try to delete anything referencing this test by attribute 'test' equals id
+                    existing = Questions.query.all()
+                    for ex in existing:
+                        try:
+                            if getattr(ex, 'test', None) == test.id or getattr(ex, 'test_id', None) == test.id:
+                                DATABASE.session.delete(ex)
+                        except Exception:
+                            pass
+            except Exception as e:
+                current_app.logger.exception("Failed to delete existing questions")
+            # add provided questions
+            for q in questions:
+                q_text = q.get('text') or q.get('question') or ''
+                q_options = q.get('options') or []
+                q_correct = q.get('correct', None)
+                qobj = Questions()
+                try:
+                    if q_test_col:
+                        setattr(qobj, q_test_col, test.id)
+                    else:
+                        setattr(qobj, 'test_id', test.id)
+                except Exception as e:
+                    current_app.logger.exception("Failed to set test_id for question")
+                try:
+                    if q_text_col:
+                        setattr(qobj, q_text_col, q_text)
+                    else:
+                        setattr(qobj, 'question', q_text)
+                except Exception as e:
+                    current_app.logger.exception("Failed to set question text")
+                # options: store as JSON string if DB field is string
+                try:
+                    if q_options_col:
+                        # if column type is string, save JSON text
+                        val = q_options
+                        if isinstance(val, (list, dict)):
+                            try:
+                                setattr(qobj, q_options_col, json.dumps(val, ensure_ascii=False))
+                            except Exception:
+                                setattr(qobj, q_options_col, json.dumps(val))
+                        else:
+                            setattr(qobj, q_options_col, val)
+                    else:
+                        setattr(qobj, 'options', json.dumps(q_options, ensure_ascii=False))
+                except Exception as e:
+                    current_app.logger.exception("Failed to set options for question")
+                try:
+                    if q_correct_col:
+                        setattr(qobj, q_correct_col, q_correct)
+                    else:
+                        setattr(qobj, 'correct', q_correct)
+                except Exception as e:
+                    current_app.logger.exception("Failed to set correct for question")
+                DATABASE.session.add(qobj)
+        else:
+            # store questions into Test.questions_json or Test.questions
+            try:
+                setattr(test, 'questions_json', json.dumps(questions, ensure_ascii=False))
+            except Exception as e:
+                current_app.logger.exception("Failed to set questions_json")
+                try: setattr(test, 'questions', json.dumps(questions, ensure_ascii=False))
+                except Exception: pass
+        DATABASE.session.commit()
+        return jsonify({'success': True, 'id': getattr(test, 'id', None)})
+    except Exception as e:
+        DATABASE.session.rollback()
+        current_app.logger.exception("update_test_full error")
+        return jsonify({'success': False, 'error': str(e)}), 500
+# ...existing code...

@@ -29,8 +29,8 @@
                 {% if not is_author %}
                     <div class="block-user">
                         <p class="user-nickname">{{ user.nickname }}</p>
-                        <div class="user-count">Створених тестів: {{ user.created_tests|length }}</div>
-                        <div class="user-count">Пройдених тести: {{ user.completed_tests|length }}</div>
+                        <div class="user-count">Створених тестів: {{ count_created_tests }}</div>
+                        <div class="user-count">Пройдених тести: {{ count_completed_tests }}</div>
                     </div>
                 {% endif %}
             </div>
@@ -58,7 +58,7 @@
                 {% set test = Test.query.get(tid) %}
                 {% if test %}
                 
-                <div class="test">
+                <div class="test" data-id="{{ test.id }}" data-title="{{ test.name }}" data-description="{{ test.description or '' }}">
                                 <div class="name-block">
                                     <span class="name">{{ test.name }}</span>
 
@@ -83,7 +83,7 @@
                     {% for tid in list_completed_tests %}
                         {% set test = Test.query.get(tid) %}
                         {% if test %}
-                            <div class="test">
+                            <div class="test" data-id="{{ test.id }}" data-title="{{ test.name }}" data-description="{{ test.description or '' }}">
                                 <div class="name-block">
                                     <span class="name">{{ test.name }}</span>
                                     <!-- <button id="edit-name"><img src="{{ url_for('user.static', filename='images/edit.svg') }}"></button> -->

@@ -3,8 +3,8 @@ $(function(){
 	const created = document.querySelector('.created-tests');
 	const completed = document.querySelector('.completed-tests');
 	const userBlock = document.querySelector('.user-block');
-	const leftArrow = document.querySelector('.arrow-block img[src*="arrow_left"]');
-	const rightArrow = document.querySelector('.arrow-block img[src*="arrow_right"]');
+	const leftArrow = document.querySelector('.arrow-block object[data*="arrow_left"], .arrow-block img[src*="arrow_left"]');
+	const rightArrow = document.querySelector('.arrow-block object[data*="arrow_right"], .arrow-block img[src*="arrow_right"]');
 	const radios = document.querySelectorAll('input[name="btn"]');
 	const testsPerPage = document.querySelector("#is_author").value;
 	let currentPage = 0, currentEditing = null;
@@ -95,111 +95,250 @@ $(function(){
 		});
 	}
 
-	const createEditModal = ()=>{
-		if(qs('#editTestModal')) return;
-		const html = `
-		<div id="editTestModal" class="edit-modal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
-			<div class="edit-modal-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
-			<div class="edit-modal-window" role="dialog" aria-modal="true" style="position:relative;max-width:520px;width:90%;background:#fff;padding:18px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.2);">
-			<h3 style="margin-top:0;">Редагувати тест</h3>
-			<form id="editTestForm">
-				<div style="margin-bottom:10px;"><label for="editTestTitle">Назва</label><br><input id="editTestTitle" name="title" type="text" style="width:100%;padding:8px;" required /></div>
-				<div style="margin-bottom:10px;"><label for="editTestDesc">Опис (опціонально)</label><br><textarea id="editTestDesc" name="description" style="width:100%;padding:8px;" rows="4"></textarea></div>
-				<div style="display:flex;gap:8px;justify-content:flex-end;"><button type="button" id="cancelEditBtn">Відміна</button><button type="submit" id="saveEditBtn">Зберегти</button></div>
-			</form>
-			</div>
-		</div>`;
-		document.body.insertAdjacentHTML('beforeend',html);
-		const modal = qs('#editTestModal');
-		const close = ()=>{ modal.style.display='none'; currentEditing=null; };
-		modal.querySelector('.edit-modal-backdrop').addEventListener('click', close);
-		modal.querySelector('#cancelEditBtn').addEventListener('click', close);
-		document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.style.display==='flex') close(); });
-		modal.querySelector('#editTestForm').addEventListener('submit', e=>{ e.preventDefault(); saveEditFromModal(); });
-	};
 
-	const openEditModal = (test)=>{
-		createEditModal();
-		currentEditing = test;
-		const modal = qs('#editTestModal');
-		const title = modal.querySelector('#editTestTitle');
-		const desc = modal.querySelector('#editTestDesc');
-		const titleNode = test.querySelector('.test-title') || test.querySelector('.name');
-		title.value = test.dataset.title || (titleNode && titleNode.innerText) || '';
-		desc.value = test.dataset.description || '';
-		modal.style.display='flex';
-		setTimeout(()=>title.focus(),50);
-	};
 
-	const saveTestToServer = (id,title,description)=>{
-		const csrf = getCsrf();
-		$.ajax({
-		url:'/profile/api/update_test',
-		method:'POST',
-		data: JSON.stringify({id,title,description}),
-		contentType:'application/json',
-		headers: csrf ? {'X-CSRFToken':csrf} : {},
-		success: data => { if(data && data.success) rightPrint('Тест збережено'); else rightPrint('Помилка: '+((data&&data.error)?data.error:'Помилка збереження на сервері')); },
-		error: xhr => rightPrint('Помилка мережі — не збережено ('+xhr.status+')')
-		});
-	};
+	// ...existing code...
+    const createEditModal = ()=>{
+        if(qs('#editTestModal')) return;
+        const html = `
+        <div id="editTestModal" class="edit-modal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
+            <div class="edit-modal-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
+            <div class="edit-modal-window" role="dialog" aria-modal="true" style="position:relative;max-width:720px;width:95%;background:#fff;padding:18px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.2);max-height:90vh;overflow:auto;">
+            <h3 style="margin-top:0;">Редагувати тест</h3>
+            <form id="editTestForm">
+                <div style="margin-bottom:10px;"><label for="editTestTitle">Назва</label><br><input id="editTestTitle" name="title" type="text" style="width:100%;padding:8px;" required /></div>
+                <div style="margin-bottom:10px;"><label for="editTestDesc">Опис (опціонально)</label><br><textarea id="editTestDesc" name="description" style="width:100%;padding:8px;" rows="3"></textarea></div>
+                <hr>
+                <div id="edit-questions" style="display:flex;flex-direction:column;gap:12px;"></div>
+                <div style="margin-top:8px;display:flex;gap:8px;">
+                    <button type="button" id="addQuestionBtn">Додати питання</button>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+                    <button type="button" id="cancelEditBtn">Відміна</button>
+                    <button type="submit" id="saveEditBtn">Зберегти</button>
+                </div>
+            </form>
+            </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend',html);
+        const modal = qs('#editTestModal');
+        const close = ()=>{ modal.style.display='none'; currentEditing=null; };
+        modal.querySelector('.edit-modal-backdrop').addEventListener('click', close);
+        modal.querySelector('#cancelEditBtn').addEventListener('click', close);
+        document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.style.display==='flex') close(); });
+        modal.querySelector('#editTestForm').addEventListener('submit', e=>{ e.preventDefault(); saveEditFromModal(); });
+        modal.querySelector('#addQuestionBtn').addEventListener('click', ()=>{ addQuestionToModal({text:'', options:['',''], correct:0}); });
+    };
 
-	function saveSettingToServer(field,value){
-		console.log(field,value)
-		const csrf = getCsrf();
-		$.ajax({
-		url: '/profile/api/update_setting',
-		method: 'POST',
-		data: JSON.stringify({field,value}),
-		contentType: 'application/json',
-		headers: csrf ? {'X-CSRFToken':csrf} : {},
-		success: d => { if(d && d.success) rightPrint('Збережено'); else rightPrint('Помилка: '+((d&&d.error)?d.error:'помилка')); },
-		error: xhr => {
-			if(xhr.status===405||xhr.status===415){
-			const fd = new FormData(); fd.append(field,value);
-			$.ajax({
-				url: '/update_user',
-				method: 'POST',
-				data: fd,
-				processData: false,
-				contentType: false,
-				success: d2 => { if(d2 && d2.success) rightPrint('Збережено'); else rightPrint('Помилка: '+((d2&&d2.error)?d2.error:'помилка')); },
-				error: ()=> rightPrint('Помилка мережі — не збережено')
-			});
-			return;
-			}
-			rightPrint('Помилка мережі — не збережено ('+xhr.status+')');
-		}
-		});
-	};
+    const renderQuestionNode = (q, idx)=>{
+        const wrapper = document.createElement('div');
+        wrapper.className = 'edit-question';
+        wrapper.style = 'border:1px solid #ddd;padding:8px;border-radius:6px;';
 
-	const saveEditFromModal = ()=>{
-		if(!currentEditing) return;
-		const modal = qs('#editTestModal');
-		const title = modal.querySelector('#editTestTitle').value.trim();
-		const desc = modal.querySelector('#editTestDesc').value.trim();
-		const titleNode = currentEditing.querySelector('.test-title') || currentEditing.querySelector('.name');
-		if(titleNode) titleNode.innerText = title;
-		currentEditing.dataset.title = title;
-		currentEditing.dataset.description = desc;
-		const id = currentEditing.dataset.id;
-		if(id) saveTestToServer(id,title,desc);
-		modal.style.display='none';
-		currentEditing = null;
-	};
+        const header = document.createElement('div');
+        header.style = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';
+        const h = document.createElement('div');
+        h.innerHTML = `<strong>Питання ${idx+1}</strong>`;
+        const del = document.createElement('button');
+        del.type='button'; del.textContent='Видалити'; del.style='background:#f8d7da;border:1px solid #f5c6cb;padding:4px 8px;border-radius:4px;';
+        del.addEventListener('click', ()=>{ wrapper.remove(); refreshQuestionHeaders(); });
+        header.appendChild(h); header.appendChild(del);
+        wrapper.appendChild(header);
+
+        const ta = document.createElement('textarea');
+        ta.className='edit-q-text'; ta.rows=2; ta.style.width='100%'; ta.value = q.text || '';
+        wrapper.appendChild(ta);
+
+        const optsBlock = document.createElement('div');
+        optsBlock.style='margin-top:8px;display:flex;flex-direction:column;gap:6px;';
+        const opts = q.options && q.options.length ? q.options.slice() : ['',''];
+
+        const updateRadioNames = ()=>{
+            // ensure unique radio group per question wrapper
+            const radios = optsBlock.querySelectorAll('input[type="radio"]');
+            const name = 'correct-'+Date.now()+'-'+Math.random();
+            radios.forEach(r=>r.name = name);
+        };
+
+        const addOpt = () => {
+            const optRow = document.createElement('div'); optRow.style='display:flex;gap:8px;align-items:center;';
+            const inp = document.createElement('input'); inp.type='text'; inp.value=''; inp.style='flex:1;padding:6px;';
+            const mark = document.createElement('input'); mark.type='radio'; mark.name = 'correct-'+Math.random(); // will rewire later
+            const rm = document.createElement('button'); rm.type='button'; rm.textContent='x'; rm.style='padding:4px;';
+            rm.addEventListener('click', ()=>{ optRow.remove(); updateRadioNames(); });
+            optRow.appendChild(mark); optRow.appendChild(inp); optRow.appendChild(rm);
+            optsBlock.appendChild(optRow);
+            updateRadioNames();
+            return {optRow, inp, mark};
+        };
+        const optionRows = [];
+        opts.forEach((o,i)=>{
+            const r = addOpt();
+            r.inp.value = o || '';
+            optionRows.push(r);
+        });
+        const addOptBtn = document.createElement('button');
+        addOptBtn.type='button'; addOptBtn.textContent='Додати варіант'; addOptBtn.style='width:150px;margin-top:6px;';
+        addOptBtn.addEventListener('click', ()=>{ const r=addOpt(); r.inp.focus(); });
+        wrapper.appendChild(optsBlock);
+        wrapper.appendChild(addOptBtn);
+
+        // set correct radio if provided
+        setTimeout(()=>{ // after radios created
+            const radios = optsBlock.querySelectorAll('input[type="radio"]');
+            let correctIndex = (q.correct===null || q.correct===undefined) ? 0 : q.correct;
+            if(typeof correctIndex === 'string' && correctIndex.match(/^\d+$/)) correctIndex = parseInt(correctIndex);
+            if(radios[correctIndex]) radios[correctIndex].checked = true;
+        }, 0);
+
+        // expose helper to fetch state
+        wrapper.getQuestionData = ()=>{
+            const text = wrapper.querySelector('.edit-q-text').value.trim();
+            const rows = Array.from(optsBlock.querySelectorAll('div')).filter(d=>d.querySelector('input[type="text"]'));
+            const options = rows.map(r=> (r.querySelector('input[type="text"]').value||'').trim() ).filter(v => v !== '');
+            const radios = Array.from(rows.map(r=> r.querySelector('input[type="radio"]') ));
+            let correct = 0; // default 0
+            radios.forEach((rd,i)=>{ if(rd && rd.checked) correct = i; });
+            return { text, options, correct };
+        };
+        return wrapper;
+    };
+
+    const addQuestionToModal = (qdata)=>{
+        const block = qs('#edit-questions');
+        if(!block) return;
+        const idx = block.querySelectorAll('.edit-question').length;
+        const node = renderQuestionNode(qdata, idx);
+        block.appendChild(node);
+        refreshQuestionHeaders();
+    };
+
+    const refreshQuestionHeaders = ()=>{
+        const qsNodes = qs('#edit-questions').querySelectorAll('.edit-question');
+        qsNodes.forEach((n,i)=>{ const h = n.querySelector('strong'); if(h) h.textContent = 'Питання '+(i+1); });
+    };
+
+    const openEditModal = (test)=>{
+        createEditModal();
+        const modal = qs('#editTestModal');
+        if(modal.style.display==='flex') return; // prevent duplicate open
+        currentEditing = test;
+        const title = modal.querySelector('#editTestTitle');
+        const desc = modal.querySelector('#editTestDesc');
+        const id = test.dataset.id || test.dataset.testId || test.dataset.id;
+        title.value = '';
+        desc.value = '';
+        const questionsBlock = modal.querySelector('#edit-questions');
+        questionsBlock.innerHTML = '';
+        // fetch test from server
+        const url = '/profile/api/get_test?id=' + encodeURIComponent(id);
+        const csrf = getCsrf();
+        if (test.isLoading) return; // prevent duplicate
+        test.isLoading = true;
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            headers: csrf ? {'X-CSRFToken':csrf} : {},
+            success: res => {
+                test.isLoading = false;
+                if(!res || !res.success || !res.test){
+                    rightPrint('Не вдалось завантажити тест');
+                    return;
+                }
+                const t = res.test;
+                title.value = t.title || '';
+                desc.value = t.description || '';
+                (currentEditing || {}).dataset = (currentEditing.dataset||{});
+                // load questions
+                const qsArr = t.questions || [];
+                if(!qsArr.length) addQuestionToModal({text:'', options:['',''], correct:0});
+                qsArr.forEach(q=>{
+                    // normalize options
+                    let opts = q.options || [];
+                    if(typeof opts === 'string'){
+                        try{ opts = JSON.parse(opts); }catch(e){ opts = opts.split(',').map(s=>s.trim()); }
+                    }
+                    addQuestionToModal({text: q.text || q.question || '', options: opts.length ? opts : ['',''], correct: q.correct===undefined ? 0 : q.correct});
+                });
+                modal.style.display='flex';
+                setTimeout(()=>title.focus(),50);
+            },
+            error: ()=> {
+                test.isLoading = false;
+                rightPrint('Помилка мережі під час завантаження тесту');
+            }
+        });
+    };
+
+    const saveEditFromModal = ()=>{
+        if(!currentEditing) return;
+        const modal = qs('#editTestModal');
+        const title = modal.querySelector('#editTestTitle').value.trim();
+        const desc = modal.querySelector('#editTestDesc').value.trim();
+        const qnodes = Array.from(modal.querySelectorAll('.edit-question'));
+        const questions = qnodes.map(n=> n.getQuestionData() ).filter(q => q.text !== '').map(q=>{
+            return { text: q.text, options: q.options, correct: q.correct };
+        });
+        const id = currentEditing.dataset.id || currentEditing.dataset.testId || currentEditing.dataset.id;
+        const payload = { id: id, title: title, description: desc, questions: questions };
+        const csrf = getCsrf();
+        $.ajax({
+            url: '/profile/api/update_test_full',
+            method: 'POST',
+            data: JSON.stringify(payload),
+            contentType: 'application/json',
+            headers: csrf ? {'X-CSRFToken':csrf} : {},
+            success: data => {
+                if(data && data.success){
+                    rightPrint('Тест збережено');
+                    // update UI title in list
+                    const titleNode = currentEditing.querySelector('.test-title') || currentEditing.querySelector('.name');
+                    if(titleNode) titleNode.innerText = title;
+                    currentEditing.dataset.title = title;
+                    currentEditing.dataset.description = desc;
+                    location.reload(); // reload page to see changes
+                } else {
+                    rightPrint('Помилка: '+((data&&data.error)?data.error:'Не збережено'));
+                }
+                modal.style.display='none';
+                currentEditing = null;
+            },
+            error: xhr => {
+                rightPrint('Помилка мережі — не збережено ('+xhr.status+')');
+            }
+        });
+    };
+
 
 	const ensureEditButtons = container=>{
 		if(!container) return;
 		Array.from(container.querySelectorAll('.test')).forEach(test=>{
-		if(test.querySelector('.edit-name')) return;
-		const btn = document.createElement('button');
-		btn.type='button'; btn.className='edit-name'; btn.innerHTML='<img src="/user/images/edit.svg">';
-		btn.addEventListener('click', ()=>openEditModal(test));
-		const actions = test.querySelector('.name-block') || test;
-		actions.appendChild(btn);
+			if(test.querySelector('.edit-name')) return;
+			// ensure test has data-id; if not try to extract from child link
+			if(!test.dataset.id){
+				const a = test.querySelector('a[href*="/test/"]');
+				if(a && a.href){
+
+					const m = a.href.match(/\/test\/(\d+)/);
+					if(m) test.dataset.id = m[1];
+				}
+			}
+			const btn = document.createElement('button');
+			btn.type='button'; btn.className='edit-name'; btn.innerHTML='<img src="/user/images/edit.svg">';
+			btn.addEventListener('click', (ev)=>{
+				ev.preventDefault();
+				// ensure id exists
+				if(!test.dataset.id){
+					rightPrint('ID теста не знайдено — неможливо відкрити редагування');
+					return;
+				}
+				openEditModal(test);
+			});
+			const actions = test.querySelector('.name-block') || test;
+			actions.appendChild(btn);
 		});
 	};
-
 	const initEditingFeatures = ()=>{
 		[created,completed].forEach(c=>ensureEditButtons(c));
 	};
@@ -228,20 +367,15 @@ $(function(){
 			pw.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); pw.blur(); } });
 			return;
 			}
-			console.log(textEl.innerText.trim(),textEl.innerText)
 			const cur = textEl.innerText.trim();
-			console.log(cur)
 			const input = document.createElement('input'); input.type='text'; input.value = cur; input.style.width='100%';
 			const parent = textEl.parentNode;
-			console.log(input,textEl)
 			try{ parent && parent.contains(textEl) ? parent.replaceChild(input,textEl) : block.appendChild(input); } catch(e){ block.appendChild(input); }
 			input.focus();
 			const save = ()=>{
 			const val = input.value.trim();
 			const p = document.createElement('p'); p.className='text'; if(field) p.dataset.field = field; p.innerText = val;
-			console.log(p.dataset.field)  
 			try{ input.parentNode.replaceChild(p,input); } catch(e){ block.appendChild(p); }
-			console.log(field)
 			if(field) saveSettingToServer(field,val);
 			};
 			input.addEventListener('blur', ()=>save(), {once:true});
